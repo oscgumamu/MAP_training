@@ -1,52 +1,28 @@
 <!DOCTYPE html>
-
 <html>
-
-<head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-
-
-
-<title>Introduction to Spatial data in R</title>
-
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<style>h1 {font-size: 34px;}
-       h1.title {font-size: 38px;}
-       h2 {font-size: 30px;}
-       h3 {font-size: 24px;}
-       h4 {font-size: 18px;}
-       h5 {font-size: 16px;}
-       h6 {font-size: 12px;}
-       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
-       pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
-
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title>Introduction to Spatial data in R</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
   hljs.initHighlightingOnLoad();
@@ -55,87 +31,10 @@ if (window.hljs) {
   }
 }
 </script>
-
-
-
-
-
-
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -169,287 +68,163 @@ $(document).ready(function () {
   document.head.appendChild(style);
 });
 </script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
-
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
+        <!-- tabsets -->
+        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
+        <!-- code folding -->
+        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
 </div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Before we get Started</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="01_datamanagement.html">Data management</a>
-</li>
-<li>
-  <a href="02_datahandling.html">Data handling and Visualiation in R</a>
-</li>
-<li>
-  <a href="03_QGIS.html">Spatial Data in QGIS</a>
-</li>
-<li>
-  <a href="04_spatial_in_R.html">Spatial Data in R</a>
-</li>
-<li>
-  <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">Introduction to Spatial data in R</h1>
-
-</div>
-
-
-<p><br></p>
-<p>Before you begin, this module expects students to have some basic
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Before we get Started</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+</ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+                    <div id="header">
+                        <h1 class="title toc-ignore">Introduction to Spatial data in R</h1>
+                    </div>
+                    <p><br></p>
+                    <p>Before you begin, this module expects students to have some basic
 knowledge of R and GIS.</p>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
-<p>This module will follow a similar structure to previous QGIS session,
+                    <div id="overview" class="section level2">
+                        <h2>Overview</h2>
+                        <p>This module will follow a similar structure to previous QGIS session,
 however, in these lessons, we aim to equip students with skills to
 manage, analyse and present spatial data using R software.</p>
-<p><br></p>
-<div id="objectives-of-tutorial" class="section level3">
-<h3>Objectives of tutorial</h3>
-<ul>
-<li>Vector data
-<ul>
-<li>Introduction to <code>sp</code> and <code>sf</code> packages</li>
-<li>Importing shapefiles into R (Spatial points and polygons)</li>
-<li>Joining data to shapefiles</li>
-<li>Writing shapefiles out in R</li>
-</ul></li>
-<li>Raster data
-<ul>
-<li>Introduction to the <code>terra</code> package</li>
-<li>Importing rasters into R</li>
-<li>Plotting, reprojecting and manipulating rasters in R</li>
-<li>Extracting data from rasters</li>
-<li>Writing rasters out in R</li>
-</ul></li>
-<li>Creating publication quality maps
-<ul>
-<li>Using <code>ggplot2</code></li>
-<li>Using <code>tmap</code></li>
-</ul></li>
-<li>Resources for advanced interactive maps with leaflet</li>
-</ul>
-<p><br></p>
-</div>
-</div>
-<div id="vector-data-in-r" class="section level2">
-<h2>Vector data in R</h2>
-<div id="introduction-to-sp-and-sf-packages" class="section level3">
-<h3>Introduction to sp and sf packages</h3>
-<p>The <code>sp</code> package (spatial) provides classes and methods
+                        <p><br></p>
+                        <div id="objectives-of-tutorial" class="section level3">
+                            <h3>Objectives of tutorial</h3>
+                            <ul>
+                                <li>Vector data
+                                    <ul>
+                                        <li>Introduction to <code>sp</code> and <code>sf</code> packages
+                                        </li>
+                                        <li>Importing shapefiles into R (Spatial points and polygons)</li>
+                                        <li>Joining data to shapefiles</li>
+                                        <li>Writing shapefiles out in R</li>
+                                    </ul>
+                                </li>
+                                <li>Raster data
+                                    <ul>
+                                        <li>Introduction to the <code>terra</code> package
+                                        </li>
+                                        <li>Importing rasters into R</li>
+                                        <li>Plotting, reprojecting and manipulating rasters in R</li>
+                                        <li>Extracting data from rasters</li>
+                                        <li>Writing rasters out in R</li>
+                                    </ul>
+                                </li>
+                                <li>Creating publication quality maps
+                                    <ul>
+                                        <li>Using <code>ggplot2</code>
+                                        </li>
+                                        <li>Using <code>tmap</code>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>Resources for advanced interactive maps with leaflet</li>
+                            </ul>
+                            <p><br></p>
+                        </div>
+                    </div>
+                    <div id="vector-data-in-r" class="section level2">
+                        <h2>Vector data in R</h2>
+                        <div id="introduction-to-sp-and-sf-packages" class="section level3">
+                            <h3>Introduction to sp and sf packages</h3>
+                            <p>The <code>sp</code> package (spatial) provides classes and methods
 for spatial (vector) data; the classes document where the spatial
 location information resides, for 2D or 3D data. Utility functions are
 provided, e.g. for plotting data as maps, spatial selection, as well as
 methods for retrieving coordinates, for subsetting, print, summary,
 etc.</p>
-<p>The <code>sf</code> package (simple features = points, lines,
+                            <p>The <code>sf</code> package (simple features = points, lines,
 polygons and their respective ‘multi’ versions) is the new kid on the
 block with further functions to work with simple features, a
 standardized way to encode spatial vector data. It binds to the packages
 ‘GDAL’ for reading and writing data, to ‘GEOS’ for geometrical
 operations, and to ‘PROJ’ for projection conversions and datum
 transformations.</p>
-<p>For the time being, it is best to know and use both the sp and the sf
-packages, as discussed in <a
-href="https://www.r-bloggers.com/should-i-learn-sf-or-sp-for-spatial-r-programming/">this
+                            <p>For the time being, it is best to know and use both the sp and the sf
+packages, as discussed in <a href="https://www.r-bloggers.com/should-i-learn-sf-or-sp-for-spatial-r-programming/">this
 post</a>. However, we focus on the <code>sf</code> package. for the
 following reasons:</p>
-<ul>
-<li>sf ensures fast reading and writing of data</li>
-<li>sf provides enhanced plotting performance</li>
-<li>sf objects can be treated as data frames in most operations</li>
-<li>sf functions can be combined using %&gt;% operator and works well
-with the tidyverse collection of R packages.</li>
-<li>sf function names are relatively consistent and intuitive (all begin
-with st_) However, in some cases we need to transform sf objects to sp
-objects or vice versa. In that case, a simple transformation to the
-desired class is necessary:</li>
-</ul>
-<p>To sp <code>object &lt;- as(object, Class = "Spatial")</code></p>
-<p>To sf <code>object_sf = st_as_sf(object_sp, "sf")</code></p>
-<p>A word of advice: be flexible in the usage of sf and sp. Sometimes it
+                            <ul>
+                                <li>sf ensures fast reading and writing of data</li>
+                                <li>sf provides enhanced plotting performance</li>
+                                <li>sf objects can be treated as data frames in most operations</li>
+                                <li>sf functions can be combined using %&gt;% operator and works well
+                                    with the tidyverse collection of R packages.
+</li>
+                                <li>sf function names are relatively consistent and intuitive (all begin
+                                    with st_) However, in some cases we need to transform sf objects to sp
+                                    objects or vice versa. In that case, a simple transformation to the
+                                    desired class is necessary:
+</li>
+                            </ul>
+                            <p>To sp <code>object &lt;- as(object, Class = "Spatial")</code></p>
+                            <p>To sf <code>object_sf = st_as_sf(object_sp, "sf")</code></p>
+                            <p>A word of advice: be flexible in the usage of sf and sp. Sometimes it
 may be hard to explain why functions work for one data type and do not
 for the other. But since transformation is quite easy, time is better
 spend on analyzing your data than on wondering why operations do not
 work. For the purpose of this material we will focus of teaching you the
 package <code>sf</code> as it is intended to succeed and replace R
-packages <code>sp</code>, <code>rgeos</code> and the vector parts of
-<code>rgdal</code> packages. It also connects nicely to tidyverse learnt
+packages <code>sp</code>, <code>rgeos</code> and the vector parts of<code>rgdal</code> packages. It also connects nicely to tidyverse learnt
 in previous modules.</p>
-<p><br></p>
-</div>
-<div id="importing-spatial-data-into-r-spatial-points-and-polygons"
-class="section level3">
-<h3>Importing spatial data into R (Spatial points and polygons)</h3>
-<p>To import data we would first need to start with loading the
+                            <p><br></p>
+                        </div>
+                        <div id="importing-spatial-data-into-r-spatial-points-and-polygons" class="section level3">
+                            <h3>Importing spatial data into R (Spatial points and polygons)</h3>
+                            <p>To import data we would first need to start with loading the
 library</p>
-<pre class="r"><code>library(sf)
+                            <pre class="r"><code>library(sf)
 library(tidyverse)</code></pre>
-<p><br></p>
-<div id="shapefiles" class="section level4">
-<h4>Shapefiles</h4>
-<p>Shapefiles can be called in to R using the function
-<code>st_read()</code>. Similarly to <code>read_csv()</code> we include
+                            <p><br></p>
+                            <div id="shapefiles" class="section level4">
+                                <h4>Shapefiles</h4>
+                                <p>Shapefiles can be called in to R using the function<code>st_read()</code>. Similarly to <code>read_csv()</code> we include
 a filepath to a shapefile. In this instance we would load the part of
 the shapefile that ends with <em>.shp</em></p>
-<pre class="r"><code>fakeland &lt;- st_read(&quot;shapefiles/FAK_HDs.shp&quot;)</code></pre>
-<pre><code>## Reading layer `FAK_HDs&#39; from data source 
+                                <pre class="r"><code>fakeland &lt;- st_read(&quot;shapefiles/FAK_HDs.shp&quot;)</code></pre>
+                                <pre><code>## Reading layer `FAK_HDs&#39; from data source 
 ##   `/builds/malaria-atlas-project/intro-to-spatial-analysis-for-infectious-diseases/shapefiles/FAK_HDs.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 46 features and 5 fields
@@ -457,32 +232,31 @@ the shapefile that ends with <em>.shp</em></p>
 ## Dimension:     XY
 ## Bounding box:  xmin: -1.137248 ymin: 7.081189 xmax: 4.912022 ymax: 10.37418
 ## Geodetic CRS:  WGS 84</code></pre>
-<p>You’ll notice that when you load the shapefile in, there will be a
+                                <p>You’ll notice that when you load the shapefile in, there will be a
 set of information explaining the features of the shapefile. The first
 sentence shows that you have loaded a ESRI shapefile, it contains 46
 features (which are polygons in this case) and 5 columns of information
 stored as a data tabel. It mentions also there is a spatial extent
 (called bounding box) and the coordinate reference system (CRS).</p>
-<p>you can also get this information when you simply call the sf
+                                <p>you can also get this information when you simply call the sf
 object</p>
-<pre class="r"><code>fakeland</code></pre>
-<p><img src="images/features.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>In this case it is important to read in and check the metadata for
+                                <pre class="r"><code>fakeland</code></pre>
+                                <p><img src="images/features.png" width="90%" style="display: block; margin: auto;"/></p>
+                                <p>In this case it is important to read in and check the metadata for
 the type of spatial information you have loaded.</p>
-<p><br></p>
-</div>
-<div id="spatial-points" class="section level4">
-<h4>Spatial points</h4>
-<p>Another key type of spatial data is data linked to coordinates,
-frequently found in a table format. We can read these data in using the
-<code>read_csv()</code> function, then we may want to convert these into
+                                <p><br></p>
+                            </div>
+                            <div id="spatial-points" class="section level4">
+                                <h4>Spatial points</h4>
+                                <p>Another key type of spatial data is data linked to coordinates,
+frequently found in a table format. We can read these data in using the<code>read_csv()</code> function, then we may want to convert these into
 spatial information using the <code>st_as_sf()</code> function. Here we
 have a csv file containing the coordinates for the locations of health
 facilities in our routine data. Note that we set the projection for the
 spatial object using the <code>crs</code> command; crs 4326 is the
 standard WGS 84 CRS.</p>
-<pre class="r"><code>fakeland_hf_gps &lt;- read_csv(&quot;data/fakeland_hf_gps.csv&quot;)</code></pre>
-<pre><code>## Rows: 100 Columns: 8
+                                <pre class="r"><code>fakeland_hf_gps &lt;- read_csv(&quot;data/fakeland_hf_gps.csv&quot;)</code></pre>
+                                <pre><code>## Rows: 100 Columns: 8
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (5): Country_ID, Country, Dist_Code, adm1, adm2
@@ -490,22 +264,21 @@ standard WGS 84 CRS.</p>
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code># Make the gps data into a point simple feature
+                                <pre class="r"><code># Make the gps data into a point simple feature
 fakeland_hf_points &lt;- st_as_sf(fakeland_hf_gps, coords = c(&quot;X&quot;, &quot;Y&quot;), crs = 4326)</code></pre>
-<p><br></p>
-</div>
-<div id="shapefile-projections" class="section level4">
-<h4>Shapefile projections</h4>
-<p>We learnt about the importance of Coordinate Reference Systems (CRS)
+                                <p><br></p>
+                            </div>
+                            <div id="shapefile-projections" class="section level4">
+                                <h4>Shapefile projections</h4>
+                                <p>We learnt about the importance of Coordinate Reference Systems (CRS)
 for projecting spatial data in module 3. Using the sf package it is easy
 to view your data on different projects and switch between different
 projections.</p>
-<p>We have already seen that you can identify the CRS when reading in a
+                                <p>We have already seen that you can identify the CRS when reading in a
 shapefile using <code>st_read</code> and when viewing the features of a
-shapefile. You can also see the CRS using the command
-<code>st_crs()</code></p>
-<pre class="r"><code>st_crs(fakeland)</code></pre>
-<pre><code>## Coordinate Reference System:
+shapefile. You can also see the CRS using the command<code>st_crs()</code></p>
+                                <pre class="r"><code>st_crs(fakeland)</code></pre>
+                                <pre><code>## Coordinate Reference System:
 ##   User input: WGS 84 
 ##   wkt:
 ## GEOGCRS[&quot;WGS 84&quot;,
@@ -522,10 +295,9 @@ shapefile. You can also see the CRS using the command
 ##             ORDER[2],
 ##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
 ##     ID[&quot;EPSG&quot;,4326]]</code></pre>
-<p>We can then change the projection using the command
-<code>st_transform()</code>. We can also combine the two commands to
+                                <p>We can then change the projection using the command<code>st_transform()</code>. We can also combine the two commands to
 change the projection of one data type to be that of the other.</p>
-<pre class="r"><code># Change the projection to UTM zone 17N
+                                <pre class="r"><code># Change the projection to UTM zone 17N
 fakeland_utm &lt;- st_transform(fakeland, 26717)
 
 ggplot(fakeland_utm)+
@@ -538,19 +310,19 @@ fakeland2 &lt;- st_transform(fakeland_utm, st_crs(fakeland))
 ggplot(fakeland2)+
   geom_sf()+
   theme_bw()</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/reproject-1.png" width="50%" /><img src="04_spatial_in_R_files/figure-html/reproject-2.png" width="50%" /></p>
-<p><br></p>
-</div>
-</div>
-<div id="joining-data-to-shapefiles" class="section level3">
-<h3>Joining data to shapefiles</h3>
-<p>We often want to join data to shapefiles to enable the creation of
+                                <p><img src="04_spatial_in_R_files/figure-html/reproject-1.png" width="50%"/><img src="04_spatial_in_R_files/figure-html/reproject-2.png" width="50%"/></p>
+                                <p><br></p>
+                            </div>
+                        </div>
+                        <div id="joining-data-to-shapefiles" class="section level3">
+                            <h3>Joining data to shapefiles</h3>
+                            <p>We often want to join data to shapefiles to enable the creation of
 maps and to analyse spatial data. You can use the join functions shown
 in module 2 to join sf data to tables. Just note that the sf data must
 go first to automatically be recognised as sf. Else you would need to
 reset it using <code>st_as_sf()</code></p>
-<pre class="r"><code>annual_data &lt;- read_csv(&quot;data/annual_admin_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 46 Columns: 20
+                            <pre class="r"><code>annual_data &lt;- read_csv(&quot;data/annual_admin_data.csv&quot;)</code></pre>
+                            <pre><code>## Rows: 46 Columns: 20
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (2): adm1, adm2
@@ -558,68 +330,66 @@ reset it using <code>st_as_sf()</code></p>
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>annual_data_sf &lt;- fakeland  %&gt;%  
+                            <pre class="r"><code>annual_data_sf &lt;- fakeland  %&gt;%  
                   left_join(annual_data, by = c(&quot;adm2&quot;, &quot;adm1&quot;)) </code></pre>
-<p><br></p>
-</div>
-<div id="writing-shapefiles-out-in-r" class="section level3">
-<h3>Writing shapefiles out in R</h3>
-<p><code>st_write</code> can be used in the same way as
-<code>write_csv</code> to save shapefiles.</p>
-<pre class="r"><code>st_write(annual_data_sf, &quot;outputs/annual_admin_routine_data.shp&quot;)</code></pre>
-<p><br></p>
-<blockquote>
-<h3 id="task-1" class="challenge">Task 1</h3>
-<ul>
-<li>Load in the shapefile called “fakeland_task”</li>
-<li>How many polygons are in the shapefile?</li>
-<li>What projection is this shapefile in?</li>
-<li>Change the projection to be in WGS 84</li>
-</ul>
-<details>
-<summary>
-Solution
+                            <p><br></p>
+                        </div>
+                        <div id="writing-shapefiles-out-in-r" class="section level3">
+                            <h3>Writing shapefiles out in R</h3>
+                            <p><code>st_write</code> can be used in the same way as<code>write_csv</code> to save shapefiles.</p>
+                            <pre class="r"><code>st_write(annual_data_sf, &quot;outputs/annual_admin_routine_data.shp&quot;)</code></pre>
+                            <p><br></p>
+                            <blockquote>
+                                <h3 id="task-1" class="challenge">Task 1</h3>
+                                <ul>
+                                    <li>Load in the shapefile called “fakeland_task”</li>
+                                    <li>How many polygons are in the shapefile?</li>
+                                    <li>What projection is this shapefile in?</li>
+                                    <li>Change the projection to be in WGS 84</li>
+                                </ul>
+                                <details>
+                                    <summary>
+                                        Solution
 </summary>
-<pre class="r"><code> fakeland &lt;- st_read(&quot;shapefiles/fakeland_task.shp&quot;)
+                                    <pre class="r"><code> fakeland &lt;- st_read(&quot;shapefiles/fakeland_task.shp&quot;)
  fakeland
  st_crs(fakeland)
  fakeland &lt;- st_transform(fakeland, 4326)</code></pre>
-</details>
-</blockquote>
-<p><br></p>
-</div>
-</div>
-<div id="raster-data" class="section level2">
-<h2>Raster data</h2>
-<p>Raster data has historically been dealt with in R primarily using the
-<code>raster</code> package, however, this is being discontinued as
+                                </details>
+                            </blockquote>
+                            <p><br></p>
+                        </div>
+                    </div>
+                    <div id="raster-data" class="section level2">
+                        <h2>Raster data</h2>
+                        <p>Raster data has historically been dealt with in R primarily using the<code>raster</code> package, however, this is being discontinued as
 replaced by the <code>terra</code> package. We can start by loading the
 package in R.</p>
-<pre class="r"><code>library(terra)</code></pre>
-<pre><code>## terra 1.6.17</code></pre>
-<pre><code>## 
+                        <pre class="r"><code>library(terra)</code></pre>
+                        <pre><code>## terra 1.6.17</code></pre>
+                        <pre><code>## 
 ## Attaching package: &#39;terra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
+                        <pre><code>## The following object is masked from &#39;package:patchwork&#39;:
 ## 
 ##     area</code></pre>
-<pre><code>## The following object is masked from &#39;package:knitr&#39;:
+                        <pre><code>## The following object is masked from &#39;package:knitr&#39;:
 ## 
 ##     spin</code></pre>
-<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+                        <pre><code>## The following object is masked from &#39;package:tidyr&#39;:
 ## 
 ##     extract</code></pre>
-<p>In terra we deal with rasters as a class of data called “SpatRaster”.
+                        <p>In terra we deal with rasters as a class of data called “SpatRaster”.
 This is a multi-layered feature which stores the parameters to describe
 the raster, including then number or rows and columns, the spatial
 extent and projection.</p>
-<p><br></p>
-<div id="loading-raster-data" class="section level3">
-<h3>Loading raster data</h3>
-<p>We can import raster data using the function <code>rast()</code>, and
+                        <p><br></p>
+                        <div id="loading-raster-data" class="section level3">
+                            <h3>Loading raster data</h3>
+                            <p>We can import raster data using the function <code>rast()</code>, and
 look at the raster properties by calling the object.</p>
-<pre class="r"><code>population &lt;- rast(&quot;rasters/ihme_corrected_worldpop_All_Ages_3_2018.tif&quot;)
+                            <pre class="r"><code>population &lt;- rast(&quot;rasters/ihme_corrected_worldpop_All_Ages_3_2018.tif&quot;)
 population</code></pre>
-<pre><code>## class       : SpatRaster 
+                            <pre><code>## class       : SpatRaster 
 ## dimensions  : 84, 156, 1  (nrow, ncol, nlyr)
 ## resolution  : 0.04166667, 0.04166667  (x, y)
 ## extent      : -1.5, 5, 7, 10.5  (xmin, xmax, ymin, ymax)
@@ -628,82 +398,80 @@ population</code></pre>
 ## name        : ihme_corrected_worldpop_All_Ages_3_2018 
 ## min value   :                            6.848159e-01 
 ## max value   :                            3.008912e+05</code></pre>
-<p>We can view the raster simply by using the <code>plot()</code>
+                            <p>We can view the raster simply by using the <code>plot()</code>
 function.</p>
-<pre class="r"><code>plot(population)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/plot-pop-1.png" width="60%" style="display: block; margin: auto;" /></p>
-<p>We can also use this function to read in a stack of multiple rasters.
+                            <pre class="r"><code>plot(population)</code></pre>
+                            <p><img src="04_spatial_in_R_files/figure-html/plot-pop-1.png" width="60%" style="display: block; margin: auto;"/></p>
+                            <p>We can also use this function to read in a stack of multiple rasters.
 In the raster folder you will find a series of rasters with the prefix
 “GPMM”, these are the monthly rainfall at a 5km resolution for Fakeland.
 We can identify these rasters using the regular expression and read them
 in as a raster stack using <code>rast()</code>.</p>
-<pre class="r"><code>file.names &lt;- list.files(path = &#39;rasters/&#39;, pattern = &#39;^GPMM.*?\\.tif$&#39;, full.names = T)
+                            <pre class="r"><code>file.names &lt;- list.files(path = &#39;rasters/&#39;, pattern = &#39;^GPMM.*?\\.tif$&#39;, full.names = T)
 
 GPMM &lt;- rast(file.names)
 
 plot(GPMM)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/load-stack-1.png" width="60%" style="display: block; margin: auto;" />
+                            <p><img src="04_spatial_in_R_files/figure-html/load-stack-1.png" width="60%" style="display: block; margin: auto;"/>
 Lets rename the rasters in the stack to make the names more meaningful.
 We can also use the index number to extract a single layer. We can
 select one raster in the stack by using the numerical index. So this
 would give us the monthly rainfall raster for June.</p>
-<pre class="r"><code>names(GPMM) &lt;-  c(&#39;GPMM_Jan&#39;, &#39;GPMM_Feb&#39;, &#39;GPMM_Mar&#39;, &#39;GPMM_Apr&#39;, &#39;GPMM_May&#39;, &#39;GPMM_Jun&#39;, 
+                            <pre class="r"><code>names(GPMM) &lt;-  c(&#39;GPMM_Jan&#39;, &#39;GPMM_Feb&#39;, &#39;GPMM_Mar&#39;, &#39;GPMM_Apr&#39;, &#39;GPMM_May&#39;, &#39;GPMM_Jun&#39;, 
                   &#39;GPMM_Jul&#39;, &#39;GPMM_Aug&#39;, &#39;GPMM_Sep&#39;, &#39;GPMM_Oct&#39;, &#39;GPMM_Nov&#39;, &#39;GPMM_Dec&#39;)
 
 plot(GPMM[[6]])</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/plot-stack-1.png" width="60%" style="display: block; margin: auto;" /></p>
-<p><br></p>
-</div>
-<div id="plotting-reprojecting-and-manipulating-rasters-in-r"
-class="section level3">
-<h3>Plotting, reprojecting and manipulating Rasters in R</h3>
-<p><br></p>
-<div id="plotting-rasters" class="section level4">
-<h4>Plotting rasters</h4>
-<p>We can quickly summarise the data from rasters in plots such as
+                            <p><img src="04_spatial_in_R_files/figure-html/plot-stack-1.png" width="60%" style="display: block; margin: auto;"/></p>
+                            <p><br></p>
+                        </div>
+                        <div id="plotting-reprojecting-and-manipulating-rasters-in-r" class="section level3">
+                            <h3>Plotting, reprojecting and manipulating Rasters in R</h3>
+                            <p><br></p>
+                            <div id="plotting-rasters" class="section level4">
+                                <h4>Plotting rasters</h4>
+                                <p>We can quickly summarise the data from rasters in plots such as
 histograms.</p>
-<pre class="r"><code>hist(log(population)) #plotting the log of the population due to the scale</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/plot-pop-hist-1.png" width="60%" style="display: block; margin: auto;" /></p>
-<p>Additionally we can also use <code>ggplot</code> to visualise
+                                <pre class="r"><code>hist(log(population)) #plotting the log of the population due to the scale</code></pre>
+                                <p><img src="04_spatial_in_R_files/figure-html/plot-pop-hist-1.png" width="60%" style="display: block; margin: auto;"/></p>
+                                <p>Additionally we can also use <code>ggplot</code> to visualise
 rasters, giving us more control over the appearance of the plot. First
 you need to convert the raster to a data frame, then it can be plotted
 using <code>geom_raster</code>. We can then use the same functions to
 control the appearance of the plot discussed in the data visualisation
 module.</p>
-<pre class="r"><code>pop_df &lt;- as.data.frame(population, xy = TRUE)
+                                <pre class="r"><code>pop_df &lt;- as.data.frame(population, xy = TRUE)
 
 ggplot()+
   geom_raster(data = pop_df, aes(x = x, y = y, fill = ihme_corrected_worldpop_All_Ages_3_2018 ))+
   scale_fill_viridis_c()+
   labs(fill = &quot;Population&quot;)+
   theme_bw()</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/ggplot-pop-1.png" width="60%" style="display: block; margin: auto;" /></p>
-<p><br></p>
-</div>
-<div id="reprojecting-rasters" class="section level4">
-<h4>Reprojecting rasters</h4>
-<p>As with the shapefiles it is important to know and control the
+                                <p><img src="04_spatial_in_R_files/figure-html/ggplot-pop-1.png" width="60%" style="display: block; margin: auto;"/></p>
+                                <p><br></p>
+                            </div>
+                            <div id="reprojecting-rasters" class="section level4">
+                                <h4>Reprojecting rasters</h4>
+                                <p>As with the shapefiles it is important to know and control the
 projection of the raster. We can find out what the current projection is
 and change it using the <code>crs()</code> function. This will allow us
 to work with rasters and other spatial data.</p>
-<pre class="r"><code>crs(population)</code></pre>
-<pre><code>## [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;geodetic latitude (Lat)\&quot;,north,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n        AXIS[\&quot;geodetic longitude (Lon)\&quot;,east,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    ID[\&quot;EPSG\&quot;,4326]]&quot;</code></pre>
-<pre class="r"><code>crs(population) &lt;- &quot;+proj=utm +zone=48 +datum=WGS84&quot;</code></pre>
-<p><br></p>
-</div>
-<div id="manipulating-rasters" class="section level4">
-<h4>Manipulating rasters</h4>
-<p>We can find out the spatial extent of a raster by using the
-<code>ext()</code> function, and easily crop the raster to other extents
+                                <pre class="r"><code>crs(population)</code></pre>
+                                <pre><code>## [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;geodetic latitude (Lat)\&quot;,north,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n        AXIS[\&quot;geodetic longitude (Lon)\&quot;,east,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    ID[\&quot;EPSG\&quot;,4326]]&quot;</code></pre>
+                                <pre class="r"><code>crs(population) &lt;- &quot;+proj=utm +zone=48 +datum=WGS84&quot;</code></pre>
+                                <p><br></p>
+                            </div>
+                            <div id="manipulating-rasters" class="section level4">
+                                <h4>Manipulating rasters</h4>
+                                <p>We can find out the spatial extent of a raster by using the<code>ext()</code> function, and easily crop the raster to other extents
 using <code>crop()</code>. We can specify the coordinates we wish to
 crop the raster to, or a take the extent from a spatial object and crop
 the raster to that.</p>
-<pre class="r"><code>ext(population)</code></pre>
-<pre><code>## SpatExtent : -1.5, 5, 7, 10.5 (xmin, xmax, ymin, ymax)</code></pre>
-<pre class="r"><code>pop1 &lt;- crop(population, c(-1,2,9,10))   # c(xmin, xmax, ymin, ymax)
+                                <pre class="r"><code>ext(population)</code></pre>
+                                <pre><code>## SpatExtent : -1.5, 5, 7, 10.5 (xmin, xmax, ymin, ymax)</code></pre>
+                                <pre class="r"><code>pop1 &lt;- crop(population, c(-1,2,9,10))   # c(xmin, xmax, ymin, ymax)
 plot(pop1)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/manip-raster-1.png" width="60%" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Get the extend of the &quot;West&quot; region of fakeland
+                                <p><img src="04_spatial_in_R_files/figure-html/manip-raster-1.png" width="60%" style="display: block; margin: auto;"/></p>
+                                <pre class="r"><code># Get the extend of the &quot;West&quot; region of fakeland
 e &lt;- filter(fakeland, adm1 == &#39;West&#39;) %&gt;%
   vect() %&gt;%
   ext()
@@ -711,11 +479,10 @@ e &lt;- filter(fakeland, adm1 == &#39;West&#39;) %&gt;%
 # Crop the raster to the same extent
 West_pop &lt;- crop(population, e)
 ext(West_pop)</code></pre>
-<pre><code>## SpatExtent : -1.125, 1.125, 7.08333333333333, 10.0833333333333 (xmin, xmax, ymin, ymax)</code></pre>
-<p>We may then want to change all the raster cells which lay outside the
-polygon for the West region to be NA. This can be done using
-<code>mask()</code>.</p>
-<pre class="r"><code>library(terra)
+                                <pre><code>## SpatExtent : -1.125, 1.125, 7.08333333333333, 10.0833333333333 (xmin, xmax, ymin, ymax)</code></pre>
+                                <p>We may then want to change all the raster cells which lay outside the
+polygon for the West region to be NA. This can be done using<code>mask()</code>.</p>
+                                <pre class="r"><code>library(terra)
 m &lt;- filter(fakeland, adm1 == &#39;West&#39;) %&gt;%
   vect()
 
@@ -724,49 +491,46 @@ crs(West_pop) -&gt; crs(m) # make sure projections are the same!
 West_pop2 &lt;-  terra::mask(West_pop, m)
 
 plot(West_pop2)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/mask-raster-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><br></p>
-</div>
-</div>
-<div id="extracting-raster-data" class="section level3">
-<h3>Extracting raster data</h3>
-<p>We frequently want to extract values from rasters. This could be
+                                <p><img src="04_spatial_in_R_files/figure-html/mask-raster-1.png" width="672" style="display: block; margin: auto;"/></p>
+                                <p><br></p>
+                            </div>
+                        </div>
+                        <div id="extracting-raster-data" class="section level3">
+                            <h3>Extracting raster data</h3>
+                            <p>We frequently want to extract values from rasters. This could be
 extracting all values within a polygon of a shapefile to perform
 calculations on (such as summing the population in each district), or
-extracting values for specific coordinates. This can be done using the
-<code>extract()</code> function. This can extract data from locations
+extracting values for specific coordinates. This can be done using the<code>extract()</code> function. This can extract data from locations
 stored as a spatial vector (SpatVector - points, polygons or lines), a
 matrix with coordinates (x,y) or a vector of cell numbers.</p>
-<p>Firstly, if we wanted to extract the population values for the first
+                            <p>Firstly, if we wanted to extract the population values for the first
 5 cells in the raster we could use this command:</p>
-<pre class="r"><code>terra::extract(population, c(1,2,3,4,5))</code></pre>
-<pre><code>##   ihme_corrected_worldpop_All_Ages_3_2018
+                            <pre class="r"><code>terra::extract(population, c(1,2,3,4,5))</code></pre>
+                            <pre><code>##   ihme_corrected_worldpop_All_Ages_3_2018
 ## 1                                203.1444
 ## 2                                505.9554
 ## 3                                855.8597
 ## 4                               1277.4124
 ## 5                               1942.9839</code></pre>
-<p>Next, if we had a specific set of coordinates we wanted to know the
+                            <p>Next, if we had a specific set of coordinates we wanted to know the
 population at, we would define these coordinates in a matrix with the
 longitude (x) as the first value, and the latitude (y) as the second
-value (N.B They must be in this order) then use the
-<code>extract()</code> function.</p>
-<pre class="r"><code>coords &lt;- cbind(1, 8)
+value (N.B They must be in this order) then use the<code>extract()</code> function.</p>
+                            <pre class="r"><code>coords &lt;- cbind(1, 8)
 
 extract(population, coords) # Extract the population for these coordinates</code></pre>
-<pre><code>##   ihme_corrected_worldpop_All_Ages_3_2018
+                            <pre><code>##   ihme_corrected_worldpop_All_Ages_3_2018
 ## 1                                1186.163</code></pre>
-<p>If we had a vector of spatial vector of coordinates, such as our
-dataset of health facility locations, we can pass this to the
-<code>extract()</code> function to get the raster values for each point.
+                            <p>If we had a vector of spatial vector of coordinates, such as our
+dataset of health facility locations, we can pass this to the<code>extract()</code> function to get the raster values for each point.
 This function additionally works on raster stacks. If we run this on our
 stack of monthly rainfall rasters we can see that the values are
 extracted for each set of coordinates from each monthly raster. These
 can then be processed as a normal data frame</p>
-<pre class="r"><code>GPMM_extract &lt;- extract(GPMM, vect(fakeland_hf_points))
+                            <pre class="r"><code>GPMM_extract &lt;- extract(GPMM, vect(fakeland_hf_points))
 
 head(GPMM_extract)</code></pre>
-<pre><code>##   ID    GPMM_Jan GPMM_Feb GPMM_Mar GPMM_Apr  GPMM_May GPMM_Jun  GPMM_Jul
+                            <pre><code>##   ID    GPMM_Jan GPMM_Feb GPMM_Mar GPMM_Apr  GPMM_May GPMM_Jun  GPMM_Jul
 ## 1  1 0.140751183 51.77404 66.19682 81.09777 147.76413 134.0340 302.64267
 ## 2  2 0.007372544 50.04529 60.83176 88.40833 129.95383 140.5897 289.12778
 ## 3  3 0.004494285 42.21128 61.98917 90.62826 133.26007 142.3357 271.26285
@@ -780,16 +544,16 @@ head(GPMM_extract)</code></pre>
 ## 4 264.4977 249.9303 127.60249  6.701365 0.15531778
 ## 5 256.3834 232.9854 128.41360  5.979004 0.07403241
 ## 6 213.7514 269.6235 184.14915  8.359339 0.12935738</code></pre>
-<p>Finally, we look at extracting the population values for each admin 2
+                            <p>Finally, we look at extracting the population values for each admin 2
 district of fakeland. For this we provide <code>extract()</code> with
 the raster and the shapefile. The output is then the population value
 for each cell of the raster, linked to each polygon ID of the shapefile.
 We can the perform summary statistic on this as we would a standard data
 frame.</p>
-<pre class="r"><code>fakeland_pop &lt;- extract(population, vect(fakeland))
+                            <pre class="r"><code>fakeland_pop &lt;- extract(population, vect(fakeland))
 
 head(fakeland)</code></pre>
-<pre><code>## Simple feature collection with 6 features and 5 fields
+                            <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: POLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -1.070175 ymin: 7.614849 xmax: 1.138602 ymax: 10.09391
@@ -801,34 +565,36 @@ head(fakeland)</code></pre>
 ## 4        FAK Fakeland    FAK004  Tangue West POLYGON ((-0.7725049 9.0987...
 ## 5        FAK Fakeland    FAK005  Cakure West POLYGON ((0.8481822 9.31230...
 ## 6        FAK Fakeland    FAK006 Yenagbo West POLYGON ((0.3932125 10.0613...</code></pre>
-<pre class="r"><code>fakeland_pop &lt;- fakeland_pop %&gt;% 
+                            <pre class="r"><code>fakeland_pop &lt;- fakeland_pop %&gt;% 
   group_by(ID) %&gt;% 
   summarise(population = sum(ihme_corrected_worldpop_All_Ages_3_2018, na.rm = T)) %&gt;% 
   mutate(adm2 = fakeland$adm2)</code></pre>
-<p><br></p>
-</div>
-<div id="writing-rasters-out-in-r" class="section level3">
-<h3>Writing rasters out in R</h3>
-<p>We can save a rasters in a variety of formats using
-<code>writeRaster</code>. Here was dave it as a “.tif”</p>
-<pre class="r"><code>writeRaster(West_pop, &quot;rasters/West_adm1_population.tif&quot;)</code></pre>
-<p><br></p>
-<blockquote>
-<h3 id="task-2" class="challenge">Task 2</h3>
-<ul>
-<li>Using the “fakelands_task” shapefile from task 1, ensure the
-projection is in “4326” (WGS84)</li>
-<li>Import the raster of rainfall for April
-“GPMM.IMerg.V06B.MM_Total.2018.04.Data.5km”</li>
-<li>Extract the vaules from the raster based on the polygons in your
-shapefile</li>
-<li>Calculate the mean rainfall for each polygon in the shapefile</li>
-</ul>
-<details>
-<summary>
-Solution
+                            <p><br></p>
+                        </div>
+                        <div id="writing-rasters-out-in-r" class="section level3">
+                            <h3>Writing rasters out in R</h3>
+                            <p>We can save a rasters in a variety of formats using<code>writeRaster</code>. Here was dave it as a “.tif”</p>
+                            <pre class="r"><code>writeRaster(West_pop, &quot;rasters/West_adm1_population.tif&quot;)</code></pre>
+                            <p><br></p>
+                            <blockquote>
+                                <h3 id="task-2" class="challenge">Task 2</h3>
+                                <ul>
+                                    <li>Using the “fakelands_task” shapefile from task 1, ensure the
+                                        projection is in “4326” (WGS84)
+</li>
+                                    <li>Import the raster of rainfall for April
+                                        “GPMM.IMerg.V06B.MM_Total.2018.04.Data.5km”
+</li>
+                                    <li>Extract the vaules from the raster based on the polygons in your
+                                        shapefile
+</li>
+                                    <li>Calculate the mean rainfall for each polygon in the shapefile</li>
+                                </ul>
+                                <details>
+                                    <summary>
+                                        Solution
 </summary>
-<pre class="r"><code> fakeland &lt;- st_read(&quot;shapefiles/fakeland_task.shp&quot;)
+                                    <pre class="r"><code> fakeland &lt;- st_read(&quot;shapefiles/fakeland_task.shp&quot;)
  fakeland &lt;- st_transform(fakeland, 4326)
  GPMM_Apr &lt;- rast(&quot;rasters/GPMM.IMerg.V06B.MM_Total.2018.04.Data.5km.tif&quot;)
  names(GPMM_Apr) &lt;- &#39;GPMM_Apr&#39;
@@ -836,19 +602,19 @@ Solution
                      group_by(ID) %&gt;% 
                      summarise(mean_rainfall = mean(GPMM_Apr, na.rm = T)) %&gt;% 
                      mutate(adm1 = fakeland$adm1)</code></pre>
-</details>
-</blockquote>
-<p><br></p>
-</div>
-</div>
-<div id="demo-1" class="section level2">
-<h2>Demo 1</h2>
-<p>In this demo we will join together what we have learnt, importing the
+                                </details>
+                            </blockquote>
+                            <p><br></p>
+                        </div>
+                    </div>
+                    <div id="demo-1" class="section level2">
+                        <h2>Demo 1</h2>
+                        <p>In this demo we will join together what we have learnt, importing the
 shapefile and population raster for Fakeland, calculating the total
 population. We will join our annually aggregated routine data with the
 population and calculated the annual parasite incidence then join this
 on to the shapefile,</p>
-<pre class="r"><code>rm(list = ls())  # clear the console
+                        <pre class="r"><code>rm(list = ls())  # clear the console
 
 # Import the data sources
 annual_data &lt;- read_csv(&#39;data/annual_admin_data.csv&#39;)
@@ -871,55 +637,50 @@ annual_data &lt;-
 #Join the routine data onto the shapefile
 fakeland_annual &lt;- 
   left_join(fakeland, annual_data) </code></pre>
-<p><br></p>
-</div>
-<div id="making-chloropleth-maps-in-r" class="section level2">
-<h2>Making chloropleth maps in R</h2>
-<p>In the demo we have created a dataset with annual incidence at admin
+                        <p><br></p>
+                    </div>
+                    <div id="making-chloropleth-maps-in-r" class="section level2">
+                        <h2>Making chloropleth maps in R</h2>
+                        <p>In the demo we have created a dataset with annual incidence at admin
 2 level. The next obvious thing to do is have a look at it. In this
 section we’ll explore some popular ways of making chloropleth maps in R.
 Although not designed as a full-scale GIS application, R (especially
 when combined with its vast ecosystem of packages) provides a powerful,
 endlessly customisable, tool for spatial visualisation.</p>
-<p><br></p>
-<div id="plotting-spatial-data-using-base-r" class="section level3">
-<h3>Plotting spatial data using base R</h3>
-<p>It’s possible to produce maps using nothing more than
-<code>rgdal</code>. Simply calling <code>plot</code> does the job, but
+                        <p><br></p>
+                        <div id="plotting-spatial-data-using-base-r" class="section level3">
+                            <h3>Plotting spatial data using base R</h3>
+                            <p>It’s possible to produce maps using nothing more than<code>rgdal</code>. Simply calling <code>plot</code> does the job, but
 plots out all attributes of our shapefile in quite an unappealing way.
 You can select out one attribute to plot using the normal R way of
 subsetting: <code>sf_object[name_of_attribute]</code>. This way we can
 very quickly plot out the API in Fakeland, as joined to the shapefile
 above, by admin2 unit:</p>
-<pre class="r"><code>library(rgdal)
+                            <pre class="r"><code>library(rgdal)
 
 
 plot(fakeland_annual[&quot;API&quot;])</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/plot-baser-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>By default R will place the legend wherever it thinks ‘best’, but you
+                            <p><img src="04_spatial_in_R_files/figure-html/plot-baser-1.png" width="672" style="display: block; margin: auto;"/></p>
+                            <p>By default R will place the legend wherever it thinks ‘best’, but you
 can specify location with the additional argument <code>key.pos</code>
-(1 for below; 2 left; 3 above and 4 to the right).
-<code>key.width</code> and <code>key.length</code> allow you to control
+(1 for below; 2 left; 3 above and 4 to the right).<code>key.width</code> and <code>key.length</code> allow you to control
 the dimensions of the legend.</p>
-<pre class="r"><code>plot(fakeland_annual[&quot;API&quot;], key.pos = 1)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/legend-pos-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Notice that by default the colour ramp is discrete. You can tune the
-colour breaks using either or both of <code>breaks</code> and
-<code>nbreaks</code>. <code>nbreaks</code> defines the number of breaks,
-<code>breaks</code> is either</p>
-<ul>
-<li>a vector of numbers defining the precise location of the breaks</li>
-<li>a string specifying the method to use to define the breaks – by
-default R uses <code>pretty</code>, but other options include
-<code>equal</code>, <code>jenks</code> and <code>quantile</code>.</li>
-</ul>
-<p>Titles can be specified using <code>main</code>, axes (with
+                            <pre class="r"><code>plot(fakeland_annual[&quot;API&quot;], key.pos = 1)</code></pre>
+                            <p><img src="04_spatial_in_R_files/figure-html/legend-pos-1.png" width="672" style="display: block; margin: auto;"/></p>
+                            <p>Notice that by default the colour ramp is discrete. You can tune the
+colour breaks using either or both of <code>breaks</code> and<code>nbreaks</code>. <code>nbreaks</code> defines the number of breaks,<code>breaks</code> is either</p>
+                            <ul>
+                                <li>a vector of numbers defining the precise location of the breaks</li>
+                                <li>a string specifying the method to use to define the breaks – by
+                                    default R uses <code>pretty</code>, but other options include<code>equal</code>, <code>jenks</code> and <code>quantile</code>.
+                                </li>
+                            </ul>
+                            <p>Titles can be specified using <code>main</code>, axes (with
 lat-longs) toggled on/off using <code>axes</code>. We can use a log-10
-scale using <code>logz</code> (if using this careful with your breaks!).
-<code>pal</code> is a palette function, detemining the colour ramp. The
+scale using <code>logz</code> (if using this careful with your breaks!).<code>pal</code> is a palette function, detemining the colour ramp. The
 default colour ramp is a bit 1980s for our purposes – let’s try Viridis
 instead.</p>
-<pre class="r"><code># define the palette
+                            <pre class="r"><code># define the palette
 test_pal &lt;- viridis::viridis(10)
 
 plot(fakeland_annual[&quot;API&quot;], 
@@ -929,55 +690,54 @@ plot(fakeland_annual[&quot;API&quot;],
      main = &quot;API, Fakeland 20XX&quot;,
      axes = F,
      logz = T)</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/viridis-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><br></p>
-</div>
-<div id="plotting-shapefiles-using-ggplot2" class="section level3">
-<h3>Plotting shapefiles using `ggplot2``</h3>
-<p>The above is a perfectly servicable map. In practice, however, the
+                            <p><img src="04_spatial_in_R_files/figure-html/viridis-1.png" width="672" style="display: block; margin: auto;"/></p>
+                            <p><br></p>
+                        </div>
+                        <div id="plotting-shapefiles-using-ggplot2" class="section level3">
+                            <h3>Plotting shapefiles using `ggplot2``</h3>
+                            <p>The above is a perfectly servicable map. In practice, however, the
 flexibility of <code>ggplot2</code> is worth the install and the
 learning curve. You met <code>ggplot2</code> earlier today – recall that
 the package implements ‘the grammar of graphics’ to build plots in
 layers. This philosophy is powerful, allowing us a much greater degree
 of freedom in our map-making than we could achieve in base R.</p>
-<p><br></p>
-</div>
-<div id="adding-features-to-maps" class="section level3">
-<h3>Adding features to maps</h3>
-<p>Recall from earlier the typical <code>ggplot</code> call:
-<code>ggplot(data, aesthetic)</code>. When making chloropleth maps, our
+                            <p><br></p>
+                        </div>
+                        <div id="adding-features-to-maps" class="section level3">
+                            <h3>Adding features to maps</h3>
+                            <p>Recall from earlier the typical <code>ggplot</code> call:<code>ggplot(data, aesthetic)</code>. When making chloropleth maps, our
 data will typically be an <code>sf</code> object, with a column
 corresponding to the variable you wish to map, and a geometry column
 describing the geography of the data.</p>
-<p>Given an <code>sf</code> object, you can use <code>geom_sf</code> to
+                            <p>Given an <code>sf</code> object, you can use <code>geom_sf</code> to
 produce a simple plot of your shapefile without even explicitly defining
 any aesthetics.</p>
-<pre class="r"><code>ggplot(fakeland) + 
+                            <pre class="r"><code>ggplot(fakeland) + 
   geom_sf() + # as we&#39;ve called ggplot using an sf object as the data argument, geom_sf can figure it out itself
   coord_sf()  # deals with map projection </code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/ggplot-basic-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><code>geom_sf</code> is a bit different to the <code>ggplot2</code>
-geometries you met earlier: it requires a new aesthetic,
-<code>geometry</code>. The good news is you often don’t need to worry
+                            <p><img src="04_spatial_in_R_files/figure-html/ggplot-basic-1.png" width="672" style="display: block; margin: auto;"/></p>
+                            <p><code>geom_sf</code> is a bit different to the <code>ggplot2</code>
+geometries you met earlier: it requires a new aesthetic,<code>geometry</code>. The good news is you often don’t need to worry
 about specifying this, as <code>ggplot</code> tries to help behind the
 scenes:</p>
-<ul>
-<li>If you supply no <code>geometry</code> argument to your
-<code>geom_sf</code> call, R will try to find a column in your provided
-data called ‘geometry’, and use that if it’s suitable;</li>
-<li>If you used an <code>sf</code> object in the function call
-(i.e. <code>geom_sf(data = sf_object,..)</code>) then ggplot can
-automatically detecte the geometry column (it doesn’t even need to be
-called geometry!)</li>
-<li>You can specify it manually,
-<code>aes(geometry = geometry_column)</code>. If you have multiple
-geometry columns you’ll need to do this, as R can’t read your mind.</li>
-</ul>
-<p>Let’s see how we can use <code>ggplot2</code> to map the API in each
+                            <ul>
+                                <li>If you supply no <code>geometry</code> argument to your<code>geom_sf</code> call, R will try to find a column in your provided
+                                    data called ‘geometry’, and use that if it’s suitable;
+                                </li>
+                                <li>If you used an <code>sf</code> object in the function call
+                                    (i.e. <code>geom_sf(data = sf_object,..)</code>) then ggplot can
+                                    automatically detecte the geometry column (it doesn’t even need to be
+                                    called geometry!)
+                                </li>
+                                <li>You can specify it manually,<code>aes(geometry = geometry_column)</code>. If you have multiple
+                                    geometry columns you’ll need to do this, as R can’t read your mind.
+                                </li>
+                            </ul>
+                            <p>Let’s see how we can use <code>ggplot2</code> to map the API in each
 admin2 unit of Fakeland. To show the full range of variation on the map,
 we’ll log-transform the colour-scale. Let’s decide on some breaks:</p>
-<pre class="r"><code>my_breaks &lt;- c(signif(min(fakeland_annual$API)-1, 2), 8000, 160000, signif(max(fakeland_annual$API)+1, 2))</code></pre>
-<pre class="r"><code>ggplot() + 
+                            <pre class="r"><code>my_breaks &lt;- c(signif(min(fakeland_annual$API)-1, 2), 8000, 160000, signif(max(fakeland_annual$API)+1, 2))</code></pre>
+                            <pre class="r"><code>ggplot() + 
   geom_sf(data = fakeland_annual, aes(fill = API), colour = &quot;grey25&quot;) + # now we need to tell ggplot an antribute of the data to use as an aesthetic
   scale_fill_viridis_c(trans = &quot;log&quot;, breaks = my_breaks) +
   labs(title = &quot;API, Fakeland 20XX&quot;, fill = &quot;&quot;) +
@@ -986,21 +746,18 @@ we’ll log-transform the colour-scale. Let’s decide on some breaks:</p>
   theme_void() +
   theme(plot.title = element_text(face = &quot;bold&quot;, hjust = 0.5),
         legend.position = &quot;bottom&quot;, legend.key.width = unit(2,&quot;cm&quot;), legend.text=element_text(size=12)) </code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/gg-prettier-plot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Compare this to the base R map we made – our colour scale is now
+                            <p><img src="04_spatial_in_R_files/figure-html/gg-prettier-plot-1.png" width="672" style="display: block; margin: auto;"/></p>
+                            <p>Compare this to the base R map we made – our colour scale is now
 continuous, but otherwise the plots are almost identical.</p>
-<p>Breaking down the code we used to produce it:</p>
-<p><code>ggplot() + geom_sf(data = fakeland_annual, aes(fill = API), colour = "grey25") +</code></p>
-<p>After calling <code>ggplot()</code>, our first layer is a call to
-<code>geom_sf</code> pointing to our <code>sf</code> object. We’re
+                            <p>Breaking down the code we used to produce it:</p>
+                            <p><code>ggplot() + geom_sf(data = fakeland_annual, aes(fill = API), colour = "grey25") +</code></p>
+                            <p>After calling <code>ggplot()</code>, our first layer is a call to<code>geom_sf</code> pointing to our <code>sf</code> object. We’re
 making a univariate map, so our aesthetics consists only of a single
-call to fill the polygons with the entries in
-<code>fakeland_annual$API</code> – no need for a <code>geometry</code>
+call to fill the polygons with the entries in<code>fakeland_annual$API</code> – no need for a <code>geometry</code>
 call, here. <code>colour</code> determines the colour of the polygon
-outlines – we’re not varying that based on data, so it sits outside
-<code>aes</code>.</p>
-<p><code>scale_fill_viridis_c() +</code></p>
-<p>This next layer tells R to using a continuous viridis palette when
+outlines – we’re not varying that based on data, so it sits outside<code>aes</code>.</p>
+                            <p><code>scale_fill_viridis_c() +</code></p>
+                            <p>This next layer tells R to using a continuous viridis palette when
 filling our polygons. When filling with discrete (factor) data, you
 instead use <code>scale_fill_viridis_d()</code> here. The Viridis family
 of colourramps are designed to . Arguments you can pass to this function
@@ -1012,55 +769,50 @@ viridis family. Four options are available: “magma” (or “A”), “inferno
 here) and “cividis” (or “E”). By default <code>NA</code>s will be shown
 in grey – change this by setting <code>na.value</code> to the colour of
 your choice.</p>
-<p><code>labs(title = "API, Fakeland 20XX", fill = "") +</code></p>
-<p>It’s rare that our short variable names are explanatory enough to
+                            <p><code>labs(title = "API, Fakeland 20XX", fill = "") +</code></p>
+                            <p>It’s rare that our short variable names are explanatory enough to
 show on a plot. <code>labs</code> allows us to define exactly what we
 want displayed, and define the plot title, subtitle, and even a caption
 (e.g. for attribution). Labels of aesthetics are set by referring back
-to that aesthetic: <code>fill</code>, <code>colour</code>,
-<code>alpha</code>, etc..</p>
-<p><code>coord_sf() + # deals with map projection</code></p>
-<p>The projection and extent of our map are controlled by this function.
+to that aesthetic: <code>fill</code>, <code>colour</code>,<code>alpha</code>, etc..</p>
+                            <p><code>coord_sf() + # deals with map projection</code></p>
+                            <p>The projection and extent of our map are controlled by this function.
 In this case, it’s not doing anything – we could happily have omitted it
-from our <code>ggplot</code> call. This is because by default
-<code>ggplot2</code> will use the CRS of the first layer which defines
-one – here <code>fakeland_annual</code>. This can be overridden using a
-<code>crs</code> argument, which accepts any valid PROJ4 string.</p>
-<p><code>coord_sf</code> is also used to change the extent of our map –
+from our <code>ggplot</code> call. This is because by default<code>ggplot2</code> will use the CRS of the first layer which defines
+one – here <code>fakeland_annual</code>. This can be overridden using a<code>crs</code> argument, which accepts any valid PROJ4 string.</p>
+                            <p><code>coord_sf</code> is also used to change the extent of our map –
 by default the whole shapefile is shown, but providing <code>xlim</code>
 and <code>ylim</code> arguements can zoom in on areas of interest.</p>
-<p><code>guides() +</code></p>
-<p>This slightly counter-intuitively named function sets the legend type
+                            <p><code>guides() +</code></p>
+                            <p>This slightly counter-intuitively named function sets the legend type
 for each aesthetic – colourbar, legend, or none. When you have multiple
 legends, guides can be used to reorder them, or even omit some
 altogether.</p>
-<p><code>theme_void() +</code></p>
-<p>Themes control the overall appearance of the plot.
-<code>theme_void</code> is an empty theme, giving us this floating
+                            <p><code>theme_void() +</code></p>
+                            <p>Themes control the overall appearance of the plot.<code>theme_void</code> is an empty theme, giving us this floating
 map.</p>
-<p><code>theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position = "bottom", legend.key.width = unit(2,"cm"), legend.text=element_text(size=12))</code></p>
-<p>Our final line makes alterations to our chosen theme – we’ve edited
+                            <p><code>theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position = "bottom", legend.key.width = unit(2,"cm"), legend.text=element_text(size=12))</code></p>
+                            <p>Our final line makes alterations to our chosen theme – we’ve edited
 the typeface of the plot title and positioned it in the middle of the
 figure; moved the legend to the bottom and made it wider, and finally
 increased the font size of the legend ticks. These small touches make a
 big difference in the readability and visual appeal of our map.</p>
-<p><br></p>
-</div>
-<div id="publication-quality-maps-in-r" class="section level3">
-<h3>Publication-quality maps in R</h3>
-<p>With <code>ggplot2</code> we can go much further than simply
+                            <p><br></p>
+                        </div>
+                        <div id="publication-quality-maps-in-r" class="section level3">
+                            <h3>Publication-quality maps in R</h3>
+                            <p>With <code>ggplot2</code> we can go much further than simply
 recreating base R’s plots. The layered nature of graphical grammar makes
 it easy to add additional features to our maps (points, annotations,
 etc). We can also exploit it to add base layers and logos, ultimately
 creating maps which rival any GIS software’s output.</p>
-<p><br></p>
-<div id="adding-points-to-maps" class="section level4">
-<h4>Adding points to maps</h4>
-<p>Suppose we want to add the locations of health facilities in Fakeland
+                            <p><br></p>
+                            <div id="adding-points-to-maps" class="section level4">
+                                <h4>Adding points to maps</h4>
+                                <p>Suppose we want to add the locations of health facilities in Fakeland
 to our map of API. <code>fakeland_hf_points</code> is an <code>sf</code>
-object, but this time consisting of points. That doesn’t matter to
-<code>geom_sf</code>.</p>
-<pre class="r"><code>fakeland_hf_gps &lt;- read_csv(&quot;data/fakeland_hf_gps.csv&quot;)
+object, but this time consisting of points. That doesn’t matter to<code>geom_sf</code>.</p>
+                                <pre class="r"><code>fakeland_hf_gps &lt;- read_csv(&quot;data/fakeland_hf_gps.csv&quot;)
 
 # Make the gps data into a point simple feature
 fakeland_hf_points &lt;- st_as_sf(fakeland_hf_gps, coords = c(&quot;X&quot;, &quot;Y&quot;), crs = 4326)
@@ -1069,7 +821,7 @@ fakeland_hospitals &lt;- sample(fakeland_hf_points$hf, 0.1*length(fakeland_hf_po
 
 fakeland_hf_points &lt;- fakeland_hf_points %&gt;% 
   mutate(hf_type = if_else(hf %in% fakeland_hospitals, &quot;Hospital&quot;, &quot;Clinic&quot;))</code></pre>
-<pre class="r"><code>ggplot() + 
+                                <pre class="r"><code>ggplot() + 
   geom_sf(data = fakeland_annual, aes(fill = API), colour = &quot;grey50&quot;, size = 0.2) + # now we need to tell ggplot an antribute of the data to use as an aesthetic
   scico::scale_fill_scico(palette = &quot;batlow&quot;, trans = &quot;log&quot;, breaks = my_breaks) +
   geom_sf(data = fakeland_hf_points, aes(shape = hf_type), size = 2, colour = &quot;grey20&quot;) + 
@@ -1081,28 +833,26 @@ fakeland_hf_points &lt;- fakeland_hf_points %&gt;%
   theme(plot.title = element_text(face = &quot;bold&quot;, hjust = 0.5),
         legend.position = &quot;right&quot;, legend.key.width = unit(0.5,&quot;cm&quot;), 
         legend.key.height = unit(0.75,&quot;cm&quot;), legend.text=element_text(size=12)) </code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/ggplot-layered-points-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Try moving the <code>geom_sf(data = fakeland_hf_points...)</code>
+                                <p><img src="04_spatial_in_R_files/figure-html/ggplot-layered-points-1.png" width="672" style="display: block; margin: auto;"/></p>
+                                <p>Try moving the <code>geom_sf(data = fakeland_hf_points...)</code>
 call to above the <code>geom_sf(data = fakeland_annual...)</code> call:
 does the map still look how you wanted it to?</p>
-<p>To make the health-facility locations easier to see when superimposed
-on our map, we’ve switched away from viridis to a palette from the
-<code>scico</code> package. Like viridis, all 17 palettes from scico are
+                                <p>To make the health-facility locations easier to see when superimposed
+on our map, we’ve switched away from viridis to a palette from the<code>scico</code> package. Like viridis, all 17 palettes from scico are
 perceptually uniform and colourblind safe.</p>
-<p><br></p>
-</div>
-<div id="basemaps-compasses-and-other-finishing-touches"
-class="section level4">
-<h4>Basemaps, compasses, and other finishing touches</h4>
-<p>For publications we often want to show some more contextual
+                                <p><br></p>
+                            </div>
+                            <div id="basemaps-compasses-and-other-finishing-touches" class="section level4">
+                                <h4>Basemaps, compasses, and other finishing touches</h4>
+                                <p>For publications we often want to show some more contextual
 informaiton on our maps, rather than having Fakeland float in
 white-space. The grammar of graphics makes this easy – we can add
 ‘zoomed-out’ geographic information as a “base” layer, then layer our
 designed information on top.</p>
-<p>Currently we only have a shapefile for Fakeland’s health districts.
+                                <p>Currently we only have a shapefile for Fakeland’s health districts.
 Let’s load in a regional Admin0 shapefile:</p>
-<pre class="r"><code>admin0_regional &lt;- st_read(&quot;shapefiles/regional/fakeland_admin0_region.shp&quot;)</code></pre>
-<pre><code>## Reading layer `fakeland_admin0_region&#39; from data source 
+                                <pre class="r"><code>admin0_regional &lt;- st_read(&quot;shapefiles/regional/fakeland_admin0_region.shp&quot;)</code></pre>
+                                <pre><code>## Reading layer `fakeland_admin0_region&#39; from data source 
 ##   `/builds/malaria-atlas-project/intro-to-spatial-analysis-for-infectious-diseases/shapefiles/regional/fakeland_admin0_region.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 6 features and 2 fields
@@ -1110,41 +860,39 @@ Let’s load in a regional Admin0 shapefile:</p>
 ## Dimension:     XY
 ## Bounding box:  xmin: -4 ymin: 7.05596 xmax: 8 ymax: 14
 ## Geodetic CRS:  WGS 84</code></pre>
-<p>If we make a quick plot of this, we can see this shapefile shows the
+                                <p>If we make a quick plot of this, we can see this shapefile shows the
 countries surrounding Fakeland. To check out the names of these
 countries, let’s try using a <code>geom_label</code> layer. To add the
 labels in the right positions, we’ll need to tell R the x and y
-co-ordinates of the centroids – luckily this is easy to do using
-<code>st_centroid</code>. Rememeber that <code>st_centroid</code>
+co-ordinates of the centroids – luckily this is easy to do using<code>st_centroid</code>. Rememeber that <code>st_centroid</code>
 assumes planar projection, rather than lat-lons. We can safely ignore
 the warning here, as we’re just plotting for explanatory purposes, but
 be careful!</p>
-<pre class="r"><code>country_central_points&lt;- st_centroid(admin0_regional)</code></pre>
-<pre><code>## Warning in st_centroid.sf(admin0_regional): st_centroid assumes attributes are
+                                <pre class="r"><code>country_central_points&lt;- st_centroid(admin0_regional)</code></pre>
+                                <pre><code>## Warning in st_centroid.sf(admin0_regional): st_centroid assumes attributes are
 ## constant over geometries of x</code></pre>
-<pre class="r"><code>country_central_points &lt;- cbind(admin0_regional, st_coordinates(st_centroid(admin0_regional$geometry)))
+                                <pre class="r"><code>country_central_points &lt;- cbind(admin0_regional, st_coordinates(st_centroid(admin0_regional$geometry)))
 
 ggplot(admin0_regional) +
   geom_sf() +
   geom_text(data = country_central_points, aes(x = X, y = Y, label = cntry_n)) +
   theme_void()</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/plot-names-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>So we can see that Fakeland is bordered by four countries – Florin,
+                                <p><img src="04_spatial_in_R_files/figure-html/plot-names-1.png" width="672" style="display: block; margin: auto;"/></p>
+                                <p>So we can see that Fakeland is bordered by four countries – Florin,
 Bartovia, Genovia and Maldonia – with a coast to the south. We probably
 don’t want to show this entire region in our base-map. We can reduce
-this to our desired buffer around Fakeland’s bounding box using
-<code>coord_sf</code>. Alternatively, we could crop the entire regional
+this to our desired buffer around Fakeland’s bounding box using<code>coord_sf</code>. Alternatively, we could crop the entire regional
 shapefile to our desired spatial extent.</p>
-<p>At the same time let’s finish maping our base-map. We’ll often want
+                                <p>At the same time let’s finish maping our base-map. We’ll often want
 scale panels and directional arrows on our plots – these are easy to
 implement by using the <code>ggspatial</code> package.</p>
-<pre class="r"><code>if(!require(ggspatial)){
+                                <pre class="r"><code>if(!require(ggspatial)){
     install.packages(&quot;ggspatial&quot;)
     library(ggspatial)
 }</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+                                <pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
 ## logical.return = TRUE, : there is no package called &#39;ggspatial&#39;</code></pre>
-<pre class="r"><code>library(ggspatial)
+                                <pre class="r"><code>library(ggspatial)
 
 ggplot(admin0_regional) +
   geom_sf(fill = &quot;antiquewhite&quot;) +
@@ -1159,13 +907,13 @@ ggplot(admin0_regional) +
         panel.grid.major = element_line(color = &quot;aliceblue&quot;), 
         panel.background = element_rect(fill = &quot;aliceblue&quot;),
         panel.border = element_rect(colour = &quot;black&quot;, fill=NA, size=5))</code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/make-basemap-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Finally, let’s pull this all together. We may wish to plot out a
+                                <p><img src="04_spatial_in_R_files/figure-html/make-basemap-1.png" width="672" style="display: block; margin: auto;"/></p>
+                                <p>Finally, let’s pull this all together. We may wish to plot out a
 number of metrics for Fakeland on this plot, so let’s save this basemap
 as an R object we can call, without having to copy and paste all that
 code. Note that we need to call <code>coord_sf</code> after our final
 data layer.</p>
-<pre class="r"><code>basemap &lt;- ggplot(admin0_regional) +
+                                <pre class="r"><code>basemap &lt;- ggplot(admin0_regional) +
   geom_sf(fill = &quot;antiquewhite&quot;, colour = &quot;grey80&quot;) +
   ggspatial::annotation_north_arrow(location = &quot;bl&quot;, 
                                     which_north = &quot;true&quot;,
@@ -1176,12 +924,12 @@ data layer.</p>
         panel.grid.major = element_line(color = &quot;aliceblue&quot;), 
         panel.background = element_rect(fill = &quot;aliceblue&quot;),
         panel.border = element_rect(colour = &quot;grey50&quot;, fill=NA, size=5))</code></pre>
-<p><br></p>
-</div>
-</div>
-<div id="demo" class="section level3">
-<h3>Demo</h3>
-<pre class="r"><code>basemap + 
+                                <p><br></p>
+                            </div>
+                        </div>
+                        <div id="demo" class="section level3">
+                            <h3>Demo</h3>
+                            <pre class="r"><code>basemap + 
   geom_sf(data = fakeland_annual, aes(fill = API), colour = &quot;grey50&quot;, size = 0.2) + 
   scico::scale_fill_scico(palette = &quot;batlow&quot;, trans = &quot;log&quot;, breaks = my_breaks) +
   labs(title = &quot;API, Fakeland 20XX&quot;, fill = &quot;API &quot;,
@@ -1191,18 +939,13 @@ data layer.</p>
   theme(plot.title = element_text(face = &quot;bold&quot;, hjust = 0.5),
         legend.position = &quot;right&quot;, legend.key.width = unit(0.5,&quot;cm&quot;), 
         legend.key.height = unit(0.75,&quot;cm&quot;), legend.text=element_text(size=12)) </code></pre>
-<p><img src="04_spatial_in_R_files/figure-html/demo-2-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-
-
-
-</div>
-</div>
-
-</div>
-
-<script>
+                            <p><img src="04_spatial_in_R_files/figure-html/demo-2-1.png" width="672" style="display: block; margin: auto;"/></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
@@ -1214,10 +957,8 @@ $(document).ready(function () {
 
 
 </script>
-
-<!-- tabsets -->
-
-<script>
+        <!-- tabsets -->
+        <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
@@ -1228,10 +969,8 @@ $(document).ready(function () {
   });
 });
 </script>
-
-<!-- code folding -->
-
-<script>
+        <!-- code folding -->
+        <script>
 $(document).ready(function ()  {
 
     // temporarily add toc-ignore selector to headers for the consistency with Pandoc
@@ -1260,9 +999,8 @@ $(document).ready(function ()  {
     var toc = $("#TOC").tocify(options).data("toc-tocify");
 });
 </script>
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+        <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -1270,6 +1008,5 @@ $(document).ready(function ()  {
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
-
-</body>
+    </body>
 </html>

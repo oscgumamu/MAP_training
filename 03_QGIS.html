@@ -1,52 +1,28 @@
 <!DOCTYPE html>
-
 <html>
-
-<head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-
-
-
-<title>Spatial data handling in QGIS</title>
-
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<style>h1 {font-size: 34px;}
-       h1.title {font-size: 38px;}
-       h2 {font-size: 30px;}
-       h3 {font-size: 24px;}
-       h4 {font-size: 18px;}
-       h5 {font-size: 16px;}
-       h6 {font-size: 12px;}
-       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
-       pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
-
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title>Spatial data handling in QGIS</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
   hljs.initHighlightingOnLoad();
@@ -55,87 +31,10 @@ if (window.hljs) {
   }
 }
 </script>
-
-
-
-
-
-
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -169,197 +68,68 @@ $(document).ready(function () {
   document.head.appendChild(style);
 });
 </script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
-
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
+        <!-- tabsets -->
+        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
+        <!-- code folding -->
+        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
 </div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Before we get Started</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="01_datamanagement.html">Data management</a>
-</li>
-<li>
-  <a href="02_datahandling.html">Data handling and Visualiation in R</a>
-</li>
-<li>
-  <a href="03_QGIS.html">Spatial Data in QGIS</a>
-</li>
-<li>
-  <a href="04_spatial_in_R.html">Spatial Data in R</a>
-</li>
-<li>
-  <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">Spatial data handling in QGIS</h1>
-
-</div>
-
-
-<p><img src="images/03_qgis/banner.png" width="90%" /></p>
-<hr />
-<div id="overview" class="section level1">
-<h1>Overview</h1>
-<p>In this session students will learn how to manage and present spatial
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Before we get Started</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+</ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+                    <div id="header">
+                        <h1 class="title toc-ignore">Spatial data handling in QGIS</h1>
+                    </div>
+                    <p><img src="images/03_qgis/banner.png" width="90%"/></p>
+                    <hr/>
+                    <div id="overview" class="section level1">
+                        <h1>Overview</h1>
+                        <p>In this session students will learn how to manage and present spatial
 data using Geographical Information System (GIS) software. Session 1
 introduces students to QGIS with Session 2 replicating many of the
 exercises in R. Both QGIS and R software are free and open-source.</p>
-<p>QGIS is a popular alternative to paid GIS software and provides an
+                        <p>QGIS is a popular alternative to paid GIS software and provides an
 interface with other open source GIS such as SAGA and GRASS. It has a
 large user base and extensive support options with easily accessible
 tutorials, user guides and forums. Similar to R there are numerous
@@ -370,185 +140,191 @@ pointing and clicking - and so are thought to be more user-friendly.
 While a little advanced for this module it should be noted that you can
 run R commands in QGIS and also access QGIS processing functions from
 R.</p>
-<p>This tutorial will give step-by-step instructions that you can use to
+                        <p>This tutorial will give step-by-step instructions that you can use to
 follow along with the instructor.</p>
-<hr />
-<div id="objectives-of-tutorial" class="section level2">
-<h2>Objectives of tutorial</h2>
-<ul>
-<li>To become familiar with QGIS</li>
-<li>Adding vector and raster data to your QGIS project</li>
-<li>Explore vector attributes</li>
-<li>Adding tabular data and joining vector data</li>
-<li>Creating maps for publications and reports</li>
-</ul>
-<hr />
-</div>
-<div id="qgis-interface" class="section level2">
-<h2>QGIS Interface</h2>
-<p>On opening QGIS from your computer familiarize yourself with the QGIS
+                        <hr/>
+                        <div id="objectives-of-tutorial" class="section level2">
+                            <h2>Objectives of tutorial</h2>
+                            <ul>
+                                <li>To become familiar with QGIS</li>
+                                <li>Adding vector and raster data to your QGIS project</li>
+                                <li>Explore vector attributes</li>
+                                <li>Adding tabular data and joining vector data</li>
+                                <li>Creating maps for publications and reports</li>
+                            </ul>
+                            <hr/>
+                        </div>
+                        <div id="qgis-interface" class="section level2">
+                            <h2>QGIS Interface</h2>
+                            <p>On opening QGIS from your computer familiarize yourself with the QGIS
 interface. Hovering your mouse over symbols will give additional
 information for most items.</p>
-<ol style="list-style-type: decimal">
-<li>Menu Bar: Provides access to various QGIS features using a standard
-hierarchical menu.</li>
-<li>Tool Bar: Provides access to most of the functions as the menus,
-plus additional tools for interacting with the map.</li>
-<li>Browser panel: Used to locate, inspect and add data to your project.
-You are able to browse you own computer and additional resources</li>
-<li>Map View or Map canvas: The map displayed in this window will depend
-on the vector and raster layers you have chosen to load. Here you can
-interact with the map - move the maps, zoom in/out, select features
-etc</li>
-<li>Layers list: lists the layers that are available in the current
-project. Hovering over layers will give some basic information. Layers
-can be toggled on/off here and right-clicking on a layer will give
-several additional options explored later in the tutorial.</li>
-<li>Status bar: The status bar shows you your current position in map
-coordinates as the mouse pointer is moved across the map view.</li>
-<li>Processing toolbox: This panel may not be visible when first opening
-QGIS. It contains many analytic tools used when delving deeper into GIS
-analysis</li>
-</ol>
-<p>Panels can be added and removed from the drop-down <strong><em>menu
+                            <ol style="list-style-type: decimal">
+                                <li>Menu Bar: Provides access to various QGIS features using a standard
+                                    hierarchical menu.
+</li>
+                                <li>Tool Bar: Provides access to most of the functions as the menus,
+                                    plus additional tools for interacting with the map.
+</li>
+                                <li>Browser panel: Used to locate, inspect and add data to your project.
+                                    You are able to browse you own computer and additional resources
+</li>
+                                <li>Map View or Map canvas: The map displayed in this window will depend
+                                    on the vector and raster layers you have chosen to load. Here you can
+                                    interact with the map - move the maps, zoom in/out, select features
+                                    etc
+</li>
+                                <li>Layers list: lists the layers that are available in the current
+                                    project. Hovering over layers will give some basic information. Layers
+                                    can be toggled on/off here and right-clicking on a layer will give
+                                    several additional options explored later in the tutorial.
+</li>
+                                <li>Status bar: The status bar shows you your current position in map
+                                    coordinates as the mouse pointer is moved across the map view.
+</li>
+                                <li>Processing toolbox: This panel may not be visible when first opening
+                                    QGIS. It contains many analytic tools used when delving deeper into GIS
+                                    analysis
+</li>
+                            </ol>
+                            <p>Panels can be added and removed from the drop-down <strong><em>menu
 bar &gt; View &gt; Panels</em></strong></p>
-<p><img src="images/03_qgis/qgis_open.png" width="90%" style="display: block; margin: auto;" /></p>
-<hr />
-</div>
-<div id="polygon-shapefile-components" class="section level2">
-<h2>Polygon shapefile components</h2>
-<p>Shapefiles are a common file format for vector data and are comprised
+                            <p><img src="images/03_qgis/qgis_open.png" width="90%" style="display: block; margin: auto;"/></p>
+                            <hr/>
+                        </div>
+                        <div id="polygon-shapefile-components" class="section level2">
+                            <h2>Polygon shapefile components</h2>
+                            <p>Shapefiles are a common file format for vector data and are comprised
 of multiple files; three that are mandatory and many that are
 optional:</p>
-<ul>
-<li>The main file has the extension .shp and contains the feature
-geometry</li>
-<li>.shx files contain the indices of the feature geometry</li>
-<li>.dbf files store the attribute data and object IDs. These files can
-be opened in Microsoft Excel, but cannot be edited there</li>
-<li>Many shapefiles will also have an optional .prj file that contains
-metadata for the coordinate and projection system associated with the
-data</li>
-</ul>
-<p>The shapefiles that we will be using for this session are the
-Fakeland health districts (FAK_HDs) and can be found following folder:
-<strong>edit when location known. Usb or … /MAP Spatial Analysis
+                            <ul>
+                                <li>The main file has the extension .shp and contains the feature
+                                    geometry
+</li>
+                                <li>.shx files contain the indices of the feature geometry</li>
+                                <li>.dbf files store the attribute data and object IDs. These files can
+                                    be opened in Microsoft Excel, but cannot be edited there
+</li>
+                                <li>Many shapefiles will also have an optional .prj file that contains
+                                    metadata for the coordinate and projection system associated with the
+                                    data
+</li>
+                            </ul>
+                            <p>The shapefiles that we will be using for this session are the
+Fakeland health districts (FAK_HDs) and can be found following folder:<strong>edit when location known. Usb or … /MAP Spatial Analysis
 Course/ASTMH/shapefiles/</strong> . We will now learn how to add the
 shapefiles to GIS, explore the data they contain and join them to
 non-spatial data.</p>
-<p><img src="images/03_qgis/fak_hds.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>A detailed description of shapefile components can be found <a
-href="https://www.esri.com/content/dam/esrisites/sitecore-archive/Files/Pdfs/library/whitepapers/pdfs/shapefile.pdf">here</a></p>
-<hr />
-</div>
-</div>
-<div id="adding-layers" class="section level1">
-<h1>Adding layers</h1>
-<p>There are multiple ways of adding layers to your QGIS project. The
+                            <p><img src="images/03_qgis/fak_hds.png" width="100%" style="display: block; margin: auto;"/></p>
+                            <p>A detailed description of shapefile components can be found <a href="https://www.esri.com/content/dam/esrisites/sitecore-archive/Files/Pdfs/library/whitepapers/pdfs/shapefile.pdf">here</a></p>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div id="adding-layers" class="section level1">
+                        <h1>Adding layers</h1>
+                        <p>There are multiple ways of adding layers to your QGIS project. The
 numbered bullet points below outline a few options. Try them out after
 class and see which you prefer. For now, we will follow option 1. Note
 that you should always add the .shp file of the shapefile
 components.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>From the menu bar <strong><em>Layer &gt; Add layer &gt; Add Vector
-Layer</em></strong>.</li>
-</ol>
-<p><img src="images/03_qgis/add_layer.png" width="100%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>From the popup window click the three dots (indicated <span
-style="color:red">1</span> below) and navigate to the files you wish to
-add. 3.Click add <span style="color:red">(2)</span> - this will add the
-shapefiles to QGIS, and then you can close the pop-up window <span
-style="color:red">(3)</span>.</li>
-</ol>
-<p>You may have noticed in the left hand panel that there are many types
+                        <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+                            <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                                        <li>From the menu bar <strong><em>Layer &gt; Add layer &gt; Add Vector
+Layer</em></strong>.
+                                        </li>
+                                    </ol><p><img src="images/03_qgis/add_layer.png" width="100%" style="display: block; margin: auto;"/></p><ol start="2" style="list-style-type: decimal">
+                                        <li>From the popup window click the three dots (indicated <span style="color:red">1</span> below) and navigate to the files you wish to
+                                            add. 3.Click add <span style="color:red">(2)</span> - this will add the
+                                            shapefiles to QGIS, and then you can close the pop-up window <span style="color:red">(3)</span>.
+                                        </li>
+                                    </ol><p>You may have noticed in the left hand panel that there are many types
 of data that can be added to the project. We use “Add Vector Layer” this
 is for lines and polygons. Later in the tutorial we will also add point
 data as well as non-geographic tabular data (Delimited text) and raster
-data.</p>
-<p><img src="images/03_qgis/add_layer2.png" width="100%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
-<p><strong>Try these options after class:</strong></p>
-<ol start="2" style="list-style-type: decimal">
-<li>On the toolbar click the “Open data source manager” icon <img
-src="images/03_qgis/open_data.png" />. The popup window will be the same
-as option one and so you will follow the same steps, just make sure
-“vector” is selected on the left hand side.</li>
-<li>From the “Browser panel” navigate to the folder where the files are
-located and to add double click on them.</li>
-<li>Finally, you can simply drag and drop files directly from your
-computer folder into the map canvas or layers list</li>
-</ol>
-</div>
-<div id="exploring-the-shapefile" class="section level1">
-<h1>Exploring the shapefile</h1>
-<p>You should now see the Fakeland health districts on your map canvas
+data.</p><p><img src="images/03_qgis/add_layer2.png" width="100%" style="display: block; margin: auto;"/></p></p></p>
+                            <p></span>
+                        </p>
+                    </div>
+                    <p><strong>Try these options after class:</strong></p>
+                    <ol start="2" style="list-style-type: decimal">
+                        <li>On the toolbar click the “Open data source manager” icon 
+                            <img src="images/03_qgis/open_data.png"/>. The popup window will be the same
+                            as option one and so you will follow the same steps, just make sure
+                            “vector” is selected on the left hand side.
+                        </li>
+                        <li>From the “Browser panel” navigate to the folder where the files are
+                            located and to add double click on them.
+</li>
+                        <li>Finally, you can simply drag and drop files directly from your
+                            computer folder into the map canvas or layers list
+</li>
+                    </ol>
+                </div>
+                <div id="exploring-the-shapefile" class="section level1">
+                    <h1>Exploring the shapefile</h1>
+                    <p>You should now see the Fakeland health districts on your map canvas
 with each district boundary being represented by a different polygon.
 Note that when adding layers QGIS will randomly assign colors and your
 map will be a different color. We will show you how this can be changed
 shortly, but first you can explore the shapefile.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<p><img src="images/03_qgis/fak_admin.png" width="100%" style="display: block; margin: auto;" /></p>
-<ol style="list-style-type: decimal">
-<li>Click on the identify features icon <img
-src="images/03_qgis/id_icon.png" /><br />
+                    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+                        <span><p style="margin-left:1em;"><p><img src="images/03_qgis/fak_admin.png" width="100%" style="display: block; margin: auto;"/></p><ol style="list-style-type: decimal">
+                                    <li>Click on the identify features icon 
+                                        <img src="images/03_qgis/id_icon.png"/><br/>
+                                    </li>
+                                    <li>Then click on an area of the shapefile.</li>
+                                    <li>You will notice that the area is highlighted in red and information
+                                        about that particular polygon will be displayed on the right. We see
+                                        that the shapefiles contain basic information about the country_id,
+                                        region name, district name and other id codes useful for identifying
+                                        administration areas.
 </li>
-<li>Then click on an area of the shapefile.</li>
-<li>You will notice that the area is highlighted in red and information
-about that particular polygon will be displayed on the right. We see
-that the shapefiles contain basic information about the country_id,
-region name, district name and other id codes useful for identifying
-administration areas.</li>
-<li>You can move the map by clicking on the pan map icon <img
-src="images/03_qgis/pan.png" /> and then clicking and holding on the map
-canvas.</li>
-<li>You can also zoom in and out with your mouse scroll wheel or
-trackpad (note these can be very sensitive) or by clicking on the zoom
-icons <img src="images/03_qgis/zoom.png" />.</li>
-<li>If the zoom gets a bit out of control, and you lose your map it is
-always possible to recenter your map again by right-clicking on the
-FAK_HDs in the layer menu and then select “Zoom to layer”</li>
-</ol>
-<p><img src="images/03_qgis/zoom_layer.png" width="70%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
-</div>
-<div id="checking-and-setting-layer-crs" class="section level1">
-<h1>Checking and setting layer CRS</h1>
-<ol style="list-style-type: decimal">
-<li>You can check the layer CRS by hovering your marker over the FAK_HDs
-layer</li>
-<li>Right-click on the layer and go to the “Layer CRS” option. Here you
-will see the layer CRS at the top and some options to change the
-setting.</li>
-<li>Select “Set layer CRS”</li>
-</ol>
-<p><img src="images/03_qgis/crs_1.png" width="70%" style="display: block; margin: auto;" /></p>
-<ol start="4" style="list-style-type: decimal">
-<li>If you are using a specific CRS you can search for it in the
-“filter” box. You can also browse the different CRS in the “Predefined
-Coordinate Reference System” menu. If you select one information about
-that CRS will be displayed at the bottom.</li>
-<li>We will be using the WGS 84 - EPSG: 4326 CRS. If your layer is not
-yet set simply select this CRS and click OK.</li>
-</ol>
-<p><img src="images/03_qgis/crs_2.png" width="70%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="the-attribute-table" class="section level1">
-<h1>The attribute table</h1>
-<p>Information regarding the features can be found in the attribute
+                                    <li>You can move the map by clicking on the pan map icon 
+                                        <img src="images/03_qgis/pan.png"/> and then clicking and holding on the map
+                                        canvas.
+                                    </li>
+                                    <li>You can also zoom in and out with your mouse scroll wheel or
+                                        trackpad (note these can be very sensitive) or by clicking on the zoom
+                                        icons 
+                                        <img src="images/03_qgis/zoom.png"/>.
+                                    </li>
+                                    <li>If the zoom gets a bit out of control, and you lose your map it is
+                                        always possible to recenter your map again by right-clicking on the
+                                        FAK_HDs in the layer menu and then select “Zoom to layer”
+</li>
+                                </ol><p><img src="images/03_qgis/zoom_layer.png" width="70%" style="display: block; margin: auto;"/></p></p></p>
+                        <p></span>
+                    </p>
+                </div>
+            </div>
+            <div id="checking-and-setting-layer-crs" class="section level1">
+                <h1>Checking and setting layer CRS</h1>
+                <ol style="list-style-type: decimal">
+                    <li>You can check the layer CRS by hovering your marker over the FAK_HDs
+                        layer
+</li>
+                    <li>Right-click on the layer and go to the “Layer CRS” option. Here you
+                        will see the layer CRS at the top and some options to change the
+                        setting.
+</li>
+                    <li>Select “Set layer CRS”</li>
+                </ol>
+                <p><img src="images/03_qgis/crs_1.png" width="70%" style="display: block; margin: auto;"/></p>
+                <ol start="4" style="list-style-type: decimal">
+                    <li>If you are using a specific CRS you can search for it in the
+                        “filter” box. You can also browse the different CRS in the “Predefined
+                        Coordinate Reference System” menu. If you select one information about
+                        that CRS will be displayed at the bottom.
+</li>
+                    <li>We will be using the WGS 84 - EPSG: 4326 CRS. If your layer is not
+                        yet set simply select this CRS and click OK.
+</li>
+                </ol>
+                <p><img src="images/03_qgis/crs_2.png" width="70%" style="display: block; margin: auto;"/></p>
+            </div>
+            <div id="the-attribute-table" class="section level1">
+                <h1>The attribute table</h1>
+                <p>Information regarding the features can be found in the attribute
 table. The attribute table is a tabular data set containing all the
 non-geographical information about each feature. In this example each
 health district is a “feature” (represented by rows in the table) and
@@ -557,136 +333,138 @@ health district. Currently, the attribute table contains basic
 information on the names of the health districts and what regions they
 are in - but attribute tables can also store numerical data needed for
 mapping populations and disease burden.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>To open the attribute table right-click on the layer <span
-style="color:red">(1)</span> and select <img
-src="images/03_qgis/att_table.png" />.</li>
-<li>Each row in the table represents a feature, and each column is a
-field (variable) that is associated with the feature. Features in the
-table can be searched, moved or even edited. Features in the table can
-be selected and they will be highlighted in yellow on the map canvas. In
-the example below we have selected Tangue administration 2 unit and the
-yellow highlight shows us where it is on the map <span
-style="color:red">(2)</span>.</li>
-<li>Try clicking on other features in the table and explore where they
-are - to make it easier to see the features selected on the map you can
-“dock” the attribute table window by clicking on the dock icon <img
-src="images/03_qgis/dock.png" />.</li>
-</ol>
-<p><img src="images/03_qgis/att_table2.png" width="90%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
-<ol start="4" style="list-style-type: decimal">
-<li>It is also possible to search and select features in the attribute
-table. Let’s select all the Admin 2 units named in the Admin 1 region
-“East”. At the top of the attribute table there is a tool bar - click on
-the filter by form icon <img src="images/03_qgis/filter.png" /><span
-style="color:red">(1)</span>.</li>
-<li>In the box next to Adm1 <span style="color:red">(2)</span> type
-“East”.</li>
-<li>The drop-down menu <span style="color:red">(3)</span> should
-currently be set on “Contains”. Note the other options - “equals to” for
-example gives an exact name match. Selecting “Contains” returns any name
-with east in it such as “North east”, “South East”. In our case we only
-have one name with “east” so either “contains” or “equals to” will
-work.</li>
-<li>Click on “select features” <span style="color:red">(4)</span> and
-look at the map to see what has been selected.</li>
-</ol>
-<p><img src="images/03_qgis/contains.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="8" style="list-style-type: decimal">
-<li>We can return to the table view for the attribute table by clicking
-the table view icon <img src="images/03_qgis/table_view.png" />in the
-bottom right hand corner of the attribute table window.</li>
-<li>We can then click the symbol <img src="images/03_qgis/to_top.png" />
-to move all the features we selected to the top of the attribute table.
-If we look at the Admin1 that have been selected we can see East has
-been selected</li>
-<li>You can also zoom in on the area you selected by clicking on “Zoom
-to Features”</li>
-</ol>
-<p>In the previous example we selected features based on a single
+                <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+                    <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                                <li>To open the attribute table right-click on the layer <span style="color:red">(1)</span> and select 
+                                    <img src="images/03_qgis/att_table.png"/>.
+                                </li>
+                                <li>Each row in the table represents a feature, and each column is a
+                                    field (variable) that is associated with the feature. Features in the
+                                    table can be searched, moved or even edited. Features in the table can
+                                    be selected and they will be highlighted in yellow on the map canvas. In
+                                    the example below we have selected Tangue administration 2 unit and the
+                                    yellow highlight shows us where it is on the map <span style="color:red">(2)</span>.
+                                </li>
+                                <li>Try clicking on other features in the table and explore where they
+                                    are - to make it easier to see the features selected on the map you can
+                                    “dock” the attribute table window by clicking on the dock icon 
+                                    <img src="images/03_qgis/dock.png"/>.
+                                </li>
+                            </ol><p><img src="images/03_qgis/att_table2.png" width="90%" style="display: block; margin: auto;"/></p></p></p>
+                    <p></span>
+                </p>
+            </div>
+            <ol start="4" style="list-style-type: decimal">
+                <li>It is also possible to search and select features in the attribute
+                    table. Let’s select all the Admin 2 units named in the Admin 1 region
+                    “East”. At the top of the attribute table there is a tool bar - click on
+                    the filter by form icon 
+                    <img src="images/03_qgis/filter.png"/><span style="color:red">(1)</span>.
+                </li>
+                <li>In the box next to Adm1 <span style="color:red">(2)</span> type
+                    “East”.
+                </li>
+                <li>The drop-down menu <span style="color:red">(3)</span> should
+                    currently be set on “Contains”. Note the other options - “equals to” for
+                    example gives an exact name match. Selecting “Contains” returns any name
+                    with east in it such as “North east”, “South East”. In our case we only
+                    have one name with “east” so either “contains” or “equals to” will
+                    work.
+                </li>
+                <li>Click on “select features” <span style="color:red">(4)</span> and
+                    look at the map to see what has been selected.
+                </li>
+            </ol>
+            <p><img src="images/03_qgis/contains.png" width="90%" style="display: block; margin: auto;"/></p>
+            <ol start="8" style="list-style-type: decimal">
+                <li>We can return to the table view for the attribute table by clicking
+                    the table view icon 
+                    <img src="images/03_qgis/table_view.png"/>in the
+                    bottom right hand corner of the attribute table window.
+                </li>
+                <li>We can then click the symbol 
+                    <img src="images/03_qgis/to_top.png"/>
+                    to move all the features we selected to the top of the attribute table.
+                    If we look at the Admin1 that have been selected we can see East has
+                    been selected
+                </li>
+                <li>You can also zoom in on the area you selected by clicking on “Zoom
+                    to Features”
+</li>
+            </ol>
+            <p>In the previous example we selected features based on a single
 condition (Adm1). However it is possible to select based on multiple
 conditions. There are many available tools in the attribute table - for
 example it is possible to edit the data here and produce new fields with
 the field calculator. We will not go through examples here but for
-further reading please see: <a
-href="https://docs.qgis.org/3.22/en/docs/user_manual/working_with_vector/attribute_table.html?highlight=attribute%20table">here</a></p>
-<hr />
-<div id="why-use-selection-tools" class="section level2">
-<h2>Why use selection tools?</h2>
-<p>The selection of features is a key skill when working in QGIS - it is
+further reading please see: <a href="https://docs.qgis.org/3.22/en/docs/user_manual/working_with_vector/attribute_table.html?highlight=attribute%20table">here</a></p>
+            <hr/>
+            <div id="why-use-selection-tools" class="section level2">
+                <h2>Why use selection tools?</h2>
+                <p>The selection of features is a key skill when working in QGIS - it is
 essentially used to subset data. For most operations in QGIS there will
 be a “Use only selected features” tickbox that will apply the operation
 to your selected subset. Note - there are also certain processing tools
 that will only apply to the selected features (and apply to all features
 if none selected) so you have to be aware of your current selection. The
 toolbar provides a variety of options for selection:</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>We will conduct basic selection using the select features tool <img
-src="images/03_qgis/select_sh.png" />. First click on the icon</li>
-<li>On the map canvas you can click on individual features to select
-them. To select multiple features you can hold down the “ctrl” button on
-your keyboard. You can also click and drag a selection rectangle that
-will select all features that it touches. Note that the features you
-select will also be highlighted in the attribute table.</li>
-<li>Finally the simplest way to un-select features is to use the select
-tool <img src="images/03_qgis/select_sh.png" /> and click the white
-space off to the side of the shapefiles.</li>
-</ol>
-<p><img src="images/03_qgis/select.png" width="90%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
-</div>
-</div>
-<div id="change-properties-of-map" class="section level1">
-<h1>Change properties of map</h1>
-<div id="symbology" class="section level2">
-<h2>Symbology</h2>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>To change the color of the map either:
-<ul>
-<li>Double click on the layer in layers panel <span
-style="color:red">1</span></li>
-<li>OR right click with cursor on the layer and select “properties”</li>
-</ul></li>
-<li>Click on symbology <span style="color:red">2</span></li>
-<li>Click single symbol <span style="color:red">3</span>,</li>
-<li>Click simple fill <span style="color:red">4</span></li>
-<li>We can change the colour by clicking on “Fill color” <span
-style="color:red">5</span> and select the colour of your choice. If you
-do not want a fill colour click on “Fill style” and choose “No Brush”.
-You can also adjust the properties of the polygon outline here.</li>
-<li>When you are happy with your choice click “Apply” and “OK” <span
-style="color:red">6</span>.</li>
-</ol>
-<p><img src="images/03_qgis/props.png" width="90%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
-<hr />
-</div>
+                <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+                    <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                                <li>We will conduct basic selection using the select features tool 
+                                    <img src="images/03_qgis/select_sh.png"/>. First click on the icon
+                                </li>
+                                <li>On the map canvas you can click on individual features to select
+                                    them. To select multiple features you can hold down the “ctrl” button on
+                                    your keyboard. You can also click and drag a selection rectangle that
+                                    will select all features that it touches. Note that the features you
+                                    select will also be highlighted in the attribute table.
+</li>
+                                <li>Finally the simplest way to un-select features is to use the select
+                                    tool 
+                                    <img src="images/03_qgis/select_sh.png"/> and click the white
+                                    space off to the side of the shapefiles.
+                                </li>
+                            </ol><p><img src="images/03_qgis/select.png" width="90%" style="display: block; margin: auto;"/></p></p></p>
+                    <p></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="change-properties-of-map" class="section level1">
+        <h1>Change properties of map</h1>
+        <div id="symbology" class="section level2">
+            <h2>Symbology</h2>
+            <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+                <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                            <li>To change the color of the map either:
+                                <ul>
+                                    <li>Double click on the layer in layers panel <span style="color:red">1</span>
+                                    </li>
+                                    <li>OR right click with cursor on the layer and select “properties”</li>
+                                </ul>
+                            </li>
+                            <li>Click on symbology <span style="color:red">2</span>
+                            </li>
+                            <li>Click single symbol <span style="color:red">3</span>,
+                            </li>
+                            <li>Click simple fill <span style="color:red">4</span>
+                            </li>
+                            <li>We can change the colour by clicking on “Fill color” <span style="color:red">5</span> and select the colour of your choice. If you
+                                do not want a fill colour click on “Fill style” and choose “No Brush”.
+                                You can also adjust the properties of the polygon outline here.
+                            </li>
+                            <li>When you are happy with your choice click “Apply” and “OK” <span style="color:red">6</span>.
+                            </li>
+                        </ol><p><img src="images/03_qgis/props.png" width="90%" style="display: block; margin: auto;"/></p></p></p>
+                <p></span>
+            </p>
+        </div>
+        <hr/>
+    </div>
 </div>
 <div id="adding-point-data" class="section level1">
-<h1>Adding Point data</h1>
-<p>Point data is a very common form of data used in health surveillance
+    <h1>Adding Point data</h1>
+    <p>Point data is a very common form of data used in health surveillance
 and research. In the following example the points represent individual
 health facilities. In contrast to the polygon shapefiles we explored
 above, point data can be stored in a single spreadsheet file that
@@ -696,114 +474,109 @@ comma-separated vales (.CSV) files. <strong><em>If you are working with
 an excel spreadsheet you must first save it as a cvs before you can load
 it into QGIS. Further note that Mac users may need to specifically save
 it as a Windows CSV file</em></strong></p>
-<p><img src="images/03_qgis/excel_point.png" width="60%" style="display: block; margin: auto;" /></p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>From the menu bar select <strong><em>Layers &gt; Add layer &gt; Add
-delimited text layer</em></strong>.</li>
-<li>Click the browser icon <img src="images/03_qgis/brows.png" /> and
-navigate to the file “fakeland_hf_gps” in the “Data” folder.</li>
-<li>Select “CSV” file format and select “first record has field names”
-from Record and Fields Options.</li>
-<li>This file contains point coordinates that can locate the data
-geographically. We therefore need to select “point coordinates” from the
-Geometry Definition and from the x and y fields select x and y
-respectively (terms used instead of x and y are; latitude and longitude,
-or North/South and West/East readings). It is a common error to input
-the coordinates the wrong way around but this should be very obvious
-from locations of the points on the map canvas</li>
-<li>Finally, there will be a preview of the attribute table associated
-with the gps points. You can make basic changes to the field type here
-if needed.</li>
-<li>Click add and Close</li>
-</ol>
-<p><img src="images/03_qgis/point1.png" width="90%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
+    <p><img src="images/03_qgis/excel_point.png" width="60%" style="display: block; margin: auto;"/></p>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>From the menu bar select <strong><em>Layers &gt; Add layer &gt; Add
+delimited text layer</em></strong>.
+                    </li>
+                    <li>Click the browser icon 
+                        <img src="images/03_qgis/brows.png"/> and
+                        navigate to the file “fakeland_hf_gps” in the “Data” folder.
+                    </li>
+                    <li>Select “CSV” file format and select “first record has field names”
+                        from Record and Fields Options.
+</li>
+                    <li>This file contains point coordinates that can locate the data
+                        geographically. We therefore need to select “point coordinates” from the
+                        Geometry Definition and from the x and y fields select x and y
+                        respectively (terms used instead of x and y are; latitude and longitude,
+                        or North/South and West/East readings). It is a common error to input
+                        the coordinates the wrong way around but this should be very obvious
+                        from locations of the points on the map canvas
+</li>
+                    <li>Finally, there will be a preview of the attribute table associated
+                        with the gps points. You can make basic changes to the field type here
+                        if needed.
+</li>
+                    <li>Click add and Close</li>
+                </ol><p><img src="images/03_qgis/point1.png" width="90%" style="display: block; margin: auto;"/></p></p></p>
+        <p></span>
+    </p>
 </div>
 <p>You will now see the points added to map canvas and Each point is a
 different health facility. Like with the polygon shapefile we can open
-the attribute table <img src="images/03_qgis/att_table.png" /> to see
+the attribute table <img src="images/03_qgis/att_table.png"/> to see
 what data is available for each health facility.</p>
 <div id="point-symbology" class="section level2">
-<h2>Point Symbology</h2>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>Following similar steps to changing the symbology of polygons
-either:
-<ul>
-<li>Double click on the points layer in layers panel</li>
-<li>OR right click with cursor on the points layer and select
-“properties”</li>
-</ul></li>
-<li>Click on symbology</li>
-<li>Select Single Symbol from the dropdown menu</li>
-<li>Click Simple Marker 5.There are multiple options presented from
-changing the colour and size of the point to changing the shape. For now
-we can change the colour by clicking on “Fill color”. Note that stroke
-colour is the colour of the boarder</li>
-<li>When you are happy with your choice click “Apply” and “OK” <span
-style="color:red">6</span>.</li>
-</ol>
-<p><img src="images/03_qgis/point2.png" width="90%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
+    <h2>Point Symbology</h2>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>Following similar steps to changing the symbology of polygons
+                        either:
+                        <ul>
+                            <li>Double click on the points layer in layers panel</li>
+                            <li>OR right click with cursor on the points layer and select
+                                “properties”
+</li>
+                        </ul>
+                    </li>
+                    <li>Click on symbology</li>
+                    <li>Select Single Symbol from the dropdown menu</li>
+                    <li>Click Simple Marker 5.There are multiple options presented from
+                        changing the colour and size of the point to changing the shape. For now
+                        we can change the colour by clicking on “Fill color”. Note that stroke
+                        colour is the colour of the boarder
+</li>
+                    <li>When you are happy with your choice click “Apply” and “OK” <span style="color:red">6</span>.
+                    </li>
+                </ol><p><img src="images/03_qgis/point2.png" width="90%" style="display: block; margin: auto;"/></p></p></p>
+        <p></span>
+    </p>
 </div>
 <div id="optional-extra---labeling" class="section level2">
-<h2>Optional Extra - Labeling</h2>
-<p>It is also possible to add labels to the map.</p>
-<ol style="list-style-type: decimal">
-<li>As before, open the properties window.</li>
-<li>Under the symbology symbol click on labels.</li>
-<li>Select “Single Labels” from the first dropdown menu.</li>
-<li>From the “Value” drop-down select which attribute you want to label
-the polygons with. For now select “hf”. This is the unique health
-facility ID number.</li>
-<li>Click “Apply” and “OK”</li>
-<li>There are many other style choices for text font, size, color,
-positioning etc that can be explored here - try a few of them. Note that
-labeling maps can often lead to busy/cluttered hard to read maps so
-unless absolutely necessary minimize labeling to main points of
-interest.<br />
+    <h2>Optional Extra - Labeling</h2>
+    <p>It is also possible to add labels to the map.</p>
+    <ol style="list-style-type: decimal">
+        <li>As before, open the properties window.</li>
+        <li>Under the symbology symbol click on labels.</li>
+        <li>Select “Single Labels” from the first dropdown menu.</li>
+        <li>From the “Value” drop-down select which attribute you want to label
+            the polygons with. For now select “hf”. This is the unique health
+            facility ID number.
 </li>
-<li>To remove the labels select “no labels” from the original drop-down
-menu.</li>
-</ol>
-<p><img src="images/03_qgis/labels.png" width="80%" style="display: block; margin: auto;" /></p>
-<p><img src="images/03_qgis/map_labels.png" width="90%" style="display: block; margin: auto;" /></p>
-<hr />
-</div>
+        <li>Click “Apply” and “OK”</li>
+        <li>There are many other style choices for text font, size, color,
+            positioning etc that can be explored here - try a few of them. Note that
+            labeling maps can often lead to busy/cluttered hard to read maps so
+            unless absolutely necessary minimize labeling to main points of
+            interest.<br/>
+        </li>
+        <li>To remove the labels select “no labels” from the original drop-down
+            menu.
+</li>
+    </ol>
+    <p><img src="images/03_qgis/labels.png" width="80%" style="display: block; margin: auto;"/></p>
+    <p><img src="images/03_qgis/map_labels.png" width="90%" style="display: block; margin: auto;"/></p>
+    <hr/>
 </div>
 <div id="layer-visibility" class="section level1">
-<h1>Layer visibility</h1>
-<p>If you are new to GIS you may be wondering why we keep referring to
+    <h1>Layer visibility</h1>
+    <p>If you are new to GIS you may be wondering why we keep referring to
 the data as “Layers”. Maps are often built up from several data sources
 and types and they have to be layered/stacked in a certain way so that
 each component can be visualized.</p>
-<p>In QGIS the order you see the layers in the layers panel represents
+    <p>In QGIS the order you see the layers in the layers panel represents
 the order you will see them on the map canvas (the layers at the top of
 the list you will see first). You can rearrange the order of the layers
 by clicking and dragging.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<p>You can also turn on/off the layers using the tickbox next to each
-layer - try un-selecting the points layer.</p>
-</p>
-</p>
-<p></span></p>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><p>You can also turn on/off the layers using the tickbox next to each
+layer - try un-selecting the points layer.</p></p></p>
+        <p></span>
+    </p>
 </div>
-<p><img src="images/03_qgis/layer_pan.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="images/03_qgis/layer_pan.png" width="50%" style="display: block; margin: auto;"/></p>
 <p>You will notice that the point data must be on top to the polygon
 data for it to be visible. Currently we only have two visible layers but
 maps may contain many layers if there are new shapefiles for roads,
@@ -816,24 +589,21 @@ the FAK_HDs - they have to be moved above the FAK_HDs layer to be
 visible. Note also that the layers are being turned on with the
 tickboxes in the layers panel</p>
 <pre class="r"><code>knitr::include_graphics(&quot;images/03_qgis/vid1.gif&quot;)</code></pre>
-<p><img src="images/03_qgis/vid1.gif" /><!-- --></p>
-<hr />
-</div>
+<p><img src="images/03_qgis/vid1.gif"/><!-- --></p>
+<hr/>
 <div id="saving-a-project" class="section level1">
-<h1>Saving a project</h1>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>To save a QGIS project, select “Project” from the top-left corner of
-the toolbar and click “SAVE AS”.</li>
-<li>Save it in an appropriate folder and name the project as
-“MAP_training” and click “SAVE”.</li>
-</ol>
-</p>
-</p>
-<p></span></p>
+    <h1>Saving a project</h1>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>To save a QGIS project, select “Project” from the top-left corner of
+                        the toolbar and click “SAVE AS”.
+</li>
+                    <li>Save it in an appropriate folder and name the project as
+                        “MAP_training” and click “SAVE”.
+</li>
+                </ol></p></p>
+        <p></span>
+    </p>
 </div>
 <p>It is important to note that QGIS does not store any data and so when
 reopening a project QGIS follows the file paths to the data you provided
@@ -842,104 +612,93 @@ be unable to open them. QGIS will maintain any changes to symbology.</p>
 <p>The project can be reopened from the folder where it was saved or
 alternatively simply open QGIS and you will see links to previous QGIS
 projects</p>
-</div>
 <div id="data-joins" class="section level1">
-<h1>Data Joins</h1>
-<p>We regularly work with data that is yet to be linked with a geometry,
+    <h1>Data Joins</h1>
+    <p>We regularly work with data that is yet to be linked with a geometry,
 for example, a table of data containing the number of malaria cases per
 administrative unit. While this data contains a name for a geographic
 location it cannot be mapped alone - it needs to be joined with existing
 shapefiles of those administration units.</p>
-<p>To join the two data types of data they must have a key shared value
+    <p>To join the two data types of data they must have a key shared value
 (e.g. Admin unit name) and we can conduct what is called an “Attribute
 Join”. We will walk through this below.</p>
-<p>An alternative join is the “Spatial join” and can be conducted if
+    <p>An alternative join is the “Spatial join” and can be conducted if
 both data types are geolocated (for example the tabular data may have
 GPS locations). This means that a key variable isn’t necessary.</p>
-<div id="addtion-of-tabular-data-no-geography" class="section level2">
-<h2>Addtion of tabular data (no geography)</h2>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>First we have to add the tabular data. From the menu bar, click “Add
-Layer” and then click “Add Delimited Text Layer”.</li>
-</ol>
-<p><img src="images/03_qgis/loadcsv.png" width="100%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Click browser (three black dots) <span style="color:red">1</span>
-and select the file “annual_admin_data” from the /data folder for this
-session.</li>
-<li>In the window that pops up, choose “CSV” under “File Format” <span
-style="color:red">2</span>, “First record has field names” under “Record
-and fields Options” <span style="color:red">3</span> and “No geometry
-(attribute only table)” under “Geometry Definitions” <span
-style="color:red">4</span>. Note the difference to when we loaded the
-health facility point data</li>
-<li>Then click “Add” and “Close” <span style="color:red">5</span>.</li>
-</ol>
-<p><img src="images/03_qgis/add_csv.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>You will now see that annual_admin_data has been added to the “Layers
-panel”. Take a look at the data by opening the attribute table <img
-src="images/03_qgis/att_table.png" />. This is an example malaria
+    <div id="addtion-of-tabular-data-no-geography" class="section level2">
+        <h2>Addtion of tabular data (no geography)</h2>
+        <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+            <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                        <li>First we have to add the tabular data. From the menu bar, click “Add
+                            Layer” and then click “Add Delimited Text Layer”.
+</li>
+                    </ol><p><img src="images/03_qgis/loadcsv.png" width="100%" style="display: block; margin: auto;"/></p><ol start="2" style="list-style-type: decimal">
+                        <li>Click browser (three black dots) <span style="color:red">1</span>
+                            and select the file “annual_admin_data” from the /data folder for this
+                            session.
+                        </li>
+                        <li>In the window that pops up, choose “CSV” under “File Format” <span style="color:red">2</span>, “First record has field names” under “Record
+                            and fields Options” <span style="color:red">3</span> and “No geometry
+                            (attribute only table)” under “Geometry Definitions” <span style="color:red">4</span>. Note the difference to when we loaded the
+                            health facility point data
+                        </li>
+                        <li>Then click “Add” and “Close” <span style="color:red">5</span>.
+                        </li>
+                    </ol><p><img src="images/03_qgis/add_csv.png" width="100%" style="display: block; margin: auto;"/></p><p>You will now see that annual_admin_data has been added to the “Layers
+panel”. Take a look at the data by opening the attribute table <img src="images/03_qgis/att_table.png"/>. This is an example malaria
 surveillance dataset. For each Admin 2 unit of Fakeland, it outlines the
 number of malaria tests and confirmed positive results. The results are
 broken down by type of test (RDT or Microscopy) and age range of the
-patients under 5yrs (u5) or over 5yrs (ov5)</p>
-<p><img src="images/03_qgis/csv.png" width="50%" style="display: block; margin: auto;" /></p>
-<p><img src="images/03_qgis/ann_att.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>Currently the data is not associated with any geometry so it will not
+patients under 5yrs (u5) or over 5yrs (ov5)</p><p><img src="images/03_qgis/csv.png" width="50%" style="display: block; margin: auto;"/></p><p><img src="images/03_qgis/ann_att.png" width="90%" style="display: block; margin: auto;"/></p><p>Currently the data is not associated with any geometry so it will not
 be displayed on the map canvas. We will now join it to the existing
-Fakeland admin units.</p>
-</p>
-</p>
-<p></span></p>
-</div>
-<div id="attribute-join" class="section level3">
-<h3>Attribute join</h3>
-</div>
-<div id="attribute-join-1" class="section level3">
-<h3>Attribute join</h3>
-<p>We have tabular data with no geometry we will have to use attribute
+Fakeland admin units.</p></p></p>
+            <p></span>
+        </p>
+    </div>
+    <div id="attribute-join" class="section level3">
+        <h3>Attribute join</h3>
+    </div>
+    <div id="attribute-join-1" class="section level3">
+        <h3>Attribute join</h3>
+        <p>We have tabular data with no geometry we will have to use attribute
 join to link it to the existing health district shapefiles. This process
 will take the tabular data and add it to the attribute table of the
 shapefile. Before we go onto show you how we do this in practice can you
 identify the key attributes that we will use to join the data? What
 attributes do the tabular data and shapefiles have in common?</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>Double click on the FAK_HDs layer <span style="color:red">1</span>
-.</li>
-<li>On the right hand side where we previously selected symbology and
-labels - select the “Joins” tab <span style="color:red">2</span> .</li>
-<li>Near the bottom of the window click <img
-src="images/03_qgis/pos.png" /> <span style="color:red">3</span> to pop
-up a new window.</li>
-<li>In the window, choose “annual_admin_data” from “Join layer”
-dropdown, “adm2” from the “Join field” and “adm2“ from the Target field”
-<span style="color:red">4</span> . Note that this will join matching
-names so the data has to be cleaned beforehand<br />
+        <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+            <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                        <li>Double click on the FAK_HDs layer <span style="color:red">1</span>
+                            .
+                        </li>
+                        <li>On the right hand side where we previously selected symbology and
+                            labels - select the “Joins” tab <span style="color:red">2</span> .
+                        </li>
+                        <li>Near the bottom of the window click 
+                            <img src="images/03_qgis/pos.png"/> <span style="color:red">3</span> to pop
+                            up a new window.
+                        </li>
+                        <li>In the window, choose “annual_admin_data” from “Join layer”
+                            dropdown, “adm2” from the “Join field” and “adm2“ from the Target field”<span style="color:red">4</span> . Note that this will join matching
+                            names so the data has to be cleaned beforehand<br/>
+                        </li>
+                        <li>Select 
+                            <img src="images/03_qgis/pre.png"/> and delete the prefix
+                            “annual_admin_data_” and click OK - If you do not delete this then the
+                            prefix will be added to all field names.
+                        </li>
+                        <li>Click “Ok” <span style="color:red">6</span>.
+                        </li>
+                        <li>The previous window will close - then click “Apply” and “Ok” on
+                            Layer Properties.
 </li>
-<li>Select <img src="images/03_qgis/pre.png" /> and delete the prefix
-“annual_admin_data_” and click OK - If you do not delete this then the
-prefix will be added to all field names.</li>
-<li>Click “Ok” <span style="color:red">6</span>.</li>
-<li>The previous window will close - then click “Apply” and “Ok” on
-Layer Properties.</li>
-</ol>
-<p><img src="images/03_qgis/att_join.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>Now open the attribute table of the FAK_HDs layer - what do you see?
+                    </ol><p><img src="images/03_qgis/att_join.png" width="90%" style="display: block; margin: auto;"/></p><p>Now open the attribute table of the FAK_HDs layer - what do you see?
 The annual_admin_data malaria data are now included in the FAK_HDs
-shapefile.</p>
-</p>
-</p>
-<p></span></p>
-</div>
-<p>Data sets and shapefiles can then be joined based on attributes such
+shapefile.</p></p></p>
+            <p></span>
+        </p>
+    </div>
+    <p>Data sets and shapefiles can then be joined based on attributes such
 as the name of the administration unit. Note that joining by name can
 commonly cause errors because if there are differences in spelling, use
 of capitals or punctuation the names will not be matched - they must be
@@ -947,495 +706,499 @@ exactly the same. Data must be clean beforehand but it is also common to
 join by standardized administrative codes that are less prone to
 error.</p>
 </div>
-</div>
-</div>
 <div id="raster-data-zonal-statistics" class="section level1">
-<h1>Raster data &amp; Zonal statistics</h1>
-<div id="raster-data" class="section level2">
-<h2>Raster data</h2>
-<p>We will now see how to load raster data. We will be using a
+    <h1>Raster data &amp; Zonal statistics</h1>
+    <div id="raster-data" class="section level2">
+        <h2>Raster data</h2>
+        <p>We will now see how to load raster data. We will be using a
 population raster that gives an all age population count for each 5x5km
 pixel.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>To add raster, select “Layer” from the menu bar</li>
-<li>Select “Add Layer” and select “Add Raster Layer”</li>
-<li>Choose “ihme_corrected_worldpop_All_Ages_3_2018.tif” from the
-“Raster” folder</li>
-<li>Click Add and Close the window.</li>
-</ol>
-<p><img src="images/03_qgis/rast_1.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>The population raster will appear on the map canvas. It may have
+        <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+            <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                        <li>To add raster, select “Layer” from the menu bar</li>
+                        <li>Select “Add Layer” and select “Add Raster Layer”</li>
+                        <li>Choose “ihme_corrected_worldpop_All_Ages_3_2018.tif” from the
+                            “Raster” folder
+</li>
+                        <li>Click Add and Close the window.</li>
+                    </ol><p><img src="images/03_qgis/rast_1.png" width="90%" style="display: block; margin: auto;"/></p><p>The population raster will appear on the map canvas. It may have
 covered up the shapefiles - for now this is fine, we can rearrange the
-layers once we have finished working with the raster.</p>
-<p>By clicking on the small arrow next to the raster on the layer panel
+layers once we have finished working with the raster.</p><p>By clicking on the small arrow next to the raster on the layer panel
 you can see the minimum value and maximum values. What can we say about
 the distribution of the population from this raster? Where are the areas
-of high and low population density?</p>
-<p>Unlike shapefiles there is no attribute table connected to a raster.
+of high and low population density?</p><p>Unlike shapefiles there is no attribute table connected to a raster.
 You can identify the value of an individual raster pixel by clicking the
-identification icon <img src="images/03_qgis/id_icon.png" /> and
+identification icon <img src="images/03_qgis/id_icon.png"/> and
 selecting an area of the raster. Currently it is difficult to identify
 variation in population as most of the raster looks black with a few
 lighter coloured pixels. We can modify the appearance by adjusting the
-symbology.</p>
-</p>
-</p>
-<p></span></p>
-</div>
-<p>The steps to change symbology in a raster layer are different from
+symbology.</p></p></p>
+            <p></span>
+        </p>
+    </div>
+    <p>The steps to change symbology in a raster layer are different from
 those explained for vector layer.</p>
-<ol style="list-style-type: decimal">
-<li>Right-click population raster in the layer panel and select
-“Properties”.</li>
-<li>Go to Symbology, choose “Singleband pseudocolor” from the “Render
-type” dropdown, and your desired coloring from the “Color ramp”
-dropdown.</li>
-<li>Select “Quantile” from the “Mode” dropdown</li>
-<li>Click “Classify”. Select Apply and Ok.</li>
-</ol>
-<p><img src="images/03_qgis/symb_raster.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>Why do you think we selected “Quantile” instead of “Continuous” from
+    <ol style="list-style-type: decimal">
+        <li>Right-click population raster in the layer panel and select
+            “Properties”.
+</li>
+        <li>Go to Symbology, choose “Singleband pseudocolor” from the “Render
+            type” dropdown, and your desired coloring from the “Color ramp”
+            dropdown.
+</li>
+        <li>Select “Quantile” from the “Mode” dropdown</li>
+        <li>Click “Classify”. Select Apply and Ok.</li>
+    </ol>
+    <p><img src="images/03_qgis/symb_raster.png" width="90%" style="display: block; margin: auto;"/></p>
+    <p>Why do you think we selected “Quantile” instead of “Continuous” from
 the mode drop-down? How has this changed the appearance of the raster?
 Re-open the Sybmology panel and adjust the number of classes - how does
 this change the appearance of the map. Note that you can manually adjust
 the values associated with each level if needed.</p>
-<p><img src="images/03_qgis/rast_2.png" width="90%" style="display: block; margin: auto;" /></p>
+    <p><img src="images/03_qgis/rast_2.png" width="90%" style="display: block; margin: auto;"/></p>
 </div>
 <div id="zonal-statistics" class="section level2">
-<h2>Zonal statistics</h2>
-<p>We now have a layer of administrative units and a population raster.
+    <h2>Zonal statistics</h2>
+    <p>We now have a layer of administrative units and a population raster.
 Using these two pieces we can calculate the population in each
 administrative unit - this is know as calculating the zonal
 statistics.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>Go to “Processing” in the menu bar and choose “Toolbox”. A new
-“processing toolbox” panel will pop-up on the right.</li>
-<li>In this panel type “zonal” in the search window and double-click
-“Zonal statistics”.</li>
-</ol>
-<p><img src="images/03_qgis/zone.png" width="95%" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Choose “FAK_HDs” as the input layer. “ihme_corrected…” as the
-raster.<br />
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>Go to “Processing” in the menu bar and choose “Toolbox”. A new
+                        “processing toolbox” panel will pop-up on the right.
 </li>
-<li>To select the statistics you want to calculate click browse <img
-src="images/03_qgis/brows.png" /> on the right side of the “Statistics
-to calculate”. For now we will stick to the pre-selected options (count,
-sum and mean) however other options are available.</li>
-<li>In the output column prefix type “pop_” or your own label - (this
-will result in output fields (pop_count, pop_sum and pop_mean). It is
-not absolutely necessary to include a prefix however if you are working
-with multiple different rasters it becomes important to keep track of
-the origin of the zonal statistics.<br />
+                    <li>In this panel type “zonal” in the search window and double-click
+                        “Zonal statistics”.
 </li>
-<li>Run and close the window.</li>
-</ol>
-<p><img src="images/03_qgis/zone_2.png" width="80%" style="display: block; margin: auto;" /></p>
-<ol start="7" style="list-style-type: decimal">
-<li>A new layer “Zonal statistics” will have appeared on the layer panel
-- it is a copy of the FAK_HDs shapefile however it contains the zonal
-statistics in is attribute table (Note that some earlier versions of
-QGIS may attach the zonal statistics directly to the BFA_HDs layer and
-you will not see this new layer).</li>
-<li>Right-click on the “Zonal_Statistics” layer and select “Open
-Attribute Table” <img src="images/03_qgis/att_table.png" /> . You will
-see the summary statistics at the extreme right of the table. Pop_count
-= the number of pixels in the feature; Pop_sum = the sum of the pixel
-values (in this case the total population); Pop_mean = mean of the pixel
-values (mean population).</li>
-</ol>
-<p><img src="images/03_qgis/zone_3.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="9" style="list-style-type: decimal">
-<li>The zonal statistics layer is temporary and will need to be saved as
-a shapefile for future use. Right-click on “Zonal_Statistics”, then
-“Export” and click “Save Feature As”.</li>
-</ol>
-<p><img src="images/03_qgis/zone_4.png" width="70%" style="display: block; margin: auto;" /></p>
-<p><img src="images/03_qgis/zone_5.png" width="50%" style="display: block; margin: auto;" /></p>
-<ol start="10" style="list-style-type: decimal">
-<li>Navigate to the output folder, give the file name as
-“FAK_HDs_with_pop” and click Save. Then click Ok.</li>
-<li>This will again create a new layer. You can remove the
-“Zonal_Statistics” from the layer pane by right-clicking and selecting
-remove layer</li>
-</ol>
-<p><img src="images/03_qgis/rm_l.png" width="50%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
+                </ol><p><img src="images/03_qgis/zone.png" width="95%" style="display: block; margin: auto;"/></p><ol start="3" style="list-style-type: decimal">
+                    <li>Choose “FAK_HDs” as the input layer. “ihme_corrected…” as the
+                        raster.<br/>
+                    </li>
+                    <li>To select the statistics you want to calculate click browse 
+                        <img src="images/03_qgis/brows.png"/> on the right side of the “Statistics
+                        to calculate”. For now we will stick to the pre-selected options (count,
+                        sum and mean) however other options are available.
+                    </li>
+                    <li>In the output column prefix type “pop_” or your own label - (this
+                        will result in output fields (pop_count, pop_sum and pop_mean). It is
+                        not absolutely necessary to include a prefix however if you are working
+                        with multiple different rasters it becomes important to keep track of
+                        the origin of the zonal statistics.<br/>
+                    </li>
+                    <li>Run and close the window.</li>
+                </ol><p><img src="images/03_qgis/zone_2.png" width="80%" style="display: block; margin: auto;"/></p><ol start="7" style="list-style-type: decimal">
+                    <li>A new layer “Zonal statistics” will have appeared on the layer panel
+                        - it is a copy of the FAK_HDs shapefile however it contains the zonal
+                        statistics in is attribute table (Note that some earlier versions of
+                        QGIS may attach the zonal statistics directly to the BFA_HDs layer and
+                        you will not see this new layer).
+</li>
+                    <li>Right-click on the “Zonal_Statistics” layer and select “Open
+                        Attribute Table” 
+                        <img src="images/03_qgis/att_table.png"/> . You will
+                        see the summary statistics at the extreme right of the table. Pop_count
+                        = the number of pixels in the feature; Pop_sum = the sum of the pixel
+                        values (in this case the total population); Pop_mean = mean of the pixel
+                        values (mean population).
+                    </li>
+                </ol><p><img src="images/03_qgis/zone_3.png" width="90%" style="display: block; margin: auto;"/></p><ol start="9" style="list-style-type: decimal">
+                    <li>The zonal statistics layer is temporary and will need to be saved as
+                        a shapefile for future use. Right-click on “Zonal_Statistics”, then
+                        “Export” and click “Save Feature As”.
+</li>
+                </ol><p><img src="images/03_qgis/zone_4.png" width="70%" style="display: block; margin: auto;"/></p><p><img src="images/03_qgis/zone_5.png" width="50%" style="display: block; margin: auto;"/></p><ol start="10" style="list-style-type: decimal">
+                    <li>Navigate to the output folder, give the file name as
+                        “FAK_HDs_with_pop” and click Save. Then click Ok.
+</li>
+                    <li>This will again create a new layer. You can remove the
+                        “Zonal_Statistics” from the layer pane by right-clicking and selecting
+                        remove layer
+</li>
+                </ol><p><img src="images/03_qgis/rm_l.png" width="50%" style="display: block; margin: auto;"/></p></p></p>
+        <p></span>
+    </p>
 </div>
 <div id="field-calculator" class="section level2">
-<h2>Field calculator</h2>
-<p>We now have population counts and confirmed malaria for each
+    <h2>Field calculator</h2>
+    <p>We now have population counts and confirmed malaria for each
 administration unit. Using these two pieces of information we can
 calculate the Annual Parasite Index (API) that will give a more
 standardised comparison between administration units. API (per 1000
 people) = Number of cases / population * 1000</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>Open the attribute table of the “FAK_HDS_with_pop” layer <img
-src="images/03_qgis/att_table.png" /></li>
-<li>Select field calculator <img
-src="images/03_qgis/field_calc.png" />from the attribute table menu
-bar</li>
-<li>In the field calculator pop-up window fill in the “output field
-name” with “api” and select the output type. In this case it will be a
-decimal number.</li>
-<li>In the expression box you can write the expression you want to carry
-out. Just type the field names however if you forget what they are
-called you can use the “fields and values” dropdown menu on the right.
-As you can see they are many other tools here we can use for
-calculation.</li>
-<li>When you are happy your formula is correct click OK.</li>
-<li>Navigate to the final column on the right of your attribute table -
-you should see a column for “api” has been added.</li>
-</ol>
-<p><img src="images/03_qgis/field_calc2.png" width="80%" style="display: block; margin: auto;" /></p>
-<ol start="7" style="list-style-type: decimal">
-<li>As we have been editing the attribute table the toggle edit icon
-<img src="images/03_qgis/tog_edit.png" /> will be selected. When we have
-finished we need to turn off editing by clicking this button - you will
-then be prompted to save or discard.</li>
-</ol>
-<p><img src="images/03_qgis/field_calc3.png" width="80%" style="display: block; margin: auto;" /></p>
-</p>
-</p>
-<p></span></p>
-</div>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>Open the attribute table of the “FAK_HDS_with_pop” layer 
+                        <img src="images/03_qgis/att_table.png"/>
+                    </li>
+                    <li>Select field calculator 
+                        <img src="images/03_qgis/field_calc.png"/>from the attribute table menu
+                        bar
+                    </li>
+                    <li>In the field calculator pop-up window fill in the “output field
+                        name” with “api” and select the output type. In this case it will be a
+                        decimal number.
+</li>
+                    <li>In the expression box you can write the expression you want to carry
+                        out. Just type the field names however if you forget what they are
+                        called you can use the “fields and values” dropdown menu on the right.
+                        As you can see they are many other tools here we can use for
+                        calculation.
+</li>
+                    <li>When you are happy your formula is correct click OK.</li>
+                    <li>Navigate to the final column on the right of your attribute table -
+                        you should see a column for “api” has been added.
+</li>
+                </ol><p><img src="images/03_qgis/field_calc2.png" width="80%" style="display: block; margin: auto;"/></p><ol start="7" style="list-style-type: decimal">
+                    <li>As we have been editing the attribute table the toggle edit icon
+                        <img src="images/03_qgis/tog_edit.png"/> will be selected. When we have
+                        finished we need to turn off editing by clicking this button - you will
+                        then be prompted to save or discard.
+                    </li>
+                </ol><p><img src="images/03_qgis/field_calc3.png" width="80%" style="display: block; margin: auto;"/></p></p></p>
+        <p></span>
+    </p>
 </div>
 <div id="visualizing-api-data---choropleth-maps" class="section level2">
-<h2>Visualizing API data - Choropleth maps</h2>
-<p>We will now explore some ways to visualize the data that has been
+    <h2>Visualizing API data - Choropleth maps</h2>
+    <p>We will now explore some ways to visualize the data that has been
 joined.</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li>Right-click on the “FAK_HDs” layer <span style="color:red">1</span>
-and select “Properties”.</li>
-<li>Go to “Symbology” <span style="color:red">2</span></li>
-<li>Select “Graduated” <span style="color:red">3</span> from the first
-drop-down</li>
-<li>Select “api” from the value drop-down <span
-style="color:red">4</span>. This is the API we just calculated</li>
-<li>You can choose your desired color scheme from the Color ramp
-drop-down <span style="color:red">5</span></li>
-<li>Click “Classify” <span style="color:red">6</span> . The continuous
-variable “api” will be dived into different bins based on the “mode”
-selected (see menu above classify) and the number of classes.</li>
-<li>You can change the number of classes <span
-style="color:red">7</span> and you can manually change the value for
-each class by double clicking on the Values of the classes in the main
-panel.</li>
-<li>When you are happy click “Apply” and “Ok”. What does your map look
-like now?</li>
-</ol>
-<p><img src="images/03_qgis/vis_api.png" width="90%" style="display: block; margin: auto;" /></p>
-<p><img src="images/03_qgis/vis_api2.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>We can now see each Admin 2 unit has been colored based on the
-settings we just established.</p>
-</p>
-</p>
-<p></span></p>
-</div>
-</div>
+    <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+        <span><p style="margin-left:1em;"><ol style="list-style-type: decimal">
+                    <li>Right-click on the “FAK_HDs” layer <span style="color:red">1</span>
+                        and select “Properties”.
+                    </li>
+                    <li>Go to “Symbology” <span style="color:red">2</span>
+                    </li>
+                    <li>Select “Graduated” <span style="color:red">3</span> from the first
+                        drop-down
+                    </li>
+                    <li>Select “api” from the value drop-down <span style="color:red">4</span>. This is the API we just calculated
+                    </li>
+                    <li>You can choose your desired color scheme from the Color ramp
+                        drop-down <span style="color:red">5</span>
+                    </li>
+                    <li>Click “Classify” <span style="color:red">6</span> . The continuous
+                        variable “api” will be dived into different bins based on the “mode”
+                        selected (see menu above classify) and the number of classes.
+                    </li>
+                    <li>You can change the number of classes <span style="color:red">7</span> and you can manually change the value for
+                        each class by double clicking on the Values of the classes in the main
+                        panel.
+                    </li>
+                    <li>When you are happy click “Apply” and “Ok”. What does your map look
+                        like now?
+</li>
+                </ol><p><img src="images/03_qgis/vis_api.png" width="90%" style="display: block; margin: auto;"/></p><p><img src="images/03_qgis/vis_api2.png" width="90%" style="display: block; margin: auto;"/></p><p>We can now see each Admin 2 unit has been colored based on the
+settings we just established.</p></p></p>
+        <p></span>
+    </p>
 </div>
 <div id="from-data-to-publishable-maps" class="section level1">
-<h1>From data to publishable maps</h1>
-<div id="print-layout-previously-print-composer" class="section level2">
-<h2>Print layout (previously print composer)</h2>
-<p>This session takes you through how to generate and export maps for
+    <h1>From data to publishable maps</h1>
+    <div id="print-layout-previously-print-composer" class="section level2">
+        <h2>Print layout (previously print composer)</h2>
+        <p>This session takes you through how to generate and export maps for
 reporting, publications and presentations. QGIS uses the print layout
 tool (know as print composer in earlier QGIS versions).</p>
-<div class="warning"
-style="padding:0.1em; background-color:#fee6ce; color:#404040">
-<span>
-<p style="margin-left:1em;">
-<ol style="list-style-type: decimal">
-<li><p>You may now have many layers in your QGIS project. We want to
+        <div class="warning" style="padding:0.1em; background-color:#fee6ce; color:#404040">
+            <span><p style="margin-left:1em;"></p><ol style="list-style-type: decimal">
+                    <li>
+                        <p>You may now have many layers in your QGIS project. We want to
 have layers we want to visualize to the front or turn off the unwanted
-layers. We focus will focus on the API map</p></li>
-<li><p>From the menu bar click on “Project” and then click “New Print
-Layout”.</p></li>
-</ol>
-<p><img src="images/03_qgis/print.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li><p>From the pop-up window you can name the map or click OK and an
+layers. We focus will focus on the API map</p>
+                    </li>
+                    <li>
+                        <p>From the menu bar click on “Project” and then click “New Print
+Layout”.</p>
+                    </li>
+                </ol><p><img src="images/03_qgis/print.png" width="90%" style="display: block; margin: auto;"/></p><ol start="3" style="list-style-type: decimal">
+                    <li>
+                        <p>From the pop-up window you can name the map or click OK and an
 automatic name will be created. The print composer window will then
-open.</p></li>
-<li><p>From the add item menu select “Add map” menu or use the symbol
-<img src="images/03_qgis/add_map.png" /> on the left pane to add
-map.</p></li>
-<li><p>Then left-click on the top left corner, hold and drag to the
+open.</p>
+                    </li>
+                    <li>
+                        <p>From the add item menu select “Add map” menu or use the symbol<img src="images/03_qgis/add_map.png"/> on the left pane to add
+map.</p>
+                    </li>
+                    <li>
+                        <p>Then left-click on the top left corner, hold and drag to the
 bottom right corner. Your map will appear in the box you
-created.</p></li>
-<li><p>If you want to move the map click the move icon on the left <img
-src="images/03_qgis/move.png" />. This will allow you to move the map
+created.</p>
+                    </li>
+                    <li>
+                        <p>If you want to move the map click the move icon on the left <img src="images/03_qgis/move.png"/>. This will allow you to move the map
 up/down/left and right but also zoom in and out. You should not confuse
 this with the zoom icon which changes you view of the map but does not
 actually change the scale of the map on the print composer. If you want
 a specific scale or extent you can enter specific settings in the item
-properties tab on the right</p></li>
-</ol>
-<p><img src="images/03_qgis/fak_print.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="7" style="list-style-type: decimal">
-<li><p>Our map is looking a little bare - we can now add features that
+properties tab on the right</p>
+                    </li>
+                </ol><p><img src="images/03_qgis/fak_print.png" width="90%" style="display: block; margin: auto;"/></p><ol start="7" style="list-style-type: decimal">
+                    <li>
+                        <p>Our map is looking a little bare - we can now add features that
 will give the map some context. Let’s first add a legend. Click on the
-legend icon on the left <img src="images/03_qgis/leg.png" /> and then
-click and drag on the map where you want the legend.</p></li>
-<li><p>You will see all the items from the Layers panel in the legend -
+legend icon on the left <img src="images/03_qgis/leg.png"/> and then
+click and drag on the map where you want the legend.</p>
+                    </li>
+                    <li>
+                        <p>You will see all the items from the Layers panel in the legend -
 even those that are not visible on the map! We have to clean up the
 legend and remove labels. In the “Items list” make sure the legend is
 selected. From there go to the item properties and tick the check box
 “Only show items inside linked map”. This should reduce the legend down
-to the layers you can see.</p></li>
-</ol>
-<p><img src="images/03_qgis/leg2.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="9" style="list-style-type: decimal">
-<li>Alternatively you can manually configure the legend by unchecking
-the “auto update” box. For any item you do not want in the legend -
-select it and click the remove the icon <img
-src="images/03_qgis/minus.png" />. Repeat this for all the items not
-useful in the legend</li>
-</ol>
-<p><img src="images/03_qgis/leg_remove.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="10" style="list-style-type: decimal">
-<li><p>The legend uses the names of layers but these are not always
+to the layers you can see.</p>
+                    </li>
+                </ol><p><img src="images/03_qgis/leg2.png" width="90%" style="display: block; margin: auto;"/></p><ol start="9" style="list-style-type: decimal">
+                    <li>Alternatively you can manually configure the legend by unchecking
+                        the “auto update” box. For any item you do not want in the legend -
+                        select it and click the remove the icon 
+                        <img src="images/03_qgis/minus.png"/>. Repeat this for all the items not
+                        useful in the legend
+                    </li>
+                </ol><p><img src="images/03_qgis/leg_remove.png" width="90%" style="display: block; margin: auto;"/></p><ol start="10" style="list-style-type: decimal">
+                    <li>
+                        <p>The legend uses the names of layers but these are not always
 informative. You can change these simply by double clicking on the label
 in the “Legend Items” panel. Try changing the FAK_HDs label to something
-like “Number of confirmed malaria cases”</p></li>
-<li><p>It should be noted that if you change the layers in the main QGIS
+like “Number of confirmed malaria cases”</p>
+                    </li>
+                    <li>
+                        <p>It should be noted that if you change the layers in the main QGIS
 project it will be reflected in the print composer. Let’s try this out -
 return to the main QGIS project window (do not close the print
-window).</p></li>
-<li><p>Change the color scale of the FAK_HDs layer then return to the
+window).</p>
+                    </li>
+                    <li>
+                        <p>Change the color scale of the FAK_HDs layer then return to the
 print window. Has the map changed? It may take a moment or you may need
-to move the map slightly with <img src="images/03_qgis/move.png" /> so
-that it updates</p></li>
-<li><p>The map is starting to look better - try adding a North Arrow
-<img src="images/03_qgis/north.png" /> and a Scale Bar <img
-src="images/03_qgis/scale.png" />. Each item on the map has
+to move the map slightly with <img src="images/03_qgis/move.png"/> so
+that it updates</p>
+                    </li>
+                    <li>
+                        <p>The map is starting to look better - try adding a North Arrow<img src="images/03_qgis/north.png"/> and a Scale Bar <img src="images/03_qgis/scale.png"/>. Each item on the map has
 customization options that can be accessed from the “Item properties”
-tab - try a few of them out.</p></li>
-<li><p>Have you added a scale bar? Try to zoom in or out of the map with
-<img src="images/03_qgis/move.png" /> and see what happens to the scale
-bar.</p></li>
-<li><p>We can also add a text box <img src="images/03_qgis/text.png" />
+tab - try a few of them out.</p>
+                    </li>
+                    <li>
+                        <p>Have you added a scale bar? Try to zoom in or out of the map with<img src="images/03_qgis/move.png"/> and see what happens to the scale
+bar.</p>
+                    </li>
+                    <li>
+                        <p>We can also add a text box <img src="images/03_qgis/text.png"/>
 for titles or labeling. Text, font size and style are all adjusted in
-the “item properties” panel.</p></li>
-</ol>
-<p><img src="images/03_qgis/text_box.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="16" style="list-style-type: decimal">
-<li><p>Once you are happy with an item it is advisable to lock it into
+the “item properties” panel.</p>
+                    </li>
+                </ol><p><img src="images/03_qgis/text_box.png" width="90%" style="display: block; margin: auto;"/></p><ol start="16" style="list-style-type: decimal">
+                    <li>
+                        <p>Once you are happy with an item it is advisable to lock it into
 place. This will stop any accidental moving/zooming. From the items list
-- check the box next to “Map 1” with the little lock symbol.</p></li>
-<li><p>The previous step is mainly used to prevent unwanted movement. We
+- check the box next to “Map 1” with the little lock symbol.</p>
+                    </li>
+                    <li>
+                        <p>The previous step is mainly used to prevent unwanted movement. We
 can also lock-in the color symbology so that if you make changes to the
 main map canvas the print layout remains the same. In the “Item
 properties” of the “Map 1” check the tickbox for “lock layers” and “lock
-styles for layers”.</p></li>
-</ol>
-<p><img src="images/03_qgis/lock.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="18" style="list-style-type: decimal">
-<li><p>Return to the main QGIS project and change the color scheme
-again. What has happened in the print composer now?</p></li>
-<li><p>There are many different items that can be added to your map such
-as arrows and tables - find out more <a
-href="https://docs.qgis.org/3.22/en/docs/user_manual/print_composer/composer_items/index.html">here</a></p></li>
-</ol>
-<div id="exporting-maps" class="section level2">
-<h2>Exporting maps</h2>
-<p>The final step is exporting the map so that it can be used in a
+styles for layers”.</p>
+                    </li>
+                </ol><p><img src="images/03_qgis/lock.png" width="90%" style="display: block; margin: auto;"/></p><ol start="18" style="list-style-type: decimal">
+                    <li>
+                        <p>Return to the main QGIS project and change the color scheme
+again. What has happened in the print composer now?</p>
+                    </li>
+                    <li>
+                        <p>There are many different items that can be added to your map such
+as arrows and tables - find out more <a href="https://docs.qgis.org/3.22/en/docs/user_manual/print_composer/composer_items/index.html">here</a></p>
+                    </li>
+                </ol><div id="exporting-maps" class="section level2">
+                    <h2>Exporting maps</h2>
+                    <p>The final step is exporting the map so that it can be used in a
 report or publication.</p>
-<ol style="list-style-type: decimal">
-<li>To export the map, go to “Layout” and select “Export as image” (note
-that you can also choose pdf)</li>
-<li>Choose an appropriate name for the file and save in the output
-folder.</li>
-<li>You will be prompted to pick a resolutions - 300 dpi is acceptable
-for most publications</li>
-<li>Open you map from the folder - how does it look?</li>
-</ol>
-</p>
-</p>
-<p></span></p>
+                    <ol style="list-style-type: decimal">
+                        <li>To export the map, go to “Layout” and select “Export as image” (note
+                            that you can also choose pdf)
+</li>
+                        <li>Choose an appropriate name for the file and save in the output
+                            folder.
+</li>
+                        <li>You will be prompted to pick a resolutions - 300 dpi is acceptable
+                            for most publications
+</li>
+                        <li>Open you map from the folder - how does it look?</li>
+                    </ol>
+                </p> <p></span>
+        </p>
+    </div>
 </div>
-</div>
-</div>
-<div id="help-and-self-learning-available-for-qgis"
-class="section level2">
-<h2>Help and self learning available for QGIS</h2>
-<p>There are many very useful sources of help for QGIS. A good place to
+<div id="help-and-self-learning-available-for-qgis" class="section level2">
+    <h2>Help and self learning available for QGIS</h2>
+    <p>There are many very useful sources of help for QGIS. A good place to
 start is the official QGIS documentation where you will find a detailed
 description of QGIS and be able to search topics that you may need help
 in. The training manual that includes easy to follow lessons</p>
-<p><a href="https://docs.qgis.org/3.22/en/docs/"
-class="uri">https://docs.qgis.org/3.22/en/docs/</a> <a
-href="https://docs.qgis.org/3.22/en/docs/training_manual/foreword/index.html"
-class="uri">https://docs.qgis.org/3.22/en/docs/training_manual/foreword/index.html</a></p>
-<p>A series of tutorials and tips have been put together by contributors
-on the following website. <a href="https://www.qgistutorials.com/en/"
-class="uri">https://www.qgistutorials.com/en/</a>. The tutorials have
+    <p><a href="https://docs.qgis.org/3.22/en/docs/" class="uri">https://docs.qgis.org/3.22/en/docs/</a> <a href="https://docs.qgis.org/3.22/en/docs/training_manual/foreword/index.html" class="uri">https://docs.qgis.org/3.22/en/docs/training_manual/foreword/index.html</a></p>
+    <p>A series of tutorials and tips have been put together by contributors
+on the following website. <a href="https://www.qgistutorials.com/en/" class="uri">https://www.qgistutorials.com/en/</a>. The tutorials have
 been translated to many different languages.</p>
-<p>If either of the these two options can not help you can ask specific
-questions on the <a href="https://gis.stackexchange.com/"
-class="uri">https://gis.stackexchange.com/</a></p>
-<hr />
-</div>
+    <p>If either of the these two options can not help you can ask specific
+questions on the <a href="https://gis.stackexchange.com/" class="uri">https://gis.stackexchange.com/</a></p>
+    <hr/>
 </div>
 <div id="optional-extras" class="section level1">
-<h1>Optional Extras</h1>
-<p>We are nearing the end of the tutorial - below are a few optional
+    <h1>Optional Extras</h1>
+    <p>We are nearing the end of the tutorial - below are a few optional
 extras you can try if you have time or want to do further study. The
 options are:</p>
-<ol style="list-style-type: decimal">
-<li>Editing the attribute table</li>
-<li>Points in polygon<br />
-</li>
-<li>How to access open source spatial data</li>
-<li>Plugins - Adding basemaps example</li>
-</ol>
-<hr />
-<div id="attribute-table-editing" class="section level2">
-<h2>Attribute table editing</h2>
-<p>There are times we may identify errors in the attribute table and may
+    <ol style="list-style-type: decimal">
+        <li>Editing the attribute table</li>
+        <li>Points in polygon<br/>
+        </li>
+        <li>How to access open source spatial data</li>
+        <li>Plugins - Adding basemaps example</li>
+    </ol>
+    <hr/>
+    <div id="attribute-table-editing" class="section level2">
+        <h2>Attribute table editing</h2>
+        <p>There are times we may identify errors in the attribute table and may
 need to correct them. There may also be unwanted columns that you want
 to tidy up. In the FAK_HDs_with_pop shapefields we do not have a use for
 the Pop_count and it can get confused with Pop_sum so it may be best to
 remove it.</p>
-<ol style="list-style-type: decimal">
-<li>Open the FAK_HDs_with_pop attribute table by right-clicking and
-selecting <img src="images/03_qgis/att_table.png" /> 2.From the
-attribute table window select the toggle edit icon <img
-src="images/03_qgis/tog_edit.png" /> from the top left corner - this
-allows edits to occur.</li>
-<li>To delete a column we can then click on the <img
-src="images/03_qgis/del_col.png" /> symbol and simply scroll down and
-select the column to be deleted.</li>
-<li>While we have editing turned on you can also try to click individual
-cells of the attribute table. You will be given the option to change the
-cell contents and is a way to fix any small errors in your dataset.</li>
-<li>To turn off editing click the toggle symbol again <img
-src="images/03_qgis/tog_edit.png" />. You will be prompted to save or
-discard your changes - if you are happy click save. Now with the editing
-turned off try and select the cell contents - you will see it is no
-longer possible.</li>
-</ol>
-<p>QGIS has many other data cleaning and manipulation functions that can
+        <ol style="list-style-type: decimal">
+            <li>Open the FAK_HDs_with_pop attribute table by right-clicking and
+                selecting 
+                <img src="images/03_qgis/att_table.png"/> 2.From the
+                attribute table window select the toggle edit icon 
+                <img src="images/03_qgis/tog_edit.png"/> from the top left corner - this
+                allows edits to occur.
+            </li>
+            <li>To delete a column we can then click on the 
+                <img src="images/03_qgis/del_col.png"/> symbol and simply scroll down and
+                select the column to be deleted.
+            </li>
+            <li>While we have editing turned on you can also try to click individual
+                cells of the attribute table. You will be given the option to change the
+                cell contents and is a way to fix any small errors in your dataset.
+</li>
+            <li>To turn off editing click the toggle symbol again 
+                <img src="images/03_qgis/tog_edit.png"/>. You will be prompted to save or
+                discard your changes - if you are happy click save. Now with the editing
+                turned off try and select the cell contents - you will see it is no
+                longer possible.
+            </li>
+        </ol>
+        <p>QGIS has many other data cleaning and manipulation functions that can
 be explored. That said it is not a strength of QGIS and so it can be
 preferable to clean data in Excel or R before using in QGIS.</p>
-</div>
-<div id="optional-extra---points-in-polygon" class="section level2">
-<h2>Optional extra - Points in polygon</h2>
-<p>There are times we may want to know how many points are in each
+    </div>
+    <div id="optional-extra---points-in-polygon" class="section level2">
+        <h2>Optional extra - Points in polygon</h2>
+        <p>There are times we may want to know how many points are in each
 polygon. In our example it will tell us how many health facilities are
 in each District but there are many other different use cases.</p>
-<ol style="list-style-type: decimal">
-<li>From the menu bar select <strong><em>Vector &gt; Analysis tools &gt;
-Count in Polygon</em></strong></li>
-</ol>
-<p><img src="images/03_qgis/pnp.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>The pop-up window will prompt you to select a polygon and a point
-layer. You can change the name of the count field name - try
-“Num_HFs”</li>
-<li>Click run</li>
-<li>A new temporary layer will be produced named “Count”. Open the
-attribute table and inspect the Num_HFs field</li>
-<li>Note that this is a temporary layer and will need to be saved if
-needed in the future</li>
-</ol>
-<p><img src="images/03_qgis/pnp2.png" width="90%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="open-source-spatial-data" class="section level2">
-<h2>Open source spatial data</h2>
-<p>An extensive list of free spatial data can be found on the <a
-href="http://freegisdata.rtwilson.com/">Free GIS Data website</a>.
+        <ol style="list-style-type: decimal">
+            <li>From the menu bar select <strong><em>Vector &gt; Analysis tools &gt;
+Count in Polygon</em></strong>
+            </li>
+        </ol>
+        <p><img src="images/03_qgis/pnp.png" width="90%" style="display: block; margin: auto;"/></p>
+        <ol start="2" style="list-style-type: decimal">
+            <li>The pop-up window will prompt you to select a polygon and a point
+                layer. You can change the name of the count field name - try
+                “Num_HFs”
+</li>
+            <li>Click run</li>
+            <li>A new temporary layer will be produced named “Count”. Open the
+                attribute table and inspect the Num_HFs field
+</li>
+            <li>Note that this is a temporary layer and will need to be saved if
+                needed in the future
+</li>
+        </ol>
+        <p><img src="images/03_qgis/pnp2.png" width="90%" style="display: block; margin: auto;"/></p>
+    </div>
+    <div id="open-source-spatial-data" class="section level2">
+        <h2>Open source spatial data</h2>
+        <p>An extensive list of free spatial data can be found on the <a href="http://freegisdata.rtwilson.com/">Free GIS Data website</a>.
 Please explore and see if there is anything relevant to your work.</p>
-<p>As an example, we can download shapefiles of the Philippines
+        <p>As an example, we can download shapefiles of the Philippines
 boundaries, roads, rail network and rivers.</p>
-<ol style="list-style-type: decimal">
-<li>Select “DIVA-GIS Country Data” under the “General” heading</li>
-<li>Near the top-right of your scree click “Free Spatial Data” and
-select “country level data” under the subheading Country Level</li>
-<li>Select “Philippines” from the Country dropdown, then select
-“Administrative areas” and click “OK”. Save to the appropriate
-location.</li>
-<li>Repeat step 3 to download other shapefiles by changing the “Subject”
-heading to “inland water”, “roads” and “railroads”.</li>
-</ol>
-<p>From the <a href="http://freegisdata.rtwilson.com/">Free GIS Data
+        <ol style="list-style-type: decimal">
+            <li>Select “DIVA-GIS Country Data” under the “General” heading</li>
+            <li>Near the top-right of your scree click “Free Spatial Data” and
+                select “country level data” under the subheading Country Level
+</li>
+            <li>Select “Philippines” from the Country dropdown, then select
+                “Administrative areas” and click “OK”. Save to the appropriate
+                location.
+</li>
+            <li>Repeat step 3 to download other shapefiles by changing the “Subject”
+                heading to “inland water”, “roads” and “railroads”.
+</li>
+        </ol>
+        <p>From the <a href="http://freegisdata.rtwilson.com/">Free GIS Data
 website</a> we can also obtain population rasters</p>
-<ol style="list-style-type: decimal">
-<li>From the main page scroll down to the “Population” section and
-select “Worldpop”</li>
-<li>In the Worldpop window select “POPULATION DENSITY” from the “DATA”
-menu. The select “Unconstrained individual countries 2000-2020 (1km
-resolution)”</li>
-<li>Type “Philippines” in the search box, and you will be able to get
-the population density data between 2000 and 2020. Choose 2020 data by
-clicking on the grey box at the end</li>
-<li>Choose the file “phi_pd_2020_1km” and save it to an appropriate
-location</li>
-</ol>
-</div>
-<div id="plugins" class="section level2">
-<h2>Plugins</h2>
-<p>QGIS plugins offer additional functionality to the core QGIS software
+        <ol style="list-style-type: decimal">
+            <li>From the main page scroll down to the “Population” section and
+                select “Worldpop”
+</li>
+            <li>In the Worldpop window select “POPULATION DENSITY” from the “DATA”
+                menu. The select “Unconstrained individual countries 2000-2020 (1km
+                resolution)”
+</li>
+            <li>Type “Philippines” in the search box, and you will be able to get
+                the population density data between 2000 and 2020. Choose 2020 data by
+                clicking on the grey box at the end
+</li>
+            <li>Choose the file “phi_pd_2020_1km” and save it to an appropriate
+                location
+</li>
+        </ol>
+    </div>
+    <div id="plugins" class="section level2">
+        <h2>Plugins</h2>
+        <p>QGIS plugins offer additional functionality to the core QGIS software
 - much like packages in R. Many popular plugins have been encorporated
 into QGIS but there are still over 1000 additional plugins available.
 Here we will look at how we can access the plugins and highlight some of
 the more popular plugins.</p>
-<ol style="list-style-type: decimal">
-<li>From the menu bar select “Plugins” and then “Manage and Install
-plugins”</li>
-</ol>
-<p><img src="images/03_qgis/plug_1.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>The popup window should list the available plugins. In the search
-bar we will look for “quickmapservices” - this is a popular plugin to
-access basemaps from Open Street Map, Google etc</li>
-</ol>
-<p><img src="images/03_qgis/plug_2.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>When you have found the plugin click install. Some plugins will
-appear in the menu bar but many will appear in the toolbar. For quick
-map services the tool icon is <img src="images/03_qgis/qms.png" />.
-CLick the icon and click OSM (open street map). The OSM basemap will
-appear on your map and in the layers list. Now you know where Fakeland
-is!</li>
-</ol>
-<p><img src="images/03_qgis/plug_3.png" width="90%" style="display: block; margin: auto;" /></p>
-<ol start="4" style="list-style-type: decimal">
-<li>To find other popular base maps you can search the quick map
-services plugin, again from the <img src="images/03_qgis/qms.png" />
-select search QMS. A search panel will appear and looks for other
-basemaps such a Google or basemaps with satellite imagery</li>
-</ol>
-<p><img src="images/03_qgis/plug_4.png" width="90%" style="display: block; margin: auto;" /></p>
+        <ol style="list-style-type: decimal">
+            <li>From the menu bar select “Plugins” and then “Manage and Install
+                plugins”
+</li>
+        </ol>
+        <p><img src="images/03_qgis/plug_1.png" width="90%" style="display: block; margin: auto;"/></p>
+        <ol start="2" style="list-style-type: decimal">
+            <li>The popup window should list the available plugins. In the search
+                bar we will look for “quickmapservices” - this is a popular plugin to
+                access basemaps from Open Street Map, Google etc
+</li>
+        </ol>
+        <p><img src="images/03_qgis/plug_2.png" width="90%" style="display: block; margin: auto;"/></p>
+        <ol start="3" style="list-style-type: decimal">
+            <li>When you have found the plugin click install. Some plugins will
+                appear in the menu bar but many will appear in the toolbar. For quick
+                map services the tool icon is 
+                <img src="images/03_qgis/qms.png"/>.
+                CLick the icon and click OSM (open street map). The OSM basemap will
+                appear on your map and in the layers list. Now you know where Fakeland
+                is!
+            </li>
+        </ol>
+        <p><img src="images/03_qgis/plug_3.png" width="90%" style="display: block; margin: auto;"/></p>
+        <ol start="4" style="list-style-type: decimal">
+            <li>To find other popular base maps you can search the quick map
+                services plugin, again from the 
+                <img src="images/03_qgis/qms.png"/>
+                select search QMS. A search panel will appear and looks for other
+                basemaps such a Google or basemaps with satellite imagery
+            </li>
+        </ol>
+        <p><img src="images/03_qgis/plug_4.png" width="90%" style="display: block; margin: auto;"/></p>
+    </div>
 </div>
-</div>
-
-
-
-</div>
-</div>
-
-</div>
-
 <script>
 
 // add bootstrap table styles to pandoc tables
@@ -1448,9 +1211,7 @@ $(document).ready(function () {
 
 
 </script>
-
 <!-- tabsets -->
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -1462,9 +1223,7 @@ $(document).ready(function () {
   });
 });
 </script>
-
 <!-- code folding -->
-
 <script>
 $(document).ready(function ()  {
 
@@ -1494,7 +1253,6 @@ $(document).ready(function ()  {
     var toc = $("#TOC").tocify(options).data("toc-tocify");
 });
 </script>
-
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
@@ -1504,6 +1262,3 @@ $(document).ready(function ()  {
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
-
-</body>
-</html>

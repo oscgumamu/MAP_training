@@ -13,7 +13,7 @@
         <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
         <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
         <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
         <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
         <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
         <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -85,29 +85,20 @@ $(document).ready(function () {
                     <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
                         <div class="container">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Before we get Started</a>
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button><a class="navbar-brand" href="index.html">Before we get Started</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    <li><a href="01_datamanagement.html">Data management</a>
                                     </li>
-                                    <li>
-                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+                                    <li><a href="02_datahandling.html">Data handling and Visualiation in R</a>
                                     </li>
-                                    <li>
-                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    <li><a href="03_QGIS.html">Spatial Data in QGIS</a>
                                     </li>
-                                    <li>
-                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
+                                    <li><a href="04_spatial_in_R.html">Spatial Data in R</a>
                                     </li>
-                                    <li>
-                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    <li><a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
                                     </li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
@@ -125,9 +116,8 @@ $(document).ready(function () {
                     <p>Welcome to MAP-East Africa node ECR training program for Cohort 1 (2024-2025).&nbsp; This program builds on the &quot;<a href="https://malaria-atlas-project.gitlab.io/intro-to-spatial-analysis-for-infectious-diseases/index.html" target="_blank">Introduction of Spatial Analysis for Infectiousdiseases tutorial</a>&quot; material.</p>
                     <p></p>
                     <p>The course has been re-arranged and updated according to a new delivery method (workshops fortnightly). The training program consists of &quot;Data and coding&quot; section and as well as &quot;Community and leadership building&quot; component. As part of the program, the participants will be sharing their assignments (e.g. informational interviews, R scripts) on this page via GitHub.&nbsp;<br></p>
-                    <img src="images/MAP%20ECR%20Program.png"/>
                     <p></p>
-                    <p>The aim of the data tutorials is to teach
+                    <p>The aim of the tutorials is to teach
 basic concepts, skills and tools for working with data so that you can
 get more done in less time, and with less pain. The lessons here focus
 mainly on the use of R and QGIS.</p>
@@ -141,9 +131,7 @@ knowledge of spatial data.</p>
                     <p>We want to provide our audience with a few useful tools for their
 day-to-day data activities, using R and becoming leaders in their fields. The
 team behind this program is excited to release future workshops, tutorials and enrol more ECR participants that could be more tailored to
-regional/country requests. Please get in touch with us at on our <a href="https://groups.google.com/g/malaria-atlas-project-introduction-to-spatial-analysis">GoogleGroup</a><section style="line-height: 35px; font-size: 22px;">
-                            <p><b>Follow the steps below to set up your computer with all the neccessary data, software and R packages.&nbsp;</b></p>
-                        </section></p>
+regional/country requests. Please get in touch with us at on our <a href="https://groups.google.com/g/malaria-atlas-project-introduction-to-spatial-analysis">GoogleGroup</a></p>
                     <hr/>
                     <p><br></p>
                     <div id="download-the-data" class="section level2">
@@ -205,13 +193,16 @@ computer.</p>
                             <h3>Install R and RStudio</h3>
                             <p>R and RStudio are two separate pieces of software:</p>
                             <ul>
-                                <li><strong>R</strong> is a programming language that is especially
+                                <li>
+                                    <strong>R</strong> is a programming language that is especially
                                     powerful for data exploration, visualization, and statistical
                                     analysis
                                 </li>
-                                <li><strong>RStudio</strong><span> (renamed recently to Posit)</span>&nbsp;is an integrated development environment
-                                    (IDE) that makes using R easier. In this course we use RStudio to
-                                    interact with R.
+                                <li>
+                                    <strong>RStudio</strong>
+                                    <span> (renamed recently to Posit)</span>&nbsp;is an integrated development environment
+                    (IDE) that makes using R easier. In this course we use RStudio to
+                    interact with R.
                                 </li>
                             </ul>
                             <p>If you don’t already have R and RStudio installed, follow the
@@ -349,9 +340,8 @@ pasting the following code into the console:</p>
                             <pre class="r"><code>library(tidyverse)
 library(sf)
 library(terra)
-#library(rgdal)</code></pre>
-                            <p>If you do not see an error like<code>there is no package called &lsquo;...&rsquo;</code> you are good to go!</p>
-                            <p>Note: The<a href="https://r-spatial.org/r/2022/04/12/evolution.html"> rgdal package was retired in 2023</a> and other, older R packages might be dependants of this package. To get around this problem, install earlier version of R.&nbsp;</p>
+library(rgdal)</code></pre>
+                            <p>If you do not see an error like<code>there is no package called ‘...’</code> you are good to go!</p>
                             <p>Also note that when you load a package like tidyverse in for the
 first time you may see such test in your console:</p>
                             <p><img src="images/index/load_tidyverse.png" width="50%"/></p>
@@ -383,8 +373,6 @@ updating your R version or on another computer. However, the details are
 outside of the scope of this lesson.</p>
                         </div>
                     </div>
-                    <section style="font-size: 22px;"><b>Now your computer is ready so let&apos;s start with Module 1!</b>
-                    </section>
                 </div>
             </div>
         </div>

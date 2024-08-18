@@ -85,29 +85,20 @@ $(document).ready(function () {
                     <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
                         <div class="container">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Before we get Started</a>
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button><a class="navbar-brand" href="index.html">Before we get Started</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    <li><a href="01_datamanagement.html">Data management</a>
                                     </li>
-                                    <li>
-                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    <li><a href="02_datahandling.html">Data handling and Visualiation in R</a>
                                     </li>
-                                    <li>
-                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
+                                    <li><a href="03_QGIS.html">Spatial Data in QGIS</a>
                                     </li>
-                                    <li>
-                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    <li><a href="04_spatial_in_R.html">Spatial Data in R</a>
                                     </li>
-                                    <li>
-                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    <li><a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
                                     </li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
@@ -1231,14 +1222,18 @@ with the values you want to reshape.</p>
 multiple variables. There are the following options for joining two data
 frames, <code>x</code> and <code>y</code>:</p>
                             <ul>
-                                <li><code>inner_join()</code>: includes all rows that appear in both x
+                                <li>
+                                    <code>inner_join()</code>: includes all rows that appear in both x
                                     and y
                                 </li>
-                                <li><code>left_join()</code>: includes all rows in x
+                                <li>
+                                    <code>left_join()</code>: includes all rows in x
                                 </li>
-                                <li><code>right_join()</code>: includes all rows in y
+                                <li>
+                                    <code>right_join()</code>: includes all rows in y
                                 </li>
-                                <li><code>full_join()</code>: includes all rows in x or y
+                                <li>
+                                    <code>full_join()</code>: includes all rows in x or y
                                 </li>
                             </ul>
                             <p>To run the command you need to pass it the data frames you wish to
@@ -1399,10 +1394,12 @@ data visualisation using the <code>+</code> operator.</p>
                             <p>There are two main arguments to the <code>ggplot() function</code>,
 these are:</p>
                             <ul>
-                                <li><code>data</code>: the name of the data frame we are working
+                                <li>
+                                    <code>data</code>: the name of the data frame we are working
                                     with
                                 </li>
-                                <li><code>mapping</code>: the columns of the data frame we are plotting.
+                                <li>
+                                    <code>mapping</code>: the columns of the data frame we are plotting.
                                     This is created using the <code>aes()</code> command.
                                 </li>
                             </ul>

@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Common Practices for Data Management</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Before we get Started</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01_datamanagement.html">Data management</a>
+</li>
+<li>
+  <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+</li>
+<li>
+  <a href="03_QGIS.html">Spatial Data in QGIS</a>
+</li>
+<li>
+  <a href="04_spatial_in_R.html">Spatial Data in R</a>
+</li>
+<li>
+  <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Common Practices for Data Management</h1>
+
+</div>
+
+
+<div id="general-overview-and-learning-objectives"
+class="section level1">
+<h1>General overview and learning objectives</h1>
+<div id="aim" class="section level2">
+<h2>Aim</h2>
+<p>This module aims to provide an overview on common practices in
+managing public health data. We will review common health data sources,
+data collection methodologies which may result to different data types,
+then discuss the main steps of the data management cycle - from design
+of a study, an information or surveillance system, collection,
+extractions, entry, manipulation, summarization, analysis,
+visualization, and interpretation and data use.</p>
+<p>We will review common practices of data handling using
+<em>Spreadsheet programs</em> e.g., using <em>MSExcel, Calc, Google
+Sheets</em> for basic data management such as dealing with missing data,
+detecting and correcting outliers and errors, joining/merging files,
+summarizing and visualization. Discussing their pros and cons, then
+briefly introduce the benefits of using reproducible approaches when
+managing data. Details of these approaches and tools will be learnt in
+other Modules.</p>
+<p>The module contains hands-on practicals and class activities in order
+to put the theoretical knowledge into practice.</p>
+</div>
+<div id="time" class="section level2">
+<h2>Time</h2>
+<p>This section is expected to take a maximum of 2 hours split into
+three steps:</p>
+<ul>
+<li>Presentation of materials from facilitators/trainers -
+interactive;</li>
+<li>Class activities with plenary discussions;</li>
+<li>Individual activities.</li>
+</ul>
+<p>Most activities for this module will be done during the session,
+however, as we are proceeding to other modules/sessions with more hands
+on activities, participants are encouraged to practice in their spare
+time to master skills and improve learning outcomes.</p>
+</div>
+</div>
+<div id="definition-of-terms" class="section level1">
+<h1>Definition of terms</h1>
+<p>Let’s revisit and refresh on a few terminologies commonly referred to
+when talking about public health and data.</p>
+<p><strong>Health</strong></p>
+<p>The World Health Organization (WHO) defined health in its 1948
+constitution as “a state of complete physical, mental and social
+well-being and not merely the absence of disease or infirmity.” (WHO
+Constitution, 1948)</p>
+<p><strong>Public Health</strong></p>
+<p>The “art and science of <em>preventing disease</em>, prolonging life
+and <em>promoting health</em> through the organized efforts of society”
+(Acheson, 1988; WHO)</p>
+<p>The “the <em>science</em> and art of preventing disease, prolonging
+life, and promoting health through the organized efforts and
+<em>informed choices</em> of society, organizations, public and private
+communities, and individuals.” (CEA Winslow, CDC)</p>
+<p>The revised definition (by CDC) has some additional terms:
+<em>Science</em> and <em>informed choices</em>. Let’s look at few of
+them:</p>
+<p>What is <strong>Science</strong>?</p>
+<p>Several definitions exist, a common one includes <em>… the pursuit
+and application of knowledge and understanding of the natural and social
+world following a systematic methodology based on evidence.</em></p>
+<ul>
+<li>Scientific methodology e.g., observation, experimental
+investigation;</li>
+<li>Measurements - identification, description, indicators;</li>
+<li>Data;</li>
+<li>Evidence:</li>
+<li>Theoretical explanation.</li>
+</ul>
+<p>What is an <strong>informed choice</strong>?</p>
+<ul>
+<li>Decision that is consistent with its goals and values;</li>
+<li>Unbiased;</li>
+<li>Utilize evidence-based information;</li>
+<li>Provide several options.</li>
+</ul>
+<p>Now it unfolds to the core components:</p>
+<p><strong>Data</strong></p>
+<p>Facts or a collection of facts about something that can be used for
+reasoning, decision-making or planning, e.g., for public health. Once
+processed, organised and put into context data can be used generate
+information that offers great input during the decision-making process,
+to draw conclusions and make predictions.</p>
+<p><strong>Public health (surveillance) data</strong></p>
+<p>Data that can be used to evaluate impact or monitor progress e.g., of
+a health program or interventions, give information that helps to
+determine appropriate public health interventions, to determine
+populations at risk, where to target interventions, to determine
+success, gaps, challenges, guide public policy and practices.</p>
+<p><strong>Data management</strong></p>
+<p>Refers to the entire process from the time the data is
+captured/collected to the point it is utilized for the decision-making
+process.</p>
+<p>See Figure 1.</p>
+<p><img src="images/01_datamanagement/Data_Management_Flowchart_v3.jpg" width="80%" style="display: block; margin: auto;" /></p>
+<p>Looking at this Figure, we are saying, in other words, Data
+Management is everything that supports a programs/projects “data
+lifecycle” steps; the architectures, policies, practices and procedures
+to take you to the <strong>Use of Data for Action.</strong></p>
+<p>We will come back to this later.</p>
+</div>
+<div id="public-health-data" class="section level1">
+<h1>Public health data</h1>
+<div id="sources" class="section level2">
+<h2>Sources</h2>
+<p>Public health data may originate from various sources including the
+following:</p>
+<ul>
+<li><strong>Routine</strong> disease surveillance systems;
+<ul>
+<li>Medical/clinical records - diseases/conditions (outpatients,
+admissions), births, deaths that happens in the care delivery facilities
+(in some cases also at community). Electronic systems such as DHIS2
+captures such data;</li>
+<li>Service data - medicines/supplies available/used, tests/procedures,
+medical devices. These data may be captured electronically or
+paper-based information systems. e.g., LMIS, DHIS2;</li>
+</ul></li>
+<li><strong>Research</strong> and <strong>surveys</strong>: e.g., DHS,
+MIS, MICS, AIS, SPA, health and demographic surveillance system (HDSS)
+and others;</li>
+<li><strong>Administrative</strong>, e.g., human resources, finances and
+other logistic data;</li>
+<li><strong>Vital statistics</strong> - this may overlap with routine
+data, but may include events captured by the vital registration systems
+happening at facilities and communities;</li>
+<li><strong>Census</strong>; and,</li>
+<li><strong>Literature</strong> - gray and published - literature review
+may provide critical complementary and useful data/information to answer
+public health questions</li>
+</ul>
+<p>No matter where your data comes from, always be sure to check that it
+is of good quality - valid, complete, and clean - before analyzing and
+utilizing.</p>
+</div>
+<div id="usefulness-and-utilization" class="section level2">
+<h2>Usefulness and utilization</h2>
+<p>Data plays a vital part in health research and practice. Properly
+managed health data will help to provide us with unbiased
+information.</p>
+<p>Where available, public health data may be useful to provide
+understanding on the health status of the population, patterns and
+trends of diseases, assess if interventions put in place are working and
+guide practical and policy decisions.</p>
+<p>Important questions public health data can be used to answer include
+the following:</p>
+<ul>
+<li><strong>What</strong> is the (main) problem?</li>
+<li><strong>Who</strong> is mostly affected? e.g., subpopulation?</li>
+<li><strong>Where</strong> is mostly affected? e.g., areas, locations,
+subunits, microlevels (spatial units).</li>
+<li><strong>Why</strong> is this mostly affected? <em>how</em> or the
+associated <em>factors</em></li>
+<li><strong>When</strong> is the most effect? Temporal trend? Seasonal
+pattern?</li>
+<li><strong>At what extent</strong>?</li>
+<li><strong>What direction</strong>? e.g., river flow</li>
+</ul>
+</div>
+<div id="data-and-system-challenges" class="section level2">
+<h2>Data and system challenges</h2>
+<p>Due to heterogeneity in nature of data journey, sources, methods of
+collection, and volume, public health data encounter a number of
+constraints which may influence its utilization.</p>
+<p>These are sometime referred to as Data quality dimensions and may
+include but not limited to the following attributes:</p>
+<ul>
+<li><strong>Completeness</strong> - captured but not reported;</li>
+<li><strong>Timeliness</strong> - late reporting;</li>
+<li><strong>Availability</strong> - captured, reported but not
+accessible for use;</li>
+<li><strong>Incomplete/poor recording</strong> - some important
+variables or attributes not captured;</li>
+<li><strong>Consistency</strong> - Always tells the similar
+fact/story;</li>
+<li><strong>Aggregated</strong> - masked important information relevant
+for decision; and</li>
+<li><strong>Big data</strong> - an <em>ambiguous</em> dimension.</li>
+</ul>
+<p>Lets explore a bit about <strong>Big data</strong>.</p>
+<p>Main characteristics include:</p>
+<ul>
+<li><strong>Volume</strong>: the amount of data collected at once;</li>
+<li><strong>Velocity</strong>: the rate at which data comes in - e.g.,
+weekly malaria surveillance data;</li>
+<li><strong>Variety</strong>: many types of data. Ref: Routine
+surveillance data discussed earlier;</li>
+</ul>
+<p>Other features includes <strong>Veracity</strong> - the quality of
+the data, the accuracy, do we have it all? And lastly,
+<strong>Value</strong> - do we have the ability to transform these
+mountains of data into useful information for use?</p>
+<p>Take note of these characteristics when discussing a need for
+real-time surveillance data, daily, weekly vs. its management.</p>
+<p>Arguments that it is better to have <em>minimal useful data</em> in
+real time and best utilized than <em>lots of data</em> at a low speed
+and poorly utilized. Your choice!</p>
+<p>As the data grows bigger, more advanced skills and tools are required
+to manage it.</p>
+</div>
+</div>
+<div id="data-management-process" class="section level1">
+<h1>Data management process</h1>
+<p>Data management is a process with various steps.</p>
+<p>Let’s re-visit the previous graphical presentation of the Data
+Management Cycle.</p>
+<p><img src="images/01_datamanagement/Data_Management_Flowchart_v3.jpg" width="80%" style="display: block; margin: auto;" /></p>
+<p>The process begins with Study design (incl Protocol, tools and
+databases) and continues until the time you share/communicate the
+outputs from your analysis. These outputs aim to provide the
+<strong>end-users</strong> information that is an essential input
+ingredient for <strong>action</strong> or <strong>decision making
+process</strong>.</p>
+<p>Steps in the middle including collection procedures,
+cleaning/validation, organizing (creating metadata, new variables) and
+quality control checks, storage, security (confidentiality,
+protection/access) sub-setting, sharing protocols/agreements, are
+equally important.</p>
+<p>Data organization and analysis is usually guided by the
+objectives.</p>
+<p>When presenting and interpreting results/information generated from
+data, take note of the audience. Packaging and repackaging is
+crucial.</p>
+<p>The main goal of managing your data is to generate information that
+will provide useful and likely sufficient evidence that gives accurate
+and needed knowledge to the right audience for the purpose of answering
+the research/policy questions or guide the decisions needed to have
+effective surveillance system.</p>
+<p>Note:</p>
+<ul>
+<li>Data and Information are used interchangeably - do not mean the same
+thing; Information is in most cases derived from Data.</li>
+<li>Data can be reused several times for several purposes. Keep an open
+mind.</li>
+<li>Variations on skills to analyse and manipulate may hinder optimal
+data utilization.</li>
+<li>Data Integration is important and should be considered:linking and
+combining data from other sources to optimize insights and evidence
+generation.</li>
+<li>Publishing data: some data is made accessible to the public (at a
+cost or freely). Consider - data from others may be useful to your work
+and your data may be useful to others.</li>
+</ul>
+</div>
+<div id="data-manipulation-using-spreadsheets" class="section level1">
+<h1>Data manipulation using Spreadsheets</h1>
+<p>This subsection will focus on a few common practices used during data
+manipulation using Microsoft Excel program.</p>
+<p>Why we think this is important:</p>
+<ul>
+<li><p>There is evidence that MSExcel is the most used tool for managing
+data (visualize and analyze) by the malaria control program’ M&amp;E
+officers and some MoH/HMIS officers in many countries. May be less for
+researchers (SPSS, STATA)</p></li>
+<li><p>Some tasks need to be performed either repetitively or for many
+units (districts, health facilities, annually, monthly, etc)</p></li>
+<li><p>Some tasks require managing very large data, multiple datasets
+and manipulating large number of indicators</p></li>
+<li><p>MAP is aiming to build (spatial) capacities and strengthen
+analytical skills to; NMCPs, researchers and students, in particular,
+those working in malaria endemic countries.</p></li>
+<li><p>Spreadsheets are great tools for data management and may be
+sufficient to perform several analytical tasks - have distinct
+functionalities.</p></li>
+<li><p>We would like to build skills in using an alternative tool with
+different set of distinct functionalities.</p></li>
+</ul>
+<div id="reading-and-exploring-the-data-file" class="section level2">
+<h2>Reading and exploring the data file</h2>
+<p>The file <em>routine_data.csv</em> (within Data in your folders)
+contains simulated routine malaria cases for a certain
+<em>Fakeland</em>. Files (with extension *.csv) can be opened using
+MSExcel program.</p>
+<p>The data contains monthly facility-based reported tested and
+confirmed malaria cases for under fives and adults (over 5s) populations
+for year 2018. The file has a total of 1200 observations, with a total
+of 7 Admin 1 and 46 Admin2 units, and 100 health facilities.</p>
+<blockquote>
+<h3 id="task-1-individual---5-mins" class="challenge">Task 1 (Individual
+- 5 mins)</h3>
+<p>Activity:</p>
+<ul>
+<li>Open the file <code>routine_data.csv</code> - you may use MSExcel or
+any other software you wish</li>
+<li>Explore the data, variables, values - missingness, outliers, typos,
+errors</li>
+<li>Check the names of adm1, adm2</li>
+<li>Check year</li>
+</ul>
+<p>Feedback: Class plenary discussion (5 minutes)</p>
+<ul>
+<li>What software did the participants used to read and explore the
+data?</li>
+<li>What observations were found?</li>
+<li>Any errors, mistakes that are obvious? Any outlying records?</li>
+</ul>
+<p><strong>Task 1: Compiled steps using MSExcel</strong></p>
+<p><img src="images/01_datamanagement/Task1_Commonpractices_datamanagement.png" width="100%" style="display: block; margin: auto;" /></p>
+<details>
+<summary>
+<p>Solution to Task 1 using R scripts</p>
+</summary>
+<pre class="r"><code># Use the function `read_csv()` to read the file 
+dat0 &lt;- read_csv(&quot;data/routine_data.csv&quot;) # only the path to the folder &#39;data&#39; is provided since the entire &gt;pipeline is organized in a &#39;Project&#39;
+
+# To see the full path use the function `getwd()`
+
+# Explore the data (call the object/name assigned) using functions `str()`, `head()` and `summary()`
+
+str(dat0)</code></pre>
+<pre><code>## spec_tbl_df [1,200 × 17] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ adm1        : chr [1:1200] &quot;West&quot; &quot;West&quot; &quot;West&quot; &quot;West&quot; ...
+##  $ adm2        : chr [1:1200] &quot;Bamakiary&quot; &quot;Bamakiary&quot; &quot;Bamakiary&quot; &quot;Bamakiary&quot; ...
+##  $ hf          : num [1:1200] 6 6 6 6 6 6 6 6 6 6 ...
+##  $ month       : chr [1:1200] &quot;Jan&quot; &quot;Feb&quot; &quot;Mar&quot; &quot;Apr&quot; ...
+##  $ year        : num [1:1200] 2018 2018 2018 2018 2018 ...
+##  $ test_u5     : num [1:1200] 289 178 41 NA 95 108 121 299 323 526 ...
+##  $ test_rdt_u5 : num [1:1200] 279 175 40 129 93 105 118 293 317 514 ...
+##  $ test_mic_u5 : num [1:1200] 127 87 13 49 28 38 46 73 73 76 ...
+##  $ conf_u5     : num [1:1200] 204 92 36 69 64 42 93 175 174 259 ...
+##  $ conf_rdt_u5 : num [1:1200] 201 90 35 68 62 41 87 171 171 252 ...
+##  $ conf_mic_u5 : num [1:1200] 9 4 2 3 4 2 6 6 6 12 ...
+##  $ test_ov5    : num [1:1200] 317 193 45 137 101 115 134 352 394 684 ...
+##  $ test_rdt_ov5: num [1:1200] 137 73 25 66 57 58 66 229 265 540 ...
+##  $ test_mic_ov5: num [1:1200] 63 36 8 25 18 22 25 56 62 80 ...
+##  $ conf_ov5    : num [1:1200] 272 104 47 79 83 49 108 335 391 554 ...
+##  $ conf_rdt_ov5: num [1:1200] 255 97 44 74 77 46 101 321 374 525 ...
+##  $ conf_mic_ov5: num [1:1200] 11 5 2 3 4 2 7 12 14 24 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   adm1 = col_character(),
+##   ..   adm2 = col_character(),
+##   ..   hf = col_double(),
+##   ..   month = col_character(),
+##   ..   year = col_double(),
+##   ..   test_u5 = col_double(),
+##   ..   test_rdt_u5 = col_double(),
+##   ..   test_mic_u5 = col_double(),
+##   ..   conf_u5 = col_double(),
+##   ..   conf_rdt_u5 = col_double(),
+##   ..   conf_mic_u5 = col_double(),
+##   ..   test_ov5 = col_double(),
+##   ..   test_rdt_ov5 = col_double(),
+##   ..   test_mic_ov5 = col_double(),
+##   ..   conf_ov5 = col_double(),
+##   ..   conf_rdt_ov5 = col_double(),
+##   ..   conf_mic_ov5 = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>head(dat0)</code></pre>
+<pre><code>## # A tibble: 6 × 17
+##   adm1  adm2      hf month  year test_u5 test_…¹ test_…² conf_u5 conf_…³ conf_…⁴
+##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 West  Bamak…     6 Jan    2018     289     279     127     204     201       9
+## 2 West  Bamak…     6 Feb    2018     178     175      87      92      90       4
+## 3 West  Bamak…     6 Mar    2018      41      40      13      36      35       2
+## 4 West  Bamak…     6 Apr    2018      NA     129      49      69      68       3
+## 5 West  Bamak…     6 May    2018      95      93      28      64      62       4
+## 6 West  Bamak…     6 Jun    2018     108     105      38      42      41       2
+## # … with 6 more variables: test_ov5 &lt;dbl&gt;, test_rdt_ov5 &lt;dbl&gt;,
+## #   test_mic_ov5 &lt;dbl&gt;, conf_ov5 &lt;dbl&gt;, conf_rdt_ov5 &lt;dbl&gt;, conf_mic_ov5 &lt;dbl&gt;,
+## #   and abbreviated variable names ¹​test_rdt_u5, ²​test_mic_u5, ³​conf_rdt_u5,
+## #   ⁴​conf_mic_u5</code></pre>
+<pre class="r"><code>summary(dat0)</code></pre>
+<pre><code>##      adm1               adm2                 hf            month          
+##  Length:1200        Length:1200        Min.   :  1.00   Length:1200       
+##  Class :character   Class :character   1st Qu.: 25.75   Class :character  
+##  Mode  :character   Mode  :character   Median : 50.50   Mode  :character  
+##                                        Mean   : 50.50                     
+##                                        3rd Qu.: 75.25                     
+##                                        Max.   :100.00                     
+##                                                                           
+##       year         test_u5          test_rdt_u5     test_mic_u5    
+##  Min.   :  18   Min.   :-9999.00   Min.   :  0.0   Min.   :  0.00  
+##  1st Qu.:2018   1st Qu.:   81.25   1st Qu.: 84.0   1st Qu.: 18.00  
+##  Median :2018   Median :  136.00   Median :138.0   Median : 34.00  
+##  Mean   :2008   Mean   :   35.13   Mean   :164.7   Mean   : 47.36  
+##  3rd Qu.:2018   3rd Qu.:  222.00   3rd Qu.:224.5   3rd Qu.: 61.00  
+##  Max.   :3018   Max.   :  702.00   Max.   :702.0   Max.   :381.00  
+##                 NA&#39;s   :22                                         
+##     conf_u5       conf_rdt_u5     conf_mic_u5        test_ov5    
+##  Min.   :  0.0   Min.   :  0.0   Min.   : 0.000   Min.   :  0.0  
+##  1st Qu.: 48.0   1st Qu.: 47.0   1st Qu.: 0.000   1st Qu.: 88.0  
+##  Median : 82.0   Median : 81.0   Median : 1.000   Median :147.0  
+##  Mean   :104.2   Mean   :103.1   Mean   : 2.507   Mean   :180.9  
+##  3rd Qu.:141.0   3rd Qu.:140.0   3rd Qu.: 3.000   3rd Qu.:245.0  
+##  Max.   :552.0   Max.   :551.0   Max.   :51.000   Max.   :831.0  
+##                                                   NA&#39;s   :2      
+##   test_rdt_ov5    test_mic_ov5       conf_ov5      conf_rdt_ov5  
+##  Min.   :  0.0   Min.   :  0.00   Min.   :  0.0   Min.   :  0.0  
+##  1st Qu.: 46.0   1st Qu.: 11.75   1st Qu.: 61.0   1st Qu.: 59.0  
+##  Median : 82.0   Median : 20.50   Median :104.0   Median :100.0  
+##  Mean   :112.1   Mean   : 25.88   Mean   :139.1   Mean   :133.9  
+##  3rd Qu.:147.2   3rd Qu.: 36.00   3rd Qu.:190.2   3rd Qu.:184.0  
+##  Max.   :802.0   Max.   :133.00   Max.   :729.0   Max.   :715.0  
+##                                                                  
+##   conf_mic_ov5   
+##  Min.   : 0.000  
+##  1st Qu.: 1.000  
+##  Median : 2.000  
+##  Mean   : 3.765  
+##  3rd Qu.: 4.000  
+##  Max.   :86.000  
+## </code></pre>
+<pre class="r"><code># Tabulate unique records for adm1, adm2 and year - note of various ways to get the output
+with(dat0, table(unique(adm1)))</code></pre>
+<pre><code>## 
+##     central     Central        East    N. Coast North Coast      Plains 
+##           1           1           1           1           1           1 
+##        West 
+##           1</code></pre>
+<pre class="r"><code>unique(dat0$adm2)</code></pre>
+<pre><code>##  [1] &quot;Bamakiary&quot;   &quot;Bonmi&quot;       &quot;Buoadara&quot;    &quot;Buseli&quot;      &quot;Bwiziwo&quot;    
+##  [6] &quot;Cadagudeey&quot;  &quot;Cakure&quot;      &quot;Caya&quot;        &quot;Dakoga&quot;      &quot;Gakingo&quot;    
+## [11] &quot;Galkashiikh&quot; &quot;Gotou&quot;       &quot;Guinikoto&quot;   &quot;Kanyabare&quot;   &quot;Kanyemfya&quot;  
+## [16] &quot;Kidobar&quot;     &quot;Kokam&quot;       &quot;Lalaba&quot;      &quot;Lamanya&quot;     &quot;Laoye&quot;      
+## [21] &quot;Lastouni&quot;    &quot;Mabangata&quot;   &quot;Madinbinda&quot;  &quot;Makabondo&quot;   &quot;Malemkolela&quot;
+## [26] &quot;Marandre&quot;    &quot;Mbidima&quot;     &quot;Mbono&quot;       &quot;Namaba&quot;      &quot;Niaya&quot;      
+## [31] &quot;Othasii&quot;     &quot;Rumoni&quot;      &quot;Siabakala&quot;   &quot;Siago&quot;       &quot;Tangue&quot;     
+## [36] &quot;Tchimari&quot;    &quot;Ushiranga&quot;   &quot;Winnedua&quot;    &quot;Yagoloko&quot;    &quot;Yakos&quot;      
+## [41] &quot;Yenagbo&quot;     &quot;Yorolesse&quot;   &quot;Youko&quot;       &quot;Yumka&quot;       &quot;Zikishi&quot;    
+## [46] &quot;Zila&quot;</code></pre>
+<pre class="r"><code>with(dat0, table(unique(year)))</code></pre>
+<pre><code>## 
+##   18 2018 3018 
+##    1    1    1</code></pre>
+<pre class="r"><code>dat0 %&gt;% group_by(year) %&gt;% count(year)</code></pre>
+<pre><code>## # A tibble: 3 × 2
+## # Groups:   year [3]
+##    year     n
+##   &lt;dbl&gt; &lt;int&gt;
+## 1    18    12
+## 2  2018  1176
+## 3  3018    12</code></pre>
+</details>
+</blockquote>
+</div>
+<div id="cleaning-the-data-and-saving-cleaned-datafile"
+class="section level2">
+<h2>Cleaning the data and saving cleaned datafile</h2>
+<p>Scanning through the data variables (see the outputs of the functions
+used in the <em>Solution using R script</em> <code>summary()</code>,
+<code>with(dat0, table(unique(adm1)))</code> and
+<code>dat0 %&gt;% group_by(year) %&gt;% count(year)</code>) we have
+observed the following:</p>
+<ul>
+<li>Missing values: Records of the variable <em>test_u5</em> include
+<em>NA</em> and <em>-9999</em></li>
+<li>Error in records: Year recorded as 18 (in 12 instances) and 3018 (in
+12 instances);</li>
+<li>Names of Admin 1:<em>“North Coast”</em> recorded as <em>“N.
+Coast”</em>;</li>
+<li>Did you notice the mismatch between <em>“central”</em> and
+<em>“Central”</em>? We have in fact only 5 adm1 levels and not 7.</li>
+</ul>
+<p>Some of these seems like obvious errors/typos and can be easily
+corrected.</p>
+<p>To do this in a spreadsheet we can for instance apply <em>Find and
+Replace</em>”* or <em>filter</em> options to the data and the variable
+with mistakes (at least to avoid searching the entire file) then do the
+needed corrections.</p>
+<blockquote>
+<h3 id="task-2-group---10-minutes" class="challenge">Task 2 (Group - 10
+minutes)</h3>
+<p>Team: Form a group of 4 participants to work on the task.</p>
+<p>Activity: Using the file <code>routine_data.csv</code></p>
+<ul>
+<li>Explore the data, variables, values - missingness, outliers, typos,
+errors</li>
+<li>Check the names of adm1, adm2, and year</li>
+<li>Correct the records with obvious mistakes/errors in these
+variables</li>
+<li>In the variable <em>test_u5</em> set -9999 values to NAs</li>
+<li>Save the cleaned datafile and name it
+<em>routine_data_clean.csv</em> or you may opt to <em>Save As</em>
+MSExcel file &gt;(.xls/.xlsxl.</li>
+</ul>
+<p>Feedback: Two (2) groups will be called to demonstrate (5
+minutes)</p>
+<details>
+<summary>
+<p>Solution to Task 2 using R scripts</p>
+</summary>
+<pre class="r"><code>## Read the file 
+dat0 &lt;- read_csv(&quot;data/routine_data.csv&quot;)
+
+## Convert the variable &quot;month&quot; to an ordered factor
+dat0$month &lt;- factor(dat0$month, levels = month.abb) # Note: There is in R a variable called month.abb
+
+## Clean the names of adm1, year records, create date variable 
+dat1 &lt;- dat0 %&gt;% 
+mutate(adm1 = recode(adm1, &quot;N. Coast&quot; = &quot;North Coast&quot;, &quot;central&quot; = &quot;Central&quot;),
+       year = recode(year, &#39;3018&#39; = 2018, 
+                     &#39;18&#39; = 2018)) %&gt;%  
+  unite(date, year, month, sep = &quot;-&quot;, remove = F) %&gt;% 
+  mutate(date = ymd(parse_date_time(date, &quot;ym&quot;)))
+
+## Clean the missing values to have a common format (*-9999* or *NA*)
+dat1$test_u5[dat1$test_u5 == -9999] &lt;-NA
+
+## Save the file as new data with name *routine_data_clean.csv* using the `write_csv()` function
+write_csv(dat1, &quot;data/routine_data_clean.csv&quot;)
+
+#View(dat1)</code></pre>
+</details>
+<p><strong>Task 2: Compiled steps using MSExcel</strong></p>
+<p><img src="images/01_datamanagement/Task2_Commonpractices_datamanagement.png" width="100%" style="display: block; margin: auto;" /></p>
+</blockquote>
+</div>
+<div id="collapsing-data-by-groups" class="section level2">
+<h2>Collapsing data by groups</h2>
+<p>Sometimes you may need to summarise/aggregate your data to specific
+groups or categories of age, sex, adm1, adm2 or monthly to allow you to
+perform specific tabulations or visualizations.</p>
+<p>In Spreadsheet/MSExcel Pivot Tables can be applied to perform such
+tasks, then save the summarized tables either as separate files or add
+in a new sheet in the existing MSExcel file. Note: the <em>.csv.</em>
+file may need to be converted to <em>.xls.</em> to allow adding formulas
+(retaining), multiple sheets, plots/charts</p>
+<blockquote>
+<h3 id="task-3-group---15-minutes" class="challenge">Task 3 (Group - 15
+minutes)</h3>
+<p>Team: Same groups of 4 people.</p>
+<p>Activity: Using the file <code>routine_data_clean.csv</code></p>
+<ul>
+<li>Aggregate the data by the following</li>
+<li>adm1 (name: <em>aggreg_adm1</em>)</li>
+<li>adm2 (name <em>aggreg_adm2</em>)</li>
+<li>months (name <em>aggreg_monthly</em>)</li>
+<li>Either save these as separate files OR Add them as new sheet to your
+data</li>
+</ul>
+</blockquote>
+<blockquote>
+<h3 id="task-4-group---10-mins" class="challenge">Task 4 (Group - 10
+mins)</h3>
+<p>Using the files/sheets <code>routine_data_clean.csv</code>,
+and<code>aggreg_adm1</code>:</p>
+<ul>
+<li>Create new variables as follows</li>
+<li>total_tested which is a SUM of test_u5 and test_ov5</li>
+<li>total_conf which is a SUM of conf_u5 and conf_ov5</li>
+</ul>
+<p>Feedback: Two (2) groups will be called to demonstrate (5
+minutes)</p>
+<p><strong>Tasks 3 and 4: Compiled steps using MSExcel</strong></p>
+<p><img src="images/01_datamanagement/Task3_4_Commonpractices_datamanagement.png" width="100%" style="display: block; margin: auto;" /></p>
+<details>
+<summary>
+<p>Solution to Tasks 3 and 4 using R scripts</p>
+</summary>
+<pre class="r"><code>dat1 &lt;- read_csv(&quot;data/routine_data_clean.csv&quot;)
+
+ggplot(data = dat1, aes(x=test_u5, y=conf_u5, color= month)) +
+  geom_point()</code></pre>
+<p><img src="01_datamanagement_files/figure-html/task3_4_collapse_newvar-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Main file 
+dat1 &lt;- dat1 %&gt;% 
+  rowwise() %&gt;% 
+  mutate(total_tested = sum(test_u5, test_ov5, na.rm = TRUE),
+            total_conf = sum(conf_u5, conf_ov5, na.rm = TRUE ))
+
+# Quick plots 
+boxplot(dat1$total_conf ~ dat1$adm1)</code></pre>
+<p><img src="01_datamanagement_files/figure-html/task3_4_collapse_newvar-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Aggregate at adm 1 and save the output file
+dat_adm1 &lt;- dat1 %&gt;% 
+  group_by(adm1) %&gt;% 
+  summarise(total_tested = sum(test_u5, test_ov5, na.rm = TRUE),
+            total_conf = sum(conf_u5, conf_ov5, na.rm = TRUE ))
+
+write_csv(dat_adm1, &quot;data/aggreg_adm1.csv&quot;)
+
+# Aggregate at adm 2 and save the output file
+dat_adm2 &lt;- dat1 %&gt;% 
+  group_by(adm2) %&gt;% 
+  summarise(total_tested = sum(test_u5, test_ov5, na.rm = TRUE),
+            total_conf = sum(conf_u5, conf_ov5, na.rm = TRUE ))
+
+write_csv(dat_adm2, &quot;data/aggreg_adm2.csv&quot;)
+
+# Aggregate monhtly and save the output file
+dat_months &lt;- dat1 %&gt;% 
+  group_by(month) %&gt;% 
+  summarise(total_tested = sum(test_u5, test_ov5, na.rm = TRUE),
+            total_conf = sum(conf_u5, conf_ov5, na.rm = TRUE ))
+
+write_csv(dat_months, &quot;data/aggreg_monthly.csv&quot;)</code></pre>
+</details>
+</blockquote>
+<p>The summarized/aggregated files now can be used to create needed
+Summary Table</p>
+<p><strong>Table 1: Total Confirmed Cases at Admin1</strong></p>
+<details>
+<summary>
+<p>Solution to Making a Summary Table for a selected Indicator using R
+scripts</p>
+</summary>
+<table>
+<thead>
+<tr class="header">
+<th align="left">adm1</th>
+<th align="right">total_conf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Central</td>
+<td align="right">70308</td>
+</tr>
+<tr class="even">
+<td align="left">East</td>
+<td align="right">63603</td>
+</tr>
+<tr class="odd">
+<td align="left">North Coast</td>
+<td align="right">59373</td>
+</tr>
+<tr class="even">
+<td align="left">Plains</td>
+<td align="right">31081</td>
+</tr>
+<tr class="odd">
+<td align="left">West</td>
+<td align="right">67543</td>
+</tr>
+</tbody>
+</table>
+</details>
+</div>
+<div id="merging-files" class="section level2">
+<h2>Merging files</h2>
+<p>The file <em>population.csv</em> includes adm2 population statistics
+for Under5s(u5s), adults(ov5) and the all ages(total) for the year 2018.
+The columns in this file include <em>adm1</em>, <em>adm2</em>,
+<em>pop_u5</em>, <em>pop_ov5</em> and <em>pop_total</em>. So ideally, we
+need to have the <em>pop_</em> columns aligned with the right
+administration units in the file with the surveillance data.</p>
+<p>We would like to merge this population statistics to our main cleaned
+dataset <em>routine_data_clean.csv</em> or the aggregate dataset
+<em>aggreg_adm2.csv</em> for further manipulation e.g., calculating
+crude incidence rates.</p>
+<p>To do that in a MSExcel we can use functions such as VLOOKUP, INDEX
+&amp; MATCH or apply Power query.</p>
+<p>Depending on where the <em>population.csv</em> file is saved, the
+Syntax generated has to ensure it reads the correct file path or
+sheet.</p>
+<p>Let’s do this task with the cleaned file
+<code>routine_data_clean.csv</code>.</p>
+<blockquote>
+<h3 id="task-5-group---15-minutes" class="challenge">Task 5 (Group - 15
+minutes)</h3>
+<p>Team: Same groups of 4 people.</p>
+<p>Activity: Using the files/sheets <code>routine_data_clean.csv</code>
+and<code>population.csv</code>: - merge the two files to have the
+population statistics in the same file as the incidence data</p>
+<details>
+<summary>
+<p>Solution to Task 5 using R scripts</p>
+</summary>
+<p>Details of how you build these scripts will be taught in next
+sessions of this course.</p>
+</details>
+<p><strong>Tasks 5: Compiled steps using MSExcel</strong></p>
+<p><img src="images/01_datamanagement/Task5_Commonpractices_datamanagement.png" width="100%" style="display: block; margin: auto;" /></p>
+</blockquote>
+</div>
+<div id="visualization---assessing-temporalmonthly-trends"
+class="section level2">
+<h2>Visualization - assessing temporal/monthly trends</h2>
+<p>To be able to assess the monthly or temporal trend of an indicator, a
+subset/summarised table need to be prepared.</p>
+<p>This process in Spreadsheet will include combining multiple steps
+such as Pivot table by month, save the table in a separate file/sheet,
+making the plot (based on the available options) then see how the months
+will be ordered to a proper calendar order and not alphabetically.</p>
+<p>In cases where Pivot table seems to be less convenient, another
+software could be used to summarise the data, then move it back to
+MSExcel for plotting.</p>
+<p>There had been instances where the Summary tables are produced
+manually.</p>
+<p>In case several summarizations/visuals are needed, the task has to be
+done repeatedly.</p>
+<details>
+<summary>
+<p>Plotting monthly trend for selected indicator using R scripts</p>
+</summary>
+</details>
+<p><br></p>
+</div>
+<div id="visualization---assessing-spatial-patterns"
+class="section level2">
+<h2>Visualization - assessing spatial patterns</h2>
+<p>Similarly, if one needs to assess the pattern of selected indicators
+by <em>adm1</em> or <em>adm2</em> of <em>age group</em>, a subset of a
+summarised data needs to be prepared, then plotted.</p>
+<ul>
+<li><p>Some spreadsheet (most updated versions) can be used to generate
+simple maps showing spatial distribution of your indicators. However,
+that requires preparing the data to an exact format needed for the plot
+- hence one has to go through the Pivoting process or other means of
+aggregating the data e.g., at adm1 or adm2 level then generate the
+maps.</p></li>
+<li><p>Tasks take longer if spatial patterns have to be assessed for
+multiple dimensions e.g., age groups (u5/ov5), annually,
+monthly.</p></li>
+<li><p>Tasks may be impossible if spatial patterns need to be assessed
+at finer resolutions. Processing of shapefiles and polygons is not
+entirely incorporated in Spreadsheets. Other mapping software such as
+ArcGIS or QGIS may be useful.</p></li>
+</ul>
+<blockquote>
+<h3 id="task-6-group---15-minutes" class="challenge">Task 6 (Group - 15
+minutes)</h3>
+<p>Team: Same groups of 4 people.</p>
+<p>Activity:Using the files <code>dat_adm1.csv</code> and
+<code>dat_adm2.csv</code>:</p>
+<ul>
+<li>Using MSExcel, make a barplot of the <em>total_tested</em> and
+<em>total_conf</em> for adm1 and adm2 in a descending &gt;order
+<em>total_tested</em> .</li>
+<li>Customize the plot for the colour, format, labels, etc as you
+wish</li>
+<li>Save the chart/figure in a image format of your choice to allow it
+to be used in a report.</li>
+</ul>
+<details>
+<summary>
+<p>Solution to Task 6 using R scripts</p>
+</summary>
+<pre class="r"><code># Read the adm2 aggregaed data 
+dat_adm2 &lt;- read_csv(&quot;data/aggreg_adm2.csv&quot;)
+
+# bar plots with change of data format from wide to long
+# with selection of color palettes 
+dat_adm2 %&gt;% 
+   tidyr::pivot_longer(
+    cols = total_tested:total_conf,
+    names_to =  &quot;group&quot;,
+    values_to = &quot;counts&quot;
+    ) %&gt;% 
+   mutate(group2 = factor(group, levels = c(&#39;total_tested&#39;, &#39;total_conf&#39;))) %&gt;% 
+ggplot(aes(x=reorder(adm2, -counts), y=counts, fill= group2)) +
+  geom_bar(stat=&quot;identity&quot;, position=position_dodge()) + 
+  # scale_fill_brewer(palette=&quot;Reds&quot;) +
+   scale_fill_manual(values=c(&#39;black&#39;,&#39;gray60&#39;)) +
+  labs(fill = &quot;Indicator&quot;, x= &quot;Adm2&quot;) +
+   #scale_fill_manual(values = c(&#39;darkgrey&#39;, &#39;firebrick&#39;)) +
+    theme_bw() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) </code></pre>
+<p><img src="01_datamanagement_files/figure-html/task6_barplots-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  ggsave(&quot;outputs/tested+confirmed.adm2.png&quot;)</code></pre>
+</details>
+</blockquote>
+<p>An extra step</p>
+<details>
+<summary>
+<p>Making overall and monthly maps of incidence rates using R
+scripts</p>
+</summary>
+<pre class="r"><code># Reading the Fakeland shapefile + join with the incidence_dm2_popn data
+fak.shp &lt;- st_read(&quot;shapefiles/FAK_HDs.shp&quot;, quiet = T) %&gt;%
+  left_join(dat_adm2_popn,by =c(&quot;adm2&quot;)) 
+
+ggplot(fak.shp) + 
+  geom_sf(aes(fill = crude_inc_total), color = &quot;transparent&quot;) + 
+  #scale_fill_viridis_c(&quot;Cases per 1000 PYO&quot;, trans = &quot;sqrt&quot;) + 
+   scale_fill_viridis_c(option = &quot;B&quot;, trans = &quot;pseudo_log&quot;, breaks = c(100,1000,510000, 50000)) +
+  labs(title = &quot;Raw incidence 2018 at Admin2 level&quot;, subtitle = &quot;All age&quot;) + 
+  theme_void() + 
+  theme(legend.position = &quot;bottom&quot;, legend.key.width = unit(1.5, &quot;cm&quot;))</code></pre>
+<p><img src="01_datamanagement_files/figure-html/spatial_pattern-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fak.shp_m &lt;- st_read(&quot;shapefiles/FAK_HDs.shp&quot;, quiet = T) %&gt;%
+  left_join(dat1,by =c(&quot;adm2&quot;)) %&gt;% 
+    left_join(popn,by =c(&quot;adm2&quot;)) %&gt;% 
+    mutate(month = factor(month, levels = month.abb),
+      total_tested = sum(test_u5, test_ov5, na.rm = TRUE),
+            total_conf = sum(conf_u5, conf_ov5, na.rm = TRUE ),
+           crude_inc_total = (total_conf/pop_total)* 12 *1000) 
+
+
+ggplot(fak.shp_m) + 
+  geom_sf(aes(fill = crude_inc_total), color = &quot;transparent&quot;) + 
+  #scale_fill_viridis_c(&quot;Cases per 1000 PYO&quot;, trans = &quot;sqrt&quot;) + 
+   scale_fill_viridis_c(option = &quot;B&quot;, trans = &quot;pseudo_log&quot;, breaks = c(100,1000,510000, 50000)) +
+  labs(title = &quot;Raw incidence 2018 at Admin2 level&quot;, subtitle = &quot;All age&quot;) + 
+  theme_void() + 
+  theme(legend.position = &quot;bottom&quot;, legend.key.width = unit(1.5, &quot;cm&quot;))+
+  facet_wrap(~month)</code></pre>
+<p><img src="01_datamanagement_files/figure-html/spatial_pattern-2.png" width="672" style="display: block; margin: auto;" /></p>
+</details>
+<p><em>Class plenary discussion</em></p>
+<p>Some guiding questions:</p>
+<ul>
+<li>Lessons, experiences, challenges</li>
+<li>What task was easy to do? Why?</li>
+<li>What task was the most difficult to do? Why?</li>
+<li>What task do you think has/had a high chance of making
+mistakes?</li>
+</ul>
+<p>Which of the methods would you prefer using when presenting your data
+e.g., in a report</p>
+<ul>
+<li>Tables only? Why?</li>
+<li>Figures only? Why?</li>
+<li>Both Tables and Figures? Why?</li>
+</ul>
+</div>
+</div>
+<div id="summary-microsoft-excel-for-data-management"
+class="section level1">
+<h1>Summary: Microsoft Excel for Data management</h1>
+<p>A. What is GOOD about it?</p>
+<ul>
+<li>Ease of learning and use – small datasets, few indicators</li>
+<li>Friendly user interface and Graphic user interface
+<ul>
+<li>point and click</li>
+<li>all-in-one - compact - data entry, summarize, visualize,
+analyse</li>
+</ul></li>
+<li>Comes with a number of beautiful functionalities incl. addons -
+sort, remove duplicates, edit, filter, do math, collapsing, freeze
+panes, work with dates (with tears if you dont know how to work around
+these), changes across worksheets, add notes/comments,</li>
+<li>Great for a quick fix for small datasets</li>
+<li>Requires minimal analytic and programming skills</li>
+<li>Supports community, online lessons (LinkedIn)</li>
+</ul>
+<p>B. What may NOT be GOOD about it?</p>
+<ul>
+<li>You have some limitations when you need to go advanced! incl. data
+dimensions</li>
+<li>Control of the manipulation is in the User hands - each task is
+manually done hence may take longer</li>
+<li>Hard to document and keep track of all the steps made - lack of
+reproducibility</li>
+<li>Data manipulation processes exploded or not feasible when the data
+is large; multiple workbooks, indicators, levels, etc</li>
+<li>The software is not free and not open source</li>
+</ul>
+</div>
+<div id="resources" class="section level1">
+<h1>Resources:</h1>
+<p>Several online tutorials available online to teach you advanced
+concepts to use spreadsheets.</p>
+<p><strong>Data carpentry</strong></p>
+<p>[<a
+href="https://datacarpentry.org/spreadsheet-ecology-lesson/00-intro/index.html"
+class="uri">https://datacarpentry.org/spreadsheet-ecology-lesson/00-intro/index.html</a>]
+- a free module on how to manage data using spreadsheets.</p>
+<p><strong>LinkedIn</strong></p>
+<p>[<a
+href="https://www.linkedin.com/learning/advanced-and-specialized-statistics-with-stata"
+class="uri">https://www.linkedin.com/learning/advanced-and-specialized-statistics-with-stata</a>]</p>
+<p><strong>Note</strong> - If you feel comfortable working with
+Spreadsheets that is completely fine - If it annoys you that is also
+fine - challenge yourself and learn something NEW!</p>
+<p><strong>Alternative software and tools for managing data</strong></p>
+<p>The Figure below presented selected software recorded to be commonly
+used to manipulate, analyse, visualize, explore data</p>
+<p><img src="images/01_datamanagement/Popular_software_datamanagement.PNG" width="80%" style="display: block; margin: auto;" /></p>
+<p>Analyze/visualize</p>
+<ul>
+<li>R/RStudio (Free/Opensource)</li>
+<li>Python (Free/Opensource)</li>
+<li>Stata (Licensed)</li>
+</ul>
+<p>Map making</p>
+<ul>
+<li>Quantum GIS, aka QGIS (Opensource)</li>
+<li>Arc GIS (Licensed)</li>
+</ul>
+<p>R/RStudio and QGIS will be taught in detail from Module 2 of the
+course.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<ul>
+<li>Generation of best information, knowledge and evidence from the data
+(small or big) starts from how well it was managed (collected,
+summarized/analyzed, presented).</li>
+<li>Several tools exist. Always! Choose a tool that you are most
+comfortable to work with; less prone to making errors in the process,
+and right for the task at hand;</li>
+<li>Best tool should allow you, or someone else to replicate the tasks
+(if needed) and reproduce the outputs without too much hustle;</li>
+<li>Think of your audience when generating outputs from your data -
+literacy, time, and purpose - should be easily communicated, easy to
+interpret to generate the needed knowledge</li>
+<li>Keep data ethics</li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

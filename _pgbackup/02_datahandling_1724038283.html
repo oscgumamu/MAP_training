@@ -85,26 +85,18 @@ $(document).ready(function () {
                     <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
                         <div class="container">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Before we get Started</a>
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button><a class="navbar-brand" href="index.html">Before we get Started</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    <li><a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
                                     </li>
-                                    <li>
-                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    <li><a href="04_spatial_in_R.html">Spatial Data in R</a>
                                     </li>
-                                    <li>
-                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
+                                    <li><a href="03_QGIS.html">Spatial Data in QGIS</a>
                                     </li>
-                                    <li>
-                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    <li><a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
                                     </li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
@@ -430,16 +422,7 @@ benefits.</p>
                             <p>There are various options we can use when importing data, such as
 whether to include headers, what character to use for decimal points,
 what to import as missing values. To explore these options you can look
-at the help pages e.g.&nbsp;<code>?read_csv</code>.</p>
-                            <section>
-                                <br>You can also use the interactive &quot;Import dataset...&quot; option above your Environment:&nbsp;&nbsp;<span style="font-size: 1.1em;">
-
-                            <p></p>
-                            <p></p>
-                            <p><img src="images/02_datahandling/Import_R.png"><section><br>Where with the &quot;readr&quot; package you can review your dataframe and specify which column contains which data type:<br>
-                                    <br>
-                                    <img src="images/02_datahandling/Import_R2.png">
-                                </section></p>
+at the help pages e.g. <code>?read_csv</code>.</p>
                             <p><br></p>
                         </div>
                         <div id="data-frames" class="section level3">
@@ -510,7 +493,7 @@ and “method” are character strings, whilst “year”, “tested” and
 ##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
                             <p>As we did with the vector, we can extract parts of the data frame
 using indices. For a data frame we can select the nth row, or the nth
-column using <b>square brackets</b> (note where the comma is paced).</p>
+column using square brackets (note where the comma is paced).</p>
                             <pre class="r"><code>routine_data[,1]  # First column</code></pre>
                             <pre><code>## # A tibble: 1,200 × 1
 ##    adm1 
@@ -535,7 +518,7 @@ column using <b>square brackets</b> (note where the comma is paced).</p>
 ## #   test_mic_ov5 &lt;dbl&gt;, conf_ov5 &lt;dbl&gt;, conf_rdt_ov5 &lt;dbl&gt;, conf_mic_ov5 &lt;dbl&gt;,
 ## #   and abbreviated variable names ¹​test_rdt_u5, ²​test_mic_u5, ³​conf_rdt_u5,
 ## #   ⁴​conf_mic_u5</code></pre>
-                            <p>To access variables of the data frame in base R we can use the<b><code>$</code> operator</b> in the format of<code>dataframe$variable</code>. We can now look at some of the
+                            <p>To access variables of the data frame in base R we can use the<code>$</code> operator in the format of<code>dataframe$variable</code>. We can now look at some of the
 variables within our data frame. <code>summary()</code> will provide a
 summary of the numerical variable, whilst <code>table()</code> will
 tabulate categorical variables.</p>
@@ -1169,7 +1152,7 @@ manipulation. We will be using the “clean_routine_data” dataset we just
 created.</p>
                         <p><br></p>
                         <div id="reshshaping-data" class="section level3">
-                            <h3>Reshaping data</h3>
+                            <h3>Reshshaping data</h3>
                             <p>Reshaping or pivoting data is an important part of data cleaning and
 manipulation. Tidyverse has introduced the functions<code>pivot_wider()</code> and <code>pivot_longer()</code> to improve
 the ease of reshaping data in R.</p>
@@ -1236,14 +1219,18 @@ with the values you want to reshape.</p>
 multiple variables. There are the following options for joining two data
 frames, <code>x</code> and <code>y</code>:</p>
                             <ul>
-                                <li><code>inner_join()</code>: includes all rows that appear in both x
+                                <li>
+                                    <code>inner_join()</code>: includes all rows that appear in both x
                                     and y
                                 </li>
-                                <li><code>left_join()</code>: includes all rows in x
+                                <li>
+                                    <code>left_join()</code>: includes all rows in x
                                 </li>
-                                <li><code>right_join()</code>: includes all rows in y
+                                <li>
+                                    <code>right_join()</code>: includes all rows in y
                                 </li>
-                                <li><code>full_join()</code>: includes all rows in x or y
+                                <li>
+                                    <code>full_join()</code>: includes all rows in x or y
                                 </li>
                             </ul>
                             <p>To run the command you need to pass it the data frames you wish to
@@ -1404,10 +1391,12 @@ data visualisation using the <code>+</code> operator.</p>
                             <p>There are two main arguments to the <code>ggplot() function</code>,
 these are:</p>
                             <ul>
-                                <li><code>data</code>: the name of the data frame we are working
+                                <li>
+                                    <code>data</code>: the name of the data frame we are working
                                     with
                                 </li>
-                                <li><code>mapping</code>: the columns of the data frame we are plotting.
+                                <li>
+                                    <code>mapping</code>: the columns of the data frame we are plotting.
                                     This is created using the <code>aes()</code> command.
                                 </li>
                             </ul>

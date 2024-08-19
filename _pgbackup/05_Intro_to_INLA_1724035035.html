@@ -1,28 +1,52 @@
 <!DOCTYPE html>
+
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="generator" content="pandoc"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
-        <title>Introduction to INLA for geospatial modelling</title>
-        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
-        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link href="css/theme.css" rel="stylesheet" type="text/css">
-        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
-        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
-        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
-        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-        <script src="site_libs/navigation-1.1/tabsets.js"></script>
-        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
-        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
-        <style type="text/css">code { white-space: pre; }</style>
-        <script type="text/javascript">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction to INLA for geospatial modelling</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
   hljs.initHighlightingOnLoad();
@@ -31,10 +55,87 @@ if (window.hljs) {
   }
 }
 </script>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
-        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
-        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
-        <script type="text/javascript">
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -68,132 +169,269 @@ $(document).ready(function () {
   document.head.appendChild(style);
 });
 </script>
-        <!-- tabsets -->
-        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
-        <!-- code folding -->
-        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
-    </head>
-    <body>
-        <div class="container-fluid main-container">
-            <!-- setup 3col/9col grid for toc_float and main content  -->
-            <div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-3">
-                    <div id="TOC" class="tocify">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
 </div>
-                </div>
-                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
-                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Before we get Started</a>
-                            </div>
-                            <div id="navbar" class="navbar-collapse collapse">
-                                <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
-                                    </li>
-                                    <li>
-                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
-                                    </li>
-                                    <li>
-                                        <a href="03_QGIS.html">Spatial Data in QGIS</a>
-                                    </li>
-                                    <li>
-                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
-                                    </li>
-                                    <li>
-                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
-                                    </li>
-                                </ul>
-                                <ul class="nav navbar-nav navbar-right">
-</ul>
-                            </div>
-                            <!--/.nav-collapse -->
-                        </div>
-                        <!--/.container -->
-                    </div>
-                    <!--/.navbar -->
-                    <div id="header">
-                        <h1 class="title toc-ignore">Introduction to INLA for geospatial
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Before we get Started</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01_datamanagement.html">Data management</a>
+</li>
+<li>
+  <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+</li>
+<li>
+  <a href="03_QGIS.html">Spatial Data in QGIS</a>
+</li>
+<li>
+  <a href="04_spatial_in_R.html">Spatial Data in R</a>
+</li>
+<li>
+  <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to INLA for geospatial
 modelling</h1>
-                    </div>
-                    <p><img src="images/INLA.png" width="10%"/></p>
-                    <p>The following presentation is to accompany this tutorial can be found<a href="https://docs.google.com/presentation/d/1KRrZjiBx_UKETtN-EyEQxMWXAOUxlaMdTzqpPSPMxPc/edit#slide=id.g33fbbb4edf_0_14">HERE</a></p>
-                    <div id="overview" class="section level2">
-                        <h2>Overview</h2>
-                        <p>In this workshop we will be taking you through an example of how to
+
+</div>
+
+
+<p><img src="images/INLA.png" width="10%" /></p>
+<p>The following presentation is to accompany this tutorial can be found
+<a href= https://docs.google.com/presentation/d/1KRrZjiBx_UKETtN-EyEQxMWXAOUxlaMdTzqpPSPMxPc/edit#slide=id.g33fbbb4edf_0_14>HERE</a></p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>In this workshop we will be taking you through an example of how to
 use the SPDE model using the R-INLA package. We will analyse parasite
 prevalence data from Madagascar. The topics we will cover include:</p>
-                        <ul>
-                            <li>How to create a mesh for the continuously indexed spatial
-                                effects
-</li>
-                            <li>Implementing the SPDE model in R-INLA</li>
-                            <li>Conducting simple model selection and best fit model</li>
-                            <li>Spatial prediction using R-INLA within and outside the fitting
-                                function (“inla”)
-</li>
-                            <li>Model validation</li>
-                        </ul>
-                        <p>For a much more thorough description of R-INLA and the details
-underlying the SPDE models, please see<a href="https://www.jstatsoft.org/index.php/jss/article/view/v063i19/v63i19.pdf">Harvard
+<ul>
+<li>How to create a mesh for the continuously indexed spatial
+effects</li>
+<li>Implementing the SPDE model in R-INLA</li>
+<li>Conducting simple model selection and best fit model</li>
+<li>Spatial prediction using R-INLA within and outside the fitting
+function (“inla”)</li>
+<li>Model validation</li>
+</ul>
+<p>For a much more thorough description of R-INLA and the details
+underlying the SPDE models, please see
+<a href = https://www.jstatsoft.org/index.php/jss/article/view/v063i19/v63i19.pdf>Harvard
 &amp; Rue 2015</a></p>
-                        <div id="data" class="section level3">
-                            <h3>1. Data</h3>
-                            <p>All data for this session will be available on your USB in the<code>INLA</code> folder it should include:</p>
-                            <p><strong>Malaria prevalence data</strong>: Open-access malaria data
-hosted by the <a href="https://malariaatlas.org/pr-survey-data"/></a>Malaria
-Atlas Project. We are using Madagascar for this example. (Note: we
+<div id="data" class="section level3">
+<h3>1. Data</h3>
+<p>All data for this session will be available on your USB in the
+<code>INLA</code> folder it should include:</p>
+<p><strong>Malaria prevalence data</strong>: Open-access malaria data
+hosted by the <a href=https://malariaatlas.org/pr-survey-data/>Malaria
+Atlas Project</a>. We are using Madagascar for this example. (Note: we
 have pulled the latest MIS for Madagascar 2021)</p>
-                            <p><strong>Covariate data</strong>: a suite of satellite imagery
+<p><strong>Covariate data</strong>: a suite of satellite imagery
 provided by MAP has been cleaned and processed for this tutorial. The
-data is available upon<a href="https://malariaatlas.org/contact-us/">request from MAP</a> For
-data cleaning and the preparation work please run the R-Script<code>data_prep.R</code></p>
-                            <p>For this tutorial, you do not need to run the preparation work
-script. The cleaned version of the data is available in<code>input/MDG_clean.Rdata</code></p>
-                            <pre class="r"><code>#load it properly without showing these results
+data is available upon
+<a href="https://malariaatlas.org/contact-us/">request from MAP</a> For
+data cleaning and the preparation work please run the R-Script
+<code>data_prep.R</code></p>
+<p>For this tutorial, you do not need to run the preparation work
+script. The cleaned version of the data is available in
+<code>input/MDG_clean.Rdata</code></p>
+<pre class="r"><code>#load it properly without showing these results
 load(&#39;INLA/input/MDG_clean.Rdata&#39;)</code></pre>
-                            <pre class="r"><code>load(&#39;INLA/input/MDG_clean.Rdata&#39;)</code></pre>
-                        </div>
-                        <div id="model-description" class="section level3">
-                            <h3>2. Model Description</h3>
-                            <p>Let <span class="math inline">\(Y_i\)</span> be the number of people
+<pre class="r"><code>load(&#39;INLA/input/MDG_clean.Rdata&#39;)</code></pre>
+</div>
+<div id="model-description" class="section level3">
+<h3>2. Model Description</h3>
+<p>Let <span class="math inline">\(Y_i\)</span> be the number of people
 tested positive (e.g. for malaria) which can be modelled as a
 binomial.</p>
-                            <p><span class="math display">\[
+<p><span class="math display">\[
 Y_i \sim {\sf Binomial}(p(s_i), N_i)
 \]</span> where <span class="math inline">\(p(s_i)\)</span> is the
-probability of positive for location <span class="math inline">\(i\)</span> and <span class="math inline">\(N_i\)</span> is the number of examined. The linear
+probability of positive for location <span
+class="math inline">\(i\)</span> and <span
+class="math inline">\(N_i\)</span> is the number of examined. The linear
 predictor is expressed as linear combinations (thus, “linear”) of
 unknown parameters. The canonical link for the Binomial distribution is
 the logit function, which transforms probability [0,1] values into real
 values.</p>
-                            <p><span class="math display">\[
+<p><span class="math display">\[
 logit(p(s_i)) = \beta_0 + X(s)\beta + \psi(s_i)
 \]</span> where <span class="math inline">\(\beta_0\)</span> is the
 Intercept and <span class="math inline">\(\beta\)</span> is the
-covariate coefficient (slope). <span class="math inline">\(\psi(s_i)\)</span> is a gaussian field that can be
+covariate coefficient (slope). <span
+class="math inline">\(\psi(s_i)\)</span> is a gaussian field that can be
 approximated using a Gaussian Markov random field (GMRF) and can be
 represented as: <span class="math display">\[
 \psi(s_i)\sim N(0,\Sigma)
 \]</span> where <span class="math inline">\(\Sigma\)</span> is a
 covariance matrix is determined by a spatial correlation function. In
 this case we will be using the Matern function:</p>
-                            <p><span class="math display">\[
+<p><span class="math display">\[
 \frac{\sigma^2}{\Gamma(\lambda)2^{\lambda - 1}}(\kappa\parallel s_i -
 s_j\parallel)^\lambda K_\lambda(\kappa\parallel s_i - s_j\parallel)
-\]</span> In this Bayesian context, we set priors for all parameters<span class="math display">\[
+\]</span> In this Bayesian context, we set priors for all parameters
+<span class="math display">\[
 \theta \sim \pi(\theta)\]</span></p>
-                        </div>
-                        <div id="libraries-needed-and-installation" class="section level3">
-                            <h3>3. Libraries needed and Installation</h3>
-                            <p>for installation please use</p>
-                            <pre class="r"><code>packages &lt;- c(&quot;malariaAtlas&quot;, &quot;raster&quot;, &quot;sp&quot;, &quot;tidyverse&quot;,
+</div>
+<div id="libraries-needed-and-installation" class="section level3">
+<h3>3. Libraries needed and Installation</h3>
+<p>for installation please use</p>
+<pre class="r"><code>packages &lt;- c(&quot;malariaAtlas&quot;, &quot;raster&quot;, &quot;sp&quot;, &quot;tidyverse&quot;,
               &quot;lattice&quot;, &quot;gridExtra&quot;, &quot;devtools&quot;, &quot;rlang&quot;)
 if(length(setdiff(packages, rownames(installed.packages()))) &gt; 0) { 
   install.packages(setdiff(packages, rownames(installed.packages()))) }
@@ -202,21 +440,21 @@ if(length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
 if(length(setdiff(&quot;INLA&quot;, rownames(installed.packages()))) &gt; 0){
   install.packages(&quot;INLA&quot;, repos=c(getOption(&quot;repos&quot;), INLA=&quot;https://inla.r-inla-download.org/R/stable&quot;), dep=TRUE)
 }</code></pre>
-                            <p>for this workshop we have included in the scripts the packages that
+<p>for this workshop we have included in the scripts the packages that
 need to be loaded:</p>
-                            <pre class="r"><code>library(INLA)
+<pre class="r"><code>library(INLA)
 library(malariaAtlas)
 library(raster)
 library(sp)
 library(tidyverse)
 library(lattice)     
 library(gridExtra)</code></pre>
-                        </div>
-                        <div id="creating-the-spde-model" class="section level3">
-                            <h3>4. Creating the SPDE model</h3>
-                            <div id="the-mesh-construction" class="section level4">
-                                <h4>4.1 The Mesh Construction</h4>
-                                <p>Disclaimer: there is no rule to determine the right size and spatial
+</div>
+<div id="creating-the-spde-model" class="section level3">
+<h3>4. Creating the SPDE model</h3>
+<div id="the-mesh-construction" class="section level4">
+<h4>4.1 The Mesh Construction</h4>
+<p>Disclaimer: there is no rule to determine the right size and spatial
 extension of the mesh. It is up to the analyst to set the mesh
 parameters, which vary from case to case. Models based on mesh with a
 large number of vertices are more computationally demanding and may not
@@ -224,87 +462,89 @@ necessarily lead to better results than coarser mesh. Therefore, we
 recommend using a relatively coarse mesh during the preliminary phase of
 the analysis and use a finer grid only as final step, when the results
 of the analysis are satisfactory. To get more details on how to build a
-mesh, see Section 2.1. of<a href="https://www.stat.washington.edu/peter/591/Lindgren.pdf">Lindgren
+mesh, see Section 2.1. of
+<a href=https://www.stat.washington.edu/peter/591/Lindgren.pdf>Lindgren
 and Rue paper</a>:</p>
-                                <p>In order to create the mesh, we require the coordinated for the
+<p>In order to create the mesh, we require the coordinated for the
 observed data points. In our analysis we also created the outline of the
 island boundary, but this isn’t necessary.</p>
-                                <pre class="r"><code>coords = cbind(MDG_pr_data$longitude, MDG_pr_data$latitude)
+<pre class="r"><code>coords = cbind(MDG_pr_data$longitude, MDG_pr_data$latitude)
 bdry &lt;- inla.sp2segment(MDG_shp)
 bdry$loc &lt;- inla.mesh.map(bdry$loc)</code></pre>
-                                <p>Next we construct the mesh using <code>coords</code>. There are
+<p>Next we construct the mesh using <code>coords</code>. There are
 mutiple arguments that are required to build the mesh:</p>
-                                <p><code>max.edge</code> is the largest allowed triangle length; the
-lower the number the higher the resolution<code>max.edge = c(inside the boundary triangle, outside the boundary triangle)</code>.</p>
-                                <p><code>offset</code> is defining how far you want to extend your
+<p><code>max.edge</code> is the largest allowed triangle length; the
+lower the number the higher the resolution
+<code>max.edge = c(inside the boundary triangle, outside the boundary triangle)</code>.</p>
+<p><code>offset</code> is defining how far you want to extend your
 domain (i.e. a secondary boundary box) for inner boundary and outer
 boundary; the offset goes with the max edge it should be in the same
 geographical unit as the max.edge</p>
-                                <p><em>NOTE: including <code>boundary</code> argument makes the inner
+<p><em>NOTE: including <code>boundary</code> argument makes the inner
 boundary value redundant. You can try by removing the boundary at this
 point and you’ll see a different inner and outer edge. Secondly, without
 the boundary, the mesh will be constructed based on a convex hull
 surrounding the observed points (i.e. <code>coords</code>). There are
 alternatives if you don’t want a non-convex hull.</em></p>
-                                <p><code>cutoff</code> can be used to avoid building too many small
+<p><code>cutoff</code> can be used to avoid building too many small
 triangles around clustered data locations</p>
-                                <pre class="r"><code>mesh0 &lt;- inla.mesh.2d(loc = coords, boundary = bdry, max.edge=c(0.5))
+<pre class="r"><code>mesh0 &lt;- inla.mesh.2d(loc = coords, boundary = bdry, max.edge=c(0.5))
 mesh1 &lt;- inla.mesh.2d(loc = coords, boundary = bdry, max.edge=c(0.5, 1))
 mesh2 &lt;- inla.mesh.2d(loc = coords, boundary = bdry, max.edge=c(0.5, 1),
                       offset = c(0.5,1))
 mesh3 &lt;- inla.mesh.2d(loc = coords, boundary = bdry, max.edge=c(0.5,1), 
                       offset = c(0.5, 1),
                       cutoff = 0.3)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-7-1.png" width="1440"/></p>
-                                <p>At this point, I would encourage you to try play with different
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-7-1.png" width="1440" /></p>
+<p>At this point, I would encourage you to try play with different
 values for each argument and observe the differences between the
 generated meshes.</p>
-                                <p><em>the non-convex hull approach:</em> we might want to use a mesh
+<p><em>the non-convex hull approach:</em> we might want to use a mesh
 which is based on a non-convex hull to avoid adding many small triangles
 outside the domain of interest (more triangles = larger computation
 times), which can be done as follows:</p>
-                                <pre class="r"><code>non_convex_bdry &lt;- inla.nonconvex.hull(coords, -0.03, -0.05, resolution = c(100, 100))
+<pre class="r"><code>non_convex_bdry &lt;- inla.nonconvex.hull(coords, -0.03, -0.05, resolution = c(100, 100))
 mesh4 &lt;- inla.mesh.2d(boundary = non_convex_bdry, max.edge=c(0.5,1), 
                       offset = c(0.5, 1),
                       cutoff = 0.3)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-9-1.png" width="672"/></p>
-                                <p>The non-convex hull provides a mesh different from what we have seen
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The non-convex hull provides a mesh different from what we have seen
 previously. There are certain situations where it can be useful; for
 example when one wishes to model separate islands from the mainland. For
-more information we recommend reading<a href="https://www.maths.ed.ac.uk/~flindgre/2018/07/22/spatially-varying-mesh-quality/">F
+more information we recommend reading
+<a href="https://www.maths.ed.ac.uk/~flindgre/2018/07/22/spatially-varying-mesh-quality/">F
 Lindgren’s blog</a>.</p>
-                            </div>
-                            <div id="the-spde-and-a-matrix" class="section level4">
-                                <h4>4.2. The SPDE and A matrix</h4>
-                                <p>Spatial models can be thought of as multivariate Gaussian models; the
+</div>
+<div id="the-spde-and-a-matrix" class="section level4">
+<h4>4.2. The SPDE and A matrix</h4>
+<p>Spatial models can be thought of as multivariate Gaussian models; the
 correlation structure is determined by a spatial covariance function
 (modelled as a Matern covariance function), the full Gaussian field is
 approximated by a Gaussian Markov Random Field (GMRF). The GMRF
 approximation is computationally intense, which is efficiently performed
 in the R-INLA using the SPDE model. There are two components that are
 required to map the GMRF into the SPDE form.</p>
-                                <ol style="list-style-type: lower-alpha">
-                                    <li>the A matrix maps the Gaussian Markov Random Field (GMRF) from the
-                                        mesh nodes to the n observation location. This is represented by a
-                                        matrix with the number of observations as column and the number of nodes
-                                        as rows.
-</li>
-                                </ol>
-                                <pre class="r"><code>A&lt;-inla.spde.make.A(mesh=mesh3,loc=as.matrix(coords));dim(A)</code></pre>
-                                <pre><code>## [1] 647 572</code></pre>
-                                <p>Next, we create the spatial structure (SPDE object). The SPDE object
+<ol style="list-style-type: lower-alpha">
+<li>the A matrix maps the Gaussian Markov Random Field (GMRF) from the
+mesh nodes to the n observation location. This is represented by a
+matrix with the number of observations as column and the number of nodes
+as rows.</li>
+</ol>
+<pre class="r"><code>A&lt;-inla.spde.make.A(mesh=mesh3,loc=as.matrix(coords));dim(A)</code></pre>
+<pre><code>## [1] 647 572</code></pre>
+<p>Next, we create the spatial structure (SPDE object). The SPDE object
 is approximate at the mesh node. We use alpha=2 (fixed here, other
 values are not tested).</p>
-                                <pre class="r"><code>spde &lt;- inla.spde2.matern(mesh3, alpha=2)</code></pre>
-                                <p>Lastly, we create all the required indexes for the SPDE model
+<pre class="r"><code>spde &lt;- inla.spde2.matern(mesh3, alpha=2)</code></pre>
+<p>Lastly, we create all the required indexes for the SPDE model
 including naming the spatial field as “spatial.field”, which facilitates
 the extraction of the estimated values of the spatial field after the
 fitting process.</p>
-                                <pre class="r"><code>iset &lt;- inla.spde.make.index(name = &quot;spatial.field&quot;, spde$n.spde)</code></pre>
-                            </div>
-                            <div id="the-inla-stack" class="section level4">
-                                <h4>4.3. the INLA stack</h4>
-                                <p>Since the covariates already are evaluated at the observation
+<pre class="r"><code>iset &lt;- inla.spde.make.index(name = &quot;spatial.field&quot;, spde$n.spde)</code></pre>
+</div>
+<div id="the-inla-stack" class="section level4">
+<h4>4.3. the INLA stack</h4>
+<p>Since the covariates already are evaluated at the observation
 locations, we only want to apply the A matrix to the spatial effect and
 not the fixed effects. It is difficult to do this manually, but we can
 use the inla.stack function. Think of it as creating a list of items you
@@ -313,7 +553,7 @@ arguments are a vector list with the data (data), a list of projector
 matrices (each related to one block effect, A) and the list of effects
 (effects). Optionally, a label can be assigned to the data stack (using
 argument tag).</p>
-                                <pre class="r"><code>stk &lt;- inla.stack(data=list(y=MDG_pr_data$pf_pos, n=MDG_pr_data$examined), #the response
+<pre class="r"><code>stk &lt;- inla.stack(data=list(y=MDG_pr_data$pf_pos, n=MDG_pr_data$examined), #the response
                   
                   A=list(A,1),  #the A matrix; the 1 is included to make the list(covariates)
                   
@@ -330,11 +570,11 @@ argument tag).</p>
                   
                   #this is a quick name so you can call upon easily
                   tag=&#39;dat&#39;)</code></pre>
-                                <p>Alternatively we can use an approximation to the natural Binomial
+<p>Alternatively we can use an approximation to the natural Binomial
 likelihood using the <em>empirical logit</em>. This lets us use a
 Gaussian likelihood when model fitting, which can be computationally
 more tractable.</p>
-                                <pre class="r"><code>emplogit&lt;-function(y, n){
+<pre class="r"><code>emplogit&lt;-function(y, n){
   # approximation of a log odds
   # y: # of occurrences of interest
   # n: # of tries
@@ -363,83 +603,87 @@ stk_el &lt;- inla.stack(data=list(y=MDG_pr_data$elogit), #the response - now emp
                   
                   #this is a quick name so you can call upon easily
                   tag=&#39;dat-elogit&#39;)</code></pre>
-                                <p>Two projector matrices are needed <code>A = list(A,1)</code>: the
+<p>Two projector matrices are needed <code>A = list(A,1)</code>: the
 projector matrix for the latent field and a matrix that is a one-to-one
 map of the covariate. The latter matrix can simply be a constant rather
 than a diagonal matrix.</p>
-                            </div>
-                            <div id="model-fitting" class="section level4">
-                                <h4>4.4. Model Fitting</h4>
-                                <p>The first step before fitting the model is to express the linear
+</div>
+<div id="model-fitting" class="section level4">
+<h4>4.4. Model Fitting</h4>
+<p>The first step before fitting the model is to express the linear
 predictor (see Section 2). For the sake of simplicity, we use one
 covariate only (Elevation).</p>
-                                <p><span class="math display">\[
+<p><span class="math display">\[
 logit(p(s_i)) = \beta_0 + \beta_1Elevation + \psi(s_i)
 \]</span></p>
-                                <p>which translates to:</p>
-                                <pre class="r"><code>formula0&lt;-y ~ -1 + Intercept + Elevation + f(spatial.field, model=spde) </code></pre>
-                                <p>Note that to include the default ‘Intercept’ you can use +1. Some
+<p>which translates to:</p>
+<pre class="r"><code>formula0&lt;-y ~ -1 + Intercept + Elevation + f(spatial.field, model=spde) </code></pre>
+<p>Note that to include the default ‘Intercept’ you can use +1. Some
 people prefer not to do this so they use -1 to exclude it and modify the
 data stack to include an intercept value in the effects list (just like
 us).</p>
-                                <p>Once the formula is created we can fit the model</p>
-                                <pre class="r"><code>model0&lt;-inla(formula0, #the formula
+<p>Once the formula is created we can fit the model</p>
+<pre class="r"><code>model0&lt;-inla(formula0, #the formula
              data=inla.stack.data(stk,spde=spde),  #the data stack
              family= &#39;binomial&#39;,   #which family the data comes from
              Ntrials = n,      #this is specific to binomial as we need to tell it the number of examined
              control.predictor=list(A=inla.stack.A(stk),compute=TRUE),  #compute gives you the marginals of the linear predictor
              control.compute = list(dic = TRUE, waic = TRUE, config = TRUE), #model diagnostics and config = TRUE gives you the GMRF
              verbose = FALSE) #can include verbose=TRUE to see the log of the model runs</code></pre>
-                            </div>
-                            <div id="inla-results" class="section level4">
-                                <h4>4.5 INLA results</h4>
-                                <p>The results of the fitting process will be saved in your INLA object,
+</div>
+<div id="inla-results" class="section level4">
+<h4>4.5 INLA results</h4>
+<p>The results of the fitting process will be saved in your INLA object,
 here defined as <code>model0</code>. The object contains a lot of
 elements (51 elements). Here, we extract only the posterior distribution
 summaries of the parameters of interest: the fixed effects (intercept
 and Elevation) and hyper parameters (spatial field parameters).</p>
-                                <pre class="r"><code>model0$summary.fix</code></pre>
-                                <pre><code>##                 mean        sd 0.025quant   0.5quant 0.975quant mode
+<pre class="r"><code>model0$summary.fix</code></pre>
+<pre><code>##                 mean        sd 0.025quant   0.5quant 0.975quant mode
 ## Intercept -4.1915072 0.4760832 -5.2162946 -4.1616739 -3.3369464   NA
 ## Elevation -0.1034586 0.2370299 -0.5757992 -0.1010635  0.3553386   NA
 ##                    kld
 ## Intercept 5.986905e-07
 ## Elevation 8.357766e-07</code></pre>
-                                <pre class="r"><code>model0$summary.hyperpar</code></pre>
-                                <pre><code>##                               mean         sd 0.025quant  0.5quant 0.975quant
+<pre class="r"><code>model0$summary.hyperpar</code></pre>
+<pre><code>##                               mean         sd 0.025quant  0.5quant 0.975quant
 ## Theta1 for spatial.field -3.479609 0.09100057 -3.6566708 -3.480393  -3.298740
 ## Theta2 for spatial.field  1.173788 0.14425568  0.8780802  1.178970   1.444205
 ##                          mode
 ## Theta1 for spatial.field   NA
 ## Theta2 for spatial.field   NA</code></pre>
-                                <p>The hyperparameters <span class="math inline">\(\theta_1\)</span> is
-the <span class="math inline">\(log(\tau)\)</span> and <span class="math inline">\(\theta_2\)</span> is the <span class="math inline">\(log(\kappa)\)</span> from the SPDE framework.
+<p>The hyperparameters <span class="math inline">\(\theta_1\)</span> is
+the <span class="math inline">\(log(\tau)\)</span> and <span
+class="math inline">\(\theta_2\)</span> is the <span
+class="math inline">\(log(\kappa)\)</span> from the SPDE framework.
 Briefly, the SPDE that represents the GMRF is</p>
-                                <p><span class="math inline">\((\kappa^2 - \Delta)^{\alpha/2}(\tau
+<p><span class="math inline">\((\kappa^2 - \Delta)^{\alpha/2}(\tau
 \xi(s_i)) = W(s_i)\)</span>.</p>
-                                <p>Where <span class="math inline">\(\kappa\)</span> is the scale
+<p>Where <span class="math inline">\(\kappa\)</span> is the scale
 parameter and <span class="math inline">\(\tau\)</span> controls the
 variance, and <span class="math inline">\(W(s)\)</span> is the Gaussian
-Process. The posterior distribution of the hyperparameters <span class="math inline">\(\theta_1\)</span> and <span class="math inline">\(\theta_2\)</span> are difficult to interpret. We
+Process. The posterior distribution of the hyperparameters <span
+class="math inline">\(\theta_1\)</span> and <span
+class="math inline">\(\theta_2\)</span> are difficult to interpret. We
 can transform them into more interpretable quantities such as the range,
 and the variance. The range is of particular interest. It provides the
 distance value (in the unit of the point coordinates) above which
 spatial dependencies become negligible.:</p>
-                                <pre class="r"><code>model0.res&lt;-inla.spde2.result(model0, &#39;spatial.field&#39;, spde, do.transf=TRUE)
+<pre class="r"><code>model0.res&lt;-inla.spde2.result(model0, &#39;spatial.field&#39;, spde, do.transf=TRUE)
 model0.res$summary.log.range.nominal</code></pre>
-                                <pre><code>##                 ID       mean        sd 0.025quant   0.5quant 0.975quant mode
+<pre><code>##                 ID       mean        sd 0.025quant   0.5quant 0.975quant mode
 ## range.nominal.1  5 -0.1339356 0.1442505 -0.4042973 -0.1393148  0.1614458   NA
 ##                       kld
 ## range.nominal.1 0.1380252</code></pre>
-                                <pre class="r"><code>model0.res$summary.log.variance.nominal</code></pre>
-                                <pre><code>##                    ID     mean       sd 0.025quant 0.5quant 0.975quant mode
+<pre class="r"><code>model0.res$summary.log.variance.nominal</code></pre>
+<pre><code>##                    ID     mean       sd 0.025quant 0.5quant 0.975quant mode
 ## variance.nominal.1  4 2.053882 0.227369   1.615255 2.050362   2.508834   NA
 ##                           kld
 ## variance.nominal.1 0.03607786</code></pre>
-                                <p>the <code>do.tranf = TRUE</code> makes sure that marginals are
+<p>the <code>do.tranf = TRUE</code> makes sure that marginals are
 calculated in the same scale as the data.</p>
-                                <p>Now let’s fit a model using all covariates:</p>
-                                <pre class="r"><code>#refit for best model:
+<p>Now let’s fit a model using all covariates:</p>
+<pre class="r"><code>#refit for best model:
 formula&lt;-y ~ -1 + Intercept + f(spatial.field, model=spde) + Access_hf + Access + Elevation + EVI + LST_day + Rain
 
 model1&lt;-inla(formula, data=inla.stack.data(stk,spde=spde),family= &#39;binomial&#39;, 
@@ -447,12 +691,13 @@ model1&lt;-inla(formula, data=inla.stack.data(stk,spde=spde),family= &#39;binomi
              control.predictor=list(A=inla.stack.A(stk),compute=TRUE), 
              control.compute = list(dic = TRUE, waic = TRUE, config = TRUE), 
              verbose = FALSE) </code></pre>
-                                <p>At this point, try exploring <code>model1</code> using the code for<em>INLA results</em>. Is there anything new or interesting?</p>
-                                <p>Let’s look at the results of our analysis. The posterior (marginal)
+<p>At this point, try exploring <code>model1</code> using the code for
+<em>INLA results</em>. Is there anything new or interesting?</p>
+<p>Let’s look at the results of our analysis. The posterior (marginal)
 distribution of the fixed and hyper parameters will provide key insight
 into the effect of the covariates and the structure of the spatial
 field, respectively.</p>
-                                <pre class="r"><code>##observe the plots for fixed parameters
+<pre class="r"><code>##observe the plots for fixed parameters
 par(mfrow=c(2,4))
 plot(model1$marginals.fixed$Intercept, ty = &quot;l&quot;, xlab = expression(beta[0]), ylab = &quot;Density&quot;) 
 plot(model1$marginals.fixed$Access_hf, ty = &quot;l&quot;, xlab = expression(beta[Access_hf]), ylab = &quot;Density&quot;) 
@@ -461,45 +706,46 @@ plot(model1$marginals.fixed$Elevation, ty = &quot;l&quot;, xlab = expression(bet
 plot(model1$marginals.fixed$EVI, ty = &quot;l&quot;, xlab = expression(beta[EVI]), ylab = &quot;Density&quot;) 
 plot(model1$marginals.fixed$LST_day, ty = &quot;l&quot;, xlab = expression(beta[LST_day]), ylab = &quot;Density&quot;) 
 plot(model1$marginals.fixed$Rain, ty = &quot;l&quot;, xlab = expression(beta[Rain]), ylab = &quot;Density&quot;) </code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-21-1.png" width="672"/></p>
-                                <pre class="r"><code>#observe the plots for hyper parameters
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>#observe the plots for hyper parameters
 par(mfrow=c(1,3))
 plot(model1.res$marginals.var[[1]], ty = &quot;l&quot;, xlab = expression(sigma[randomfield]^2), ylab = &quot;Density&quot;) 
 plot(model1.res$marginals.kap[[1]], type = &quot;l&quot;, xlab = expression(kappa), ylab = &quot;Density&quot;)
 plot(model1.res$marginals.range[[1]], type = &quot;l&quot;, xlab = &quot;range nominal&quot;, ylab = &quot;Density&quot;)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-22-1.png" width="672"/></p>
-                                <p>Lastly, we could take a look at the spatial field to understand the
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Lastly, we could take a look at the spatial field to understand the
 spatial structure. It can inform on potential omitted variable - how
 much of the variance in the dependent variable is not explained by the
 covariates.</p>
-                                <pre class="r"><code>#looking at the spatial field and what it looks like
+<pre class="r"><code>#looking at the spatial field and what it looks like
 gproj &lt;- inla.mesh.projector(mesh3,  dims = c(300, 300))
 g.mean &lt;- inla.mesh.project(gproj, model1$summary.random$spatial.field$mean)
 g.sd &lt;- inla.mesh.project(gproj, model1$summary.random$spatial.field$sd)
 
 grid.arrange(levelplot(g.mean, scales=list(draw=F), xlab=&#39;&#39;, ylab=&#39;&#39;, main=&#39;mean&#39;,col.regions = heat.colors(16)),
              levelplot(g.sd, scal=list(draw=F), xla=&#39;&#39;, yla=&#39;&#39;, main=&#39;sd&#39; ,col.regions = heat.colors(16)), nrow=1)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-23-1.png" width="672"/></p>
-                            </div>
-                        </div>
-                        <div id="empirical-logit-version" class="section level3">
-                            <h3>4.5 Empirical logit version</h3>
-                            <p>Now let’s fit a model using all covariates and the Gaussian
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<div id="empirical-logit-version" class="section level3">
+<h3>4.5 Empirical logit version</h3>
+<p>Now let’s fit a model using all covariates and the Gaussian
 approximation:</p>
-                            <pre class="r"><code>#refit for best model:
+<pre class="r"><code>#refit for best model:
 formula&lt;-y ~ -1 + Intercept + f(spatial.field, model=spde) + Access_hf + Access + Elevation + EVI + LST_day + Rain
 
 model2&lt;-inla(formula, data=inla.stack.data(stk_el,spde=spde),family= &#39;gaussian&#39;, 
              control.predictor=list(A=inla.stack.A(stk),compute=TRUE), 
              control.compute = list(dic = TRUE, waic = TRUE, config = TRUE), 
              verbose = FALSE) </code></pre>
-                            <p>Let’s see what’s changed in the results by exploring<code>model2</code> using the code for <em>INLA results</em>. Is there
+<p>Let’s see what’s changed in the results by exploring
+<code>model2</code> using the code for <em>INLA results</em>. Is there
 anything new or interesting?</p>
-                            <p>Let’s look at the results of our analysis. The posterior (marginal)
+<p>Let’s look at the results of our analysis. The posterior (marginal)
 distribution of the fixed and hyper parameters will provide key insight
 into the effect of the covariates and the structure of the spatial
 field, respectively.</p>
-                            <pre class="r"><code>##observe the plots for fixed parameters
+<pre class="r"><code>##observe the plots for fixed parameters
 par(mfrow=c(2,4))
 plot(model2$marginals.fixed$Intercept, ty = &quot;l&quot;, xlab = expression(beta[0]), ylab = &quot;Density&quot;) 
 plot(model2$marginals.fixed$Access_hf, ty = &quot;l&quot;, xlab = expression(beta[Access_hf]), ylab = &quot;Density&quot;) 
@@ -508,34 +754,34 @@ plot(model2$marginals.fixed$Elevation, ty = &quot;l&quot;, xlab = expression(bet
 plot(model2$marginals.fixed$EVI, ty = &quot;l&quot;, xlab = expression(beta[EVI]), ylab = &quot;Density&quot;) 
 plot(model2$marginals.fixed$LST_day, ty = &quot;l&quot;, xlab = expression(beta[LST_day]), ylab = &quot;Density&quot;) 
 plot(model2$marginals.fixed$Rain, ty = &quot;l&quot;, xlab = expression(beta[Rain]), ylab = &quot;Density&quot;) </code></pre>
-                            <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-26-1.png" width="672"/></p>
-                            <pre class="r"><code>#observe the plots for hyper parameters
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>#observe the plots for hyper parameters
 par(mfrow=c(1,3))
 plot(model2.res$marginals.var[[1]], ty = &quot;l&quot;, xlab = expression(sigma[randomfield]^2), ylab = &quot;Density&quot;) 
 plot(model2.res$marginals.kap[[1]], type = &quot;l&quot;, xlab = expression(kappa), ylab = &quot;Density&quot;)
 plot(model2.res$marginals.range[[1]], type = &quot;l&quot;, xlab = &quot;range nominal&quot;, ylab = &quot;Density&quot;)</code></pre>
-                            <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-27-1.png" width="672"/></p>
-                            <p>And has the spatial field changed much?</p>
-                            <pre class="r"><code>#looking at the spatial field and what it looks like
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>And has the spatial field changed much?</p>
+<pre class="r"><code>#looking at the spatial field and what it looks like
 gproj &lt;- inla.mesh.projector(mesh3,  dims = c(300, 300))
 g.mean &lt;- inla.mesh.project(gproj, model2$summary.random$spatial.field$mean)
 g.sd &lt;- inla.mesh.project(gproj, model2$summary.random$spatial.field$sd)
 
 grid.arrange(levelplot(g.mean, scales=list(draw=F), xlab=&#39;&#39;, ylab=&#39;&#39;, main=&#39;mean&#39;,col.regions = heat.colors(16)),
              levelplot(g.sd, scal=list(draw=F), xla=&#39;&#39;, yla=&#39;&#39;, main=&#39;sd&#39; ,col.regions = heat.colors(16)), nrow=1)</code></pre>
-                            <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-28-1.png" width="672"/></p>
-                        </div>
-                        <div id="model-prediction" class="section level3">
-                            <h3>5. Model Prediction</h3>
-                            <p>Finally, we would like to calculate a prediction of the expected
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="model-prediction" class="section level3">
+<h3>5. Model Prediction</h3>
+<p>Finally, we would like to calculate a prediction of the expected
 malaria prevalence on a dense grid in Madagascar. There are two methods
 we would like to show you; a) predicting within the “inla” function to
 fit the model; b) outside the “inla” function to fit the model. Option
 a) has the advantage to make the code more compact; however, it may
 drastically increase the computational costs compared to option b).</p>
-                            <p>In order to do either, we first need to create the grid to do the
+<p>In order to do either, we first need to create the grid to do the
 prediction on.</p>
-                            <pre class="r"><code>reference.image &lt;- raster(&#39;INLA/covariates/Access.tif&#39;)
+<pre class="r"><code>reference.image &lt;- raster(&#39;INLA/covariates/Access.tif&#39;)
 in.country &lt;- which(!is.na(getValues(reference.image)))
 reference.coordinates &lt;- coordinates(reference.image)[in.country,]
 
@@ -543,7 +789,7 @@ reference.coordinates &lt;- coordinates(reference.image)[in.country,]
 pred.points &lt;- SpatialPoints(reference.coordinates, proj4string = crs(MDG_shp))
 covs &lt;- list.files(&#39;INLA/covariates/&#39;, pattern = &quot;.tif$&quot;,full.names = T)[1:3] %&gt;% stack()
 pred.covs &lt;- raster::extract(covs, pred.points, df=T)</code></pre>
-                            <pre class="r"><code>reference.image &lt;- raster(&#39;INLA/covariates/Access.tif&#39;)
+<pre class="r"><code>reference.image &lt;- raster(&#39;INLA/covariates/Access.tif&#39;)
 in.country &lt;- which(!is.na(getValues(reference.image)))
 reference.coordinates &lt;- coordinates(reference.image)[in.country,]
 
@@ -551,19 +797,20 @@ reference.coordinates &lt;- coordinates(reference.image)[in.country,]
 pred.points &lt;- SpatialPoints(reference.coordinates, proj4string = crs(MDG_shp))
 covs &lt;- list.files(&#39;INLA/covariates/&#39;, pattern = &quot;.tif$&quot;,full.names = T)[1:3] %&gt;% stack()
 pred.covs &lt;- raster::extract(covs, pred.points, df=T)</code></pre>
-                            <p>we will also need to remake the observation A matrix for the
+<p>we will also need to remake the observation A matrix for the
 prediction coordinates.</p>
-                            <pre class="r"><code>#remake the A matrix for prediction
+<pre class="r"><code>#remake the A matrix for prediction
 Aprediction &lt;- inla.spde.make.A(mesh = mesh3, loc = reference.coordinates)
 dim(Aprediction)</code></pre>
-                            <pre><code>## [1] 29350   572</code></pre>
-                            <div id="prediction-within-the-inla-fitting-function" class="section level4">
-                                <h4>5.1 Prediction within the “inla” fitting function</h4>
-                                <p>To predict within the “inla” fitting function, we will need to create
+<pre><code>## [1] 29350   572</code></pre>
+<div id="prediction-within-the-inla-fitting-function"
+class="section level4">
+<h4>5.1 Prediction within the “inla” fitting function</h4>
+<p>To predict within the “inla” fitting function, we will need to create
 an inla stack for prediction. Note that for the response in the
 prediction stack we will set it to <em>y=NA</em>. Lastly, we join the
 prediction and observed data stack together.</p>
-                                <pre class="r"><code>stk.pred &lt;- inla.stack(data=list(y=NA), 
+<pre class="r"><code>stk.pred &lt;- inla.stack(data=list(y=NA), 
                        A=list(Aprediction,1), 
                        effects=list(c(list(Intercept=1)
                                       ,iset),
@@ -577,49 +824,52 @@ prediction and observed data stack together.</p>
 #join the prediction stack with the one for the full data
 stk.full &lt;- inla.stack(stk, stk.pred)
 stk.full.el &lt;- inla.stack(stk_el, stk.pred)</code></pre>
-                                <p>Doing the joint estimation takes a while, and we therefore amend the
+<p>Doing the joint estimation takes a while, and we therefore amend the
 code to remove the computation of unnecessary objects and make the
-numerical approximation faster. For this purpose, we use<code>compute = FALSE</code> (not needed here since we make predictions
+numerical approximation faster. For this purpose, we use
+<code>compute = FALSE</code> (not needed here since we make predictions
 within the “inla” function). We also use a simplified integration
 strategy (actually only using the posterior mode of the
 hyper-parameters) through the command control.inla = list(int.strategy =
 “simplified.laplace”, huge = TRUE), and defining that the dataset is
-huge. we need to include <code>link=1</code> connects the unobserved<em>y=NA</em> to the family. Just remember if you run this code, it WILL
+huge. we need to include <code>link=1</code> connects the unobserved
+<em>y=NA</em> to the family. Just remember if you run this code, it WILL
 take a while (when I ran took 2814.261 seconds).</p>
-                                <p>Using the Gaussian approximation should be much faster…</p>
-                                <pre class="r"><code>p.res.pred&lt;-inla(formula, data=inla.stack.data(stk.full,spde=spde),
+<p>Using the Gaussian approximation should be much faster…</p>
+<pre class="r"><code>p.res.pred&lt;-inla(formula, data=inla.stack.data(stk.full,spde=spde),
                  family= &#39;binomial&#39;, quantiles = NULL,
                  Ntrials = n,
                  control.predictor=list(link = 1, A=inla.stack.A(stk.full),compute=FALSE),  #compute gives you the marginals of the linear predictor
                  control.compute = list(config = TRUE), #model diagnostics and config = TRUE gives you the GMRF
                  control.inla(strategy = &#39;simplified.laplace&#39;, int.strategy=&#39;eb&#39;, huge = TRUE),  #this is to make it run faster
                  verbose = FALSE) </code></pre>
-                                <pre class="r"><code>p.res.pred&lt;-inla(formula, data=inla.stack.data(stk.full.el,spde=spde),
+<pre class="r"><code>p.res.pred&lt;-inla(formula, data=inla.stack.data(stk.full.el,spde=spde),
                  family= &#39;gaussian&#39;, quantiles = NULL,
                  control.predictor=list(link = 1, A=inla.stack.A(stk.full),compute=FALSE),  #compute gives you the marginals of the linear predictor
                  control.compute = list(config = TRUE), #model diagnostics and config = TRUE gives you the GMRF
                  control.inla(strategy = &#39;gaussian&#39;, int.strategy=&#39;eb&#39;),  #this is to make it run faster
                  verbose = FALSE) </code></pre>
-                                <p>Finally, we extract the indices to the prediction nodes and then
+<p>Finally, we extract the indices to the prediction nodes and then
 extract the posterior mean of the response. Remember that the output is
 in logit form and needs to be transformed.</p>
-                                <pre class="r"><code>index.pred&lt;-inla.stack.index(stk.full, &quot;pred&quot;)$data
+<pre class="r"><code>index.pred&lt;-inla.stack.index(stk.full, &quot;pred&quot;)$data
 post.mean.pred.logit&lt;-p.res.pred$summary.linear.predictor[index.pred,&quot;mean&quot;]
 p.pred&lt;-exp(post.mean.pred.logit)/(1 + exp(post.mean.pred.logit))</code></pre>
-                                <p>We can visualise the posterior mean to see what it looks like:</p>
-                                <pre class="r"><code>x &lt;- as.matrix(reference.coordinates)
+<p>We can visualise the posterior mean to see what it looks like:</p>
+<pre class="r"><code>x &lt;- as.matrix(reference.coordinates)
 z &lt;- as.matrix(p.pred)
 pr.mdg.in&lt;-rasterize(x, reference.image, field=z, fun=&#39;last&#39;, background=NA)
 par(mfrow=c(1,1))
 plot(pr.mdg.in, main = &#39;Prediction using INLA&#39;)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/5.1.d-1.png" width="672"/></p>
-                            </div>
-                            <div id="prediction-outside-the-inla-fitting-function" class="section level4">
-                                <h4>5.2 Prediction outside the “inla” fitting function</h4>
-                                <p>A more optimised method for prediction would be to reconstruct the
+<p><img src="05_Intro_to_INLA_files/figure-html/5.1.d-1.png" width="672" /></p>
+</div>
+<div id="prediction-outside-the-inla-fitting-function"
+class="section level4">
+<h4>5.2 Prediction outside the “inla” fitting function</h4>
+<p>A more optimised method for prediction would be to reconstruct the
 algebra outside the “inla” fitting function and use the posterior means
 for the parameters from the model fit.</p>
-                                <pre class="r"><code>## using results from Model1
+<pre class="r"><code>## using results from Model1
 model = model1
 ## recall:: formula&lt;-y ~ -1 +Intercept + f(spatial.field, model=spde) + Access + Access_hf + Elevation 
 
@@ -644,20 +894,20 @@ pred &lt;- model$summary.fixed[&#39;Intercept&#39;, &#39;mean&#39;] +
 
 # write results in csv
 results &lt;- exp(pred)/(1+exp(pred))</code></pre>
-                                <p>and plot this</p>
-                                <pre class="r"><code># write results as a raster
+<p>and plot this</p>
+<pre class="r"><code># write results as a raster
 x &lt;- as.matrix(reference.coordinates)
 z &lt;- as.matrix(results)
 pr.mdg.out &lt;- rasterFromXYZ(cbind(x, z))
 
 plot(pr.mdg.out, main = &#39;Prediction outside INLA&#39;)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/5.2.b-1.png" width="672"/></p>
-                                <p>These maps look a bit different to the ones we made above, because
+<p><img src="05_Intro_to_INLA_files/figure-html/5.2.b-1.png" width="672" /></p>
+<p>These maps look a bit different to the ones we made above, because
 we’ve used Model 1 (which used a Binomial likelihood, but is too slow to
 predict inside INLA in this session!). We can repeat this exercise with
 Model 2 to check the outputs really are identical using the two
 different prediction methods.</p>
-                                <pre class="r"><code>## using results from Model2
+<pre class="r"><code>## using results from Model2
 model = model2
 ## recall:: formula&lt;-y ~ -1 +Intercept + f(spatial.field, model=spde) + Access + Access_hf + Elevation 
 
@@ -682,30 +932,31 @@ pred &lt;- model$summary.fixed[&#39;Intercept&#39;, &#39;mean&#39;] +
 
 # write results in csv
 results &lt;- exp(pred)/(1+exp(pred))</code></pre>
-                                <p>and plot this</p>
-                                <pre class="r"><code># write results as a raster
+<p>and plot this</p>
+<pre class="r"><code># write results as a raster
 x &lt;- as.matrix(reference.coordinates)
 z &lt;- as.matrix(results)
 pr.mdg.out &lt;- rasterFromXYZ(cbind(x, z))
 
 plot(pr.mdg.out, main = &#39;Prediction outside INLA&#39;)</code></pre>
-                                <p><img src="05_Intro_to_INLA_files/figure-html/5.2.b.el-1.png" width="672"/></p>
-                                <p>You will notice the maps look very similar which expected, as these
+<p><img src="05_Intro_to_INLA_files/figure-html/5.2.b.el-1.png" width="672" /></p>
+<p>You will notice the maps look very similar which expected, as these
 two ways of making predictions are identical.</p>
-                            </div>
-                        </div>
-                        <div id="model-validation" class="section level3">
-                            <h3>6. Model Validation</h3>
-                            <p>It is important to assess how does the model perform when we have new
+</div>
+</div>
+<div id="model-validation" class="section level3">
+<h3>6. Model Validation</h3>
+<p>It is important to assess how does the model perform when we have new
 data. There are various approaches to assess the predictive performance
 of models. Here, we focus on one cross-validation approach that can be
 performed with R-INLA. In this approach, we will split the data into a
 Training and Testing set. Then, we will make predictions as shown in
 Section 6.1.</p>
-                            <p>First let’s split the data and make the observations in the test set<code>NA</code> (We set the predicted values as <code>NA</code>. This
+<p>First let’s split the data and make the observations in the test set
+<code>NA</code> (We set the predicted values as <code>NA</code>. This
 might not sound intuitive but in R-INLA, this is an easy way to make
 predictions).</p>
-                            <pre class="r"><code>## 75% of the sample size
+<pre class="r"><code>## 75% of the sample size
 smp_size &lt;- floor(0.75 * nrow(MDG_pr_data))
 
 ## set the seed to make your partition reproducible
@@ -719,16 +970,16 @@ test$positive &lt;- test$pf_pos &lt;- NA  #make the y values for test NA
 #lastly, create the training and testing coordinates
 train_coords &lt;- coords[train_ind,]
 test_coords &lt;- coords[-train_ind,]</code></pre>
-                            <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-30-1.png" width="1440"/></p>
-                            <p>Next, we create the A matrix for training and testing data. Note: we
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-30-1.png" width="1440" /></p>
+<p>Next, we create the A matrix for training and testing data. Note: we
 are using the same mesh3 and spde that we have made in section 4.1 and
 4.2 respectively</p>
-                            <pre class="r"><code>Ae&lt;-inla.spde.make.A(mesh=mesh3,loc=as.matrix(train_coords));dim(Ae)</code></pre>
-                            <pre><code>## [1] 485 572</code></pre>
-                            <pre class="r"><code>Ap &lt;- inla.spde.make.A(mesh = mesh3, loc = test_coords);dim(Ap)</code></pre>
-                            <pre><code>## [1] 162 572</code></pre>
-                            <p>Build the stacks for prediction and estimates</p>
-                            <pre class="r"><code>stk.e &lt;- inla.stack(data=list(y=train$pf_pos, n=train$examined), 
+<pre class="r"><code>Ae&lt;-inla.spde.make.A(mesh=mesh3,loc=as.matrix(train_coords));dim(Ae)</code></pre>
+<pre><code>## [1] 485 572</code></pre>
+<pre class="r"><code>Ap &lt;- inla.spde.make.A(mesh = mesh3, loc = test_coords);dim(Ap)</code></pre>
+<pre><code>## [1] 162 572</code></pre>
+<p>Build the stacks for prediction and estimates</p>
+<pre class="r"><code>stk.e &lt;- inla.stack(data=list(y=train$pf_pos, n=train$examined), 
                     A=list(Ae,1),  
                     effects=list(c(list(Intercept=1)
                                       ,iset),
@@ -755,30 +1006,30 @@ stk.p &lt;- inla.stack(data=list(y=test$pf_pos, n=test$examined),
                     tag=&#39;pred&#39;)
 #put them together
 stk.full &lt;- inla.stack(stk.e, stk.p)</code></pre>
-                            <p>Then re-run the INLA fit for prediction within R-INLA</p>
-                            <pre class="r"><code>p.res&lt;-inla(formula, data=inla.stack.data(stk.full,spde=spde),family= &#39;binomial&#39;, 
+<p>Then re-run the INLA fit for prediction within R-INLA</p>
+<pre class="r"><code>p.res&lt;-inla(formula, data=inla.stack.data(stk.full,spde=spde),family= &#39;binomial&#39;, 
             Ntrials = n,
             control.predictor=list(link = 1, A=inla.stack.A(stk.full),compute=TRUE),  #compute gives you the marginals of the linear predictor
             control.compute = list(config = TRUE), #model diagnostics and config = TRUE gives you the GMRF
             verbose = FALSE) #can include verbose=TRUE to see the log</code></pre>
-                            <p>Lastly, we can get the results from the INLA model and compare the
+<p>Lastly, we can get the results from the INLA model and compare the
 prediction to the observation for the test set</p>
-                            <pre class="r"><code>#getting the predictions
+<pre class="r"><code>#getting the predictions
 index.pred &lt;- inla.stack.index(stk.full, &quot;pred&quot;)$data
 post.mean.logit &lt;- p.res$summary.linear.predictor[index.pred,&#39;mean&#39;] #the posterior is in logit form
 pred &lt;- exp(post.mean.logit)/(1 + exp(post.mean.logit))
 obs &lt;- test$pf_pr #this is the number pos/number examined</code></pre>
-                            <p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-35-1.png" width="672"/></p>
-                            <pre><code>## [1] 0.462323</code></pre>
-                            <p>The validation plot shows that the model fits pretty well. But it is
+<p><img src="05_Intro_to_INLA_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<pre><code>## [1] 0.462323</code></pre>
+<p>The validation plot shows that the model fits pretty well. But it is
 important to remember that this isn’t always the case. How would you
 improve this model?</p>
-                        </div>
-                        <div id="optional-extra" class="section level3">
-                            <h3>Optional Extra</h3>
-                            <div id="model-selection" class="section level4">
-                                <h4>Model Selection</h4>
-                                <p>There is a rich literature on variable selection in the field of
+</div>
+<div id="optional-extra" class="section level3">
+<h3>Optional Extra</h3>
+<div id="model-selection" class="section level4">
+<h4>Model Selection</h4>
+<p>There is a rich literature on variable selection in the field of
 statistics. A discussion of this topic would go beyond the scope of this
 tutorial. However, we show some ways to select variables using R-INLA
 built-in functions. Mainly we will be focus on metrics that we can
@@ -787,7 +1038,7 @@ function, one can extract several metrics helpful to select variables,
 including DIC, CPO/PIT, and WAIC. In the following example, we will
 focus on WAIC, but one can similarly extract DIC and CPO/PIT
 metrics.</p>
-                                <pre class="r"><code>###model selection with WAIC (other criteria can be used)
+<pre class="r"><code>###model selection with WAIC (other criteria can be used)
 for(i in 1:6){
   
   f1 &lt;- as.formula(paste0(&quot;y ~ -1 + Intercept + f(spatial.field, model=spde) + &quot;, paste0(colnames(covs_df)[1:i], collapse = &quot; + &quot;)))
@@ -803,40 +1054,44 @@ model_selection &lt;- if(i==1){rbind(c(model = paste(colnames(covs_df)[1:i]),wai
 }
 
 model_selection</code></pre>
-                                <p>Which model would you choose?</p>
-                            </div>
-                        </div>
-                        <div id="additional-information" class="section level3">
-                            <h3>Additional Information</h3>
-                            <p>If you’d like some hints, please see the paper from Su Kang:</p>
-                            <p><em>(Su Yun Kang, Katherine E. Battle, Harry S. Gibson, Arsène
+<p>Which model would you choose?</p>
+</div>
+</div>
+<div id="additional-information" class="section level3">
+<h3>Additional Information</h3>
+<p>If you’d like some hints, please see the paper from Su Kang:</p>
+<p><em>(Su Yun Kang, Katherine E. Battle, Harry S. Gibson, Arsène
 Ratsimbasoa, Milijaona Randrianarivelojosia, Stéphanie Ramboarina, Peter
 A. Zimmerman, Daniel J. Weiss, Ewan Cameron, Peter W. Gething &amp;
 Rosalind E. Howes (2018). Spatio-temporal mapping of Madagascar’s
 Malaria Indicator Survey results to assess Plasmodium falciparum
 endemicity trends between 2011 and 2016. BMC Medicine 16, Article
 number: 71)</em></p>
-                            <p>We hope you have enjoyed the tutorial and found it insightful. We are
+<p>We hope you have enjoyed the tutorial and found it insightful. We are
 always happy to improve our material and encourage users to reach out
 the MAP team.</p>
-                            <p>Some other useful resources to get more indepth with INLA are:</p>
-                            <ol style="list-style-type: decimal">
-                                <li>
-                                    <p>The R-INLA webpage : <a href="http://www.r-inla.org/" class="uri">http://www.r-inla.org/</a></p>
-                                </li>
-                                <li>
-                                    <p>Spatial and Spatio-temporal Bayesian Models with R-INLA: <a href="https://sites.google.com/a/r-inla.org/stbook/" class="uri">https://sites.google.com/a/r-inla.org/stbook/</a></p>
-                                </li>
-                                <li>
-                                    <p>Bayesian inference with INLA and R-INLA: <a href="https://becarioprecario.bitbucket.io/inla-gitbook/index.html" class="uri">https://becarioprecario.bitbucket.io/inla-gitbook/index.html</a></p>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
+<p>Some other useful resources to get more indepth with INLA are:</p>
+<ol style="list-style-type: decimal">
+<li><p>The R-INLA webpage : <a href="http://www.r-inla.org/"
+class="uri">http://www.r-inla.org/</a></p></li>
+<li><p>Spatial and Spatio-temporal Bayesian Models with R-INLA: <a
+href="https://sites.google.com/a/r-inla.org/stbook/"
+class="uri">https://sites.google.com/a/r-inla.org/stbook/</a></p></li>
+<li><p>Bayesian inference with INLA and R-INLA: <a
+href="https://becarioprecario.bitbucket.io/inla-gitbook/index.html"
+class="uri">https://becarioprecario.bitbucket.io/inla-gitbook/index.html</a></p></li>
+</ol>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
@@ -848,8 +1103,10 @@ $(document).ready(function () {
 
 
 </script>
-        <!-- tabsets -->
-        <script>
+
+<!-- tabsets -->
+
+<script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
@@ -860,8 +1117,10 @@ $(document).ready(function () {
   });
 });
 </script>
-        <!-- code folding -->
-        <script>
+
+<!-- code folding -->
+
+<script>
 $(document).ready(function ()  {
 
     // temporarily add toc-ignore selector to headers for the consistency with Pandoc
@@ -890,8 +1149,9 @@ $(document).ready(function ()  {
     var toc = $("#TOC").tocify(options).data("toc-tocify");
 });
 </script>
-        <!-- dynamically load mathjax for compatibility with self-contained -->
-        <script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -899,5 +1159,6 @@ $(document).ready(function ()  {
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
-    </body>
+
+</body>
 </html>

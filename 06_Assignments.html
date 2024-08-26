@@ -4,43 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignments</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="css/theme.css"> <!-- Link to your existing CSS file -->
+    <link rel="stylesheet" href="site_libs/bootstrap-3.3.5/css/yeti.min.css"> <!-- Existing Bootstrap CSS -->
+    <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script> <!-- Existing jQuery -->
+    <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script> <!-- Existing Bootstrap JS -->
+    <style>
+        /* Add padding to the top to avoid overlap with navbar */
+        .toc-content {
+            padding-top: 120px;
+        }
+    </style>
 </head>
 <body>
-    <div id="navbar"></div>
-    <script>
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar').innerHTML = data;
-            });
-    </script>
 
-    <h1>Assignments</h1>
-
-    <div class="assignment">
-        <h2 onclick="toggleContent('assignment1')">Assignment Title 1</h2>
-        <div id="assignment1" class="assignment-content" style="display: none;">
-            <p>This is the content of the first assignment...</p>
+    <!-- Navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Intro</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="01_datamanagement.html">Data management and data wrangling in Excel</a></li>
+                    <li><a href="02_datahandling.html">Data handling and Visualization in R</a></li>
+                    <li><a href="04_spatial_in_R.html">Spatial Data in R</a></li>
+                    <li><a href="03_QGIS.html">Spatial Data in QGIS</a></li>
+                    <li><a href="05_Intro_to_INLA.html">Introduction to R-INLA</a></li>
+                    <li class="active"><a href="06_Assignments.html">Assignments</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <div class="assignment">
-        <h2 onclick="toggleContent('assignment2')">Assignment Title 2</h2>
-        <div id="assignment2" class="assignment-content" style="display: none;">
-            <p>This is the content of the second assignment...</p>
-        </div>
-    </div>
+    <!-- Page Content -->
+    <div class="container-fluid main-container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                <div id="TOC" class="tocify"></div>
+            </div>
+            <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                <h1>Assignments</h1>
 
-    <script>
-        function toggleContent(assignmentId) {
-            var content = document.getElementById(assignmentId);
-            if (content.style.display === "none") {
-                content.style.display = "block";
-            } else {
-                content.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
+                <div class="assignment">
+                    <h2 onclick="toggleContent('assignment1')">Assignment Title 1</h

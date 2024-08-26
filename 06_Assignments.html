@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <div id="navbar"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+            });
+    </script>
+
+    <h1>Assignments</h1>
+
+    <div class="assignment">
+        <h2 onclick="toggleContent('assignment1')">Assignment Title 1</h2>
+        <div id="assignment1" class="assignment-content" style="display: none;">
+            <p>This is the content of the first assignment...</p>
+        </div>
+    </div>
+
+    <div class="assignment">
+        <h2 onclick="toggleContent('assignment2')">Assignment Title 2</h2>
+        <div id="assignment2" class="assignment-content" style="display: none;">
+            <p>This is the content of the second assignment...</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(assignmentId) {
+            var content = document.getElementById(assignmentId);
+            if (content.style.display === "none") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

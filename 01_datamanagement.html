@@ -137,19 +137,8 @@ summarizing and visualization. Discussing their pros and cons, then
 briefly introduce the benefits of using reproducible approaches when
 managing data. Details of these approaches and tools will be learnt in
 other Modules.</p>
-                            <p>The module contains hands-on practicals and class activities in order
-to put the theoretical knowledge into practice.</p>
                         </div>
                         <div id="time" class="section level2">
-                            <h2>Time</h2>
-                            <p>This section is expected to take a maximum of 2 hours split into
-three steps:</p>
-                            <ul>
-                                <li>Presentation of materials from facilitators/trainers -
-                                    interactive;
-</li>
-                                <li>Class activities with plenary discussions;</li>
-                                <li>Individual activities.</li>
                             </ul>
                             <p>Most activities for this module will be done during the session,
 however, as we are proceeding to other modules/sessions with more hands
@@ -391,6 +380,37 @@ effective surveillance system.</p>
 </li>
                         </ul>
                     </div>
+                    <!-- New section: Data Management Plans -->
+<div id="data-management-plans" class="section level2">
+    <h2>Data Management Plans</h2>
+    <p>Data Management Plans (DMPs) are essential documents that outline how data will be handled during and after a research project. A well-crafted DMP ensures that data is collected, organized, stored, and shared effectively, facilitating reproducibility and long-term accessibility.</p>
+    <div>
+        <p></p>
+        <p class="">
+            Key components of a Data Management Plan include:<br><br>
+            <b>1. Data Collection</b><br>
+            Why It Matters: Clearly defining what data will be collected, the formats used, and the methods for data collection ensures consistency and quality.<br>
+            Common Pitfall: Failing to document the specifics of data collection, leading to inconsistencies and difficulties in data integration.<br><br>
+            <b>2. Data Storage and Backup</b><br>
+            Why It Matters: Proper data storage and regular backups are critical to prevent data loss and ensure that data remains accessible throughout the project.<br>
+            Common Pitfall: Relying on a single storage location without adequate backup strategies, which increases the risk of data loss.<br><br>
+            <b>3. Data Documentation</b><br>
+            Why It Matters: Comprehensive documentation, including metadata and codebooks, ensures that data can be understood and used by others, including those who were not involved in the data collection.<br>
+            Common Pitfall: Inadequate or incomplete documentation, which makes it difficult for others to use the data effectively.<br><br>
+            <b>4. Data Sharing</b><br>
+            Why It Matters: Planning for data sharing, including selecting appropriate repositories and ensuring data is anonymized where necessary, enhances the impact of your research by making data available to other researchers.<br>
+            Common Pitfall: Neglecting to consider data sharing early in the project, which can lead to challenges in making data publicly available later on.<br><br>
+            <b>5. Ethical and Legal Considerations</b><br>
+            Why It Matters: Addressing ethical and legal considerations, such as participant consent and data privacy, is essential for compliance with regulations and maintaining the trust of research participants.<br>
+            Common Pitfall: Overlooking the ethical and legal aspects of data management, which can result in non-compliance with regulations and potential harm to participants.<br><br>
+            <b>6. Data Preservation</b><br>
+            Why It Matters: Planning for long-term data preservation ensures that data remains accessible and usable for future research and validation.<br>
+            Common Pitfall: Failing to plan for data preservation, leading to data becoming inaccessible or unusable over time.
+        </p>
+        <p> <img src="images/01_datamanagement/Data_Management_Plan.jpg" alt="Data Management Plan Example"></p>
+    </div>
+</div>
+
                     <!-- New section: What should good data look like -->
                     <div id="what-should-good-data-look-like" class="section level2">
                         <h2>What should good data look like<section></section></h2>A well-structured data frame is crucial for efficient data wrangling in R and other data analysis tools. Good data organization minimizes errors, simplifies analysis, and ensures that your data can be easily understood and manipulated by both humans and machines.&nbsp;
@@ -398,7 +418,7 @@ effective surveillance system.</p>
                             <p></p>
                             <p class="">Below are key aspects of what good data should look like and common pitfalls to avoid:<br><br><b>1. Consistent and Clear Column Names</b><br>Why It Matters: Column names should be descriptive, concise, and consistent. They should clearly indicate what data each column contains, using underscores or camelCase instead of spaces.<br>Common Mistake: Using spaces in column names, which can complicate scripting and automation in R. For example, use total_cases instead of Total Cases.<br><br><b>2. One Variable per Column</b><br>Why It Matters: Each column should represent only one variable. This structure allows for straightforward data manipulation and analysis. ~<br>Common Mistake: Storing multiple variables in a single column. For example, combining age and gender into one column instead of having separate age and gender columns.<br><br><b>3. One Observation per Row</b><br>Why It Matters: Each row in a data frame should represent one distinct observation. This makes it easier to aggregate, filter, and analyze data.<br>Common Mistake: Spreading observations across multiple rows or combining several observations into one row. For instance, recording results from multiple experiments or time points in a single row.<br><br><b>4. Avoiding Empty Cells and Inconsistent Data Entry</b><br>Why It Matters: Empty cells and inconsistent entries can lead to errors in data analysis and make it difficult to perform accurate calculations or data wrangling operations.
 Common Mistake: Leaving cells empty instead of using a consistent placeholder (like NA) for missing data, or entering different spellings or formats for the same category (e.g., Male, M, and male in a gender column).<br><br><b>5. No Merged Cells</b><br>Why It Matters: Merged cells can confuse data wrangling scripts and make it difficult to read data programmatically.<br>Common Mistake: Merging cells in Excel to create a visually appealing layout, which disrupts the underlying data structure.<br><br><b>6. Consistent Data Types<br></b>Why It Matters: Ensuring that each column contains data of a consistent type (e.g., all numeric, all text) allows R to perform operations without errors.<br>Common Mistake: Mixing data types within a single column, such as having numbers and text in the same column, which can lead to conversion errors or incorrect analyses.</p>
-                            <p> <img src="file:///C:/Users/junip/OneDrive%20-%20University%20of%20Southampton/Documents/GitHub/MAP_training/images/01_datamanagement/Labelling.jpg"></p>
+                            <p> <img src="images/01_datamanagement/Labelling.jpg" ></p>
                         </div>
                     </div>
                     <div id="data-manipulation-using-spreadsheets" class="section level1">
@@ -450,7 +470,7 @@ of 7 Admin 1 and 46 Admin2 units, and 100 health facilities.</p>
 - 5 mins)</h3>
                                 <p>Activity:</p>
                                 <ul>
-                                    <li>Open the file <code>routine_data.csv</code> - you may use MSExcel or
+                                    <li>Open the file <code >routine_data.csv</code> - you may use MSExcel or
                                         any other software you wish
                                     </li>
                                     <li>Explore the data, variables, values - missingness, outliers, typos,

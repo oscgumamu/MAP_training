@@ -76,3 +76,26 @@ blockquote p,ul,ol {
     border-left: 2px solid #007bff;
     margin-top: 5px;
 }
+
+.section-spacing {
+    margin-bottom: 30px; /* Space between sections */
+}
+
+h2, h3 {
+    margin-top: 30px;   /* Space above the heading */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.section-format {
+    margin: 20px 0; /* Vertical spacing for the sections */
+    padding: 15px;   /* Padding inside the sections */
+    font-size: 16px; /* Base font size (adjust as needed) */
+    line-height: 1.5; /* Line height for better readability */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.section-format h2, .section-format h3 {
+    margin-top: 15px;  /* Adjust this for spacing above headings */
+    margin-bottom: 10px; /* Adjust this for spacing below headings */
+    font-weight: bold; /* Ensures headings are bold */
+}

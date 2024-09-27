@@ -156,8 +156,7 @@ regional/country requests. Please get in touch with us at on our <a href="https:
                     <hr/>
                     <p><br></p>
                     <div id="download-the-data" class="section level2">
-                        <h2>Follow the steps below to set up before you begin!</h2>
-                        <p><strong>Download the data</strong></p>
+                        <h2>Download the data</h2>
                         <p>All data for this workshop can be found in
 a <a href="https://drive.google.com/drive/folders/16KTr5tKvE73GibDDWxWa1RuOAJRF7ZPS?usp=sharing">GoogleDrive</a>
 folder.</p>
@@ -180,26 +179,49 @@ health facilities in the country. Data from Community Health Workers
                         </div>
                     </div>
                     <div id="notes" class="section level2">
-                        <p><strong>Notes</strong></p>
-                        <p>We have set up a <a href="https://docs.google.com/document/d/149gRP2qhoIQiKRW_Z8JA1vWfhUKQBmu0Fn45m3XK2WI/edit">Googledoc</a>
+                        <p><strong>Notes during the workshops</strong></p>
+                        <p>We have set up a <a href="https://docs.google.com/document/d/1GsMrdz7OLGLBl1RF7ZRqJcH7vgUwfYL6R9CF3_I70Gg/edit?usp=sharing">Googledoc</a>
 where we will put all the R scripts and notes we make during the
 workshop</p>
                         <p><br></p>
                     </div>
-                    <div id="preparations" class="section level2">
-                        <h2>Preparations</h2>
-                        <p>This workshops is expected to be hands-on, and to follow this lessons
-participants must have R, RStudio and QGIS installed on their computers.
-You also need to be able to install a number of R packages, create
-directories and download files.</p>
+                    <div id="preparations" class="section level2 section-format">
+                        <h2>Installations</h2>
                         <p>To avoid troubleshooting during the lesson, participants should
 follow the instructions below to download and install everything
 beforehand. If you are using your own computers this should be no
 problem, but if the computer is managed by your organization’s IT
 department you might need help from an IT administrator.</p>
+
+<div id="software-overview" class="section level2 section-format" >
+    <h3>Overview of Software</h3>
+    <p>This workshop will require you to install several software programs that are essential for data analysis, programming, and project management. Below is a brief description of each software and its purpose:</p>
+    
+    <ul>
+        <li>
+            <strong>R</strong>: A powerful programming language and software environment specifically designed for statistical computing and data analysis. It offers a wide array of packages for data manipulation, statistical modeling, and visualization.
+        </li>
+        <li>
+            <strong>RStudio (now known as Posit)</strong>: An integrated development environment (IDE) for R that makes coding easier and more efficient. It provides a user-friendly interface for writing and executing R scripts, managing projects, and visualizing data.
+        </li>
+        <li>
+            <strong>QGIS</strong>: A free and open-source geographic information system (GIS) that enables users to create, edit, visualize, and analyze geospatial data. It is particularly useful for mapping and spatial data analysis.
+        </li>
+        <li>
+            <strong>Visual Studio Code (VS Code)</strong>: A lightweight yet powerful source code editor that supports numerous programming languages. It offers features like debugging, task running, and version control, making it ideal for coding projects.
+        </li>
+        <li>
+            <strong>GitHub</strong>: A platform for version control and collaboration that allows you to store and manage your code repositories. It facilitates collaboration on projects and keeps track of changes made to your code.
+        </li>
+    </ul>
+    
+    <p>Understanding the role of each software will help you utilize them effectively throughout the workshop. Make sure to follow the installation instructions carefully to ensure everything is set up correctly!</p>
+</div>
+
                         <p><br></p>
+                        
                         <div id="installing-qgis" class="section level3">
-                            <h2>Installing QGIS</h2>
+                            <h3>Installing QGIS</h3>
                             <p>Follow the <a href="https://qgis.org/download/">QGIS</a>
 download for the appropriate operating system to download on your
 computer.</p>
@@ -212,7 +234,7 @@ computer.</p>
                             <p><br></p>
                         </div>
                         <div id="install-r-and-rstudio" class="section level3">
-                            <h2>Install R and RStudio</h2>
+                            <h3>Install R and RStudio</h3>
                             <p>R and RStudio are two separate pieces of software:</p>
                             <ul>
                                 <li><strong>R</strong> is a programming language that is especially
@@ -296,7 +318,7 @@ download page</a>
                             </div>
                         </div>
                         <div id="update-r-and-rstudio" class="section level3">
-                            <h2>Update R and RStudio</h2>
+                            <h3>Update R and RStudio</h3>
                             <p>If you already have R and RStudio installed, first check if your R
 version is up to date:</p>
                             <ul>
@@ -328,7 +350,7 @@ automatically notify you of new versions every once in a while.</p>
                             <p><br></p>
                         </div>
                         <div id="install-required-r-packages" class="section level3">
-                            <h2>Install required R packages</h2>
+                            <h3>Install required R packages</h3>
                             <p>During the course we will need a number of R packages. Packages
 contain useful R code written by other people. We will use the packages<code>tidyverse</code>, <code>sf</code> and <code>terra</code> mainly
 for this workshop.</p>
@@ -379,25 +401,96 @@ see.</p>
                             <p><br></p>
                         </div>
                         <div id="updating-r-packages" class="section level3">
-                            <h2>Updating R packages</h2>
-                            <p>Generally, it is recommended to keep your R version and all packages
-up to date, because new versions bring improvements and important
-bugfixes. To update the packages that you have installed, click<code>Update</code> in the <code>Packages</code> tab in the bottom right
-panel of RStudio, or go to<code>Tools &gt; Check for Package Updates...</code>.</p>
-                            <p>Sometimes, package updates introduce changes that break your old
-code, which can be very frustrating. To avoid this problem, you can use
-a package called <code>renv</code>. It locks the package versions you
-have used for a given project and makes it straightforward to reinstall
-those exact package version in a new environment, for example after
-updating your R version or on another computer. However, the details are
-outside of the scope of this lesson.</p>
+                            <h3>Updating R Packages</h3>
+                            <p>Generally, it is recommended to keep your R version and all packages up to date, because new versions bring improvements and important bug fixes. To update the packages that you have installed, click <code>Update</code> in the <code>Packages</code> tab in the bottom right panel of RStudio, or go to <code>Tools &gt; Check for Package Updates...</code>.</p>
+                            <p>Sometimes, package updates introduce changes that break your old code, which can be very frustrating. To avoid this problem, you can use a package called <code>renv</code>. It locks the package versions you have used for a given project and makes it straightforward to reinstall those exact package versions in a new environment, for example, after updating your R version or on another computer. However, the details are outside the scope of this lesson.</p>
                         </div>
-                    </div>
-                    <section style="font-size: 22px;"><b>Now your computer is ready so let&apos;s start with Module 1!</b>
-                    </section>
-                </div>
-            </div>
-        </div>
+                        <div id="installing-vscode" class="section level3">
+                            <h3>Installing Visual Studio Code</h3>
+                            <p>Visual Studio Code (VS Code) is a powerful code editor that supports various programming languages and comes with numerous extensions to enhance your coding experience.</p>
+                            <p>To install VS Code, follow the instructions below for your operating system:</p>
+                            <div id="windows" class="section level4">
+                                <h4>Windows</h4>
+                                <ol style="list-style-type: decimal">
+                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                    <li>Download the installer for Windows.</li>
+                                    <li>Once the download is complete, double-click the installer file to start the installation process.</li>
+                                    <li>Follow the installation prompts, ensuring to select any additional components you wish to include.</li>
+                                    <li>After installation, launch VS Code from the Start Menu or desktop shortcut.</li>
+                                </ol>
+                            </div>
+                            <div id="mac" class="section level4">
+                                <h4>macOS</h4>
+                                <ol style="list-style-type: decimal">
+                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                    <li>Download the installer for macOS.</li>
+                                    <li>Open the downloaded .zip file and drag the Visual Studio Code app into your Applications folder.</li>
+                                    <li>Launch VS Code from your Applications folder or the Launchpad.</li>
+                                </ol>
+                            </div>
+                            <div id="linux" class="section level4">
+                                <h4>Linux</h4>
+                                <ol style="list-style-type: decimal">
+                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                    <li>Select the appropriate package for your Linux distribution (deb or rpm).</li>
+                                    <li>Install the downloaded package using your package manager. For example, use the following command for .deb files:</li>
+                                    <pre><code>sudo dpkg -i <file>.deb</code></pre>
+                                    <li>After installation, launch VS Code from your application menu.</li>
+                                </ol>
+                            </div>
+                            <p>Once installed, you can customize VS Code with various extensions and settings to suit your programming needs. </p>
+                        </div>
+                        
+                        <div id="setting-up-live-preview-and-github" class="section level3">
+                            <h3>Setting Up Live Preview and GitHub Integration</h3>
+                            <p>To enhance your coding experience in Visual Studio Code, you can install the "Live Preview" extension, which allows you to see your HTML files in action in real time. Additionally, connecting your GitHub account will enable you to manage your repositories directly from the editor.</p>
+                            
+                            <div id="installing-live-preview" class="section level4">
+                                <h4>Installing Live Preview</h4>
+                                <ol style="list-style-type: decimal">
+                                    <li>Open Visual Studio Code.</li>
+                                    <li>Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side or by pressing <code>Ctrl + Shift + X</code>.</li>
+                                    <li>In the search bar, type <strong>Live Preview</strong> and press <code>Enter</code>.</li>
+                                    <li>Locate the Live Preview extension by <strong>MS-CEINTL</strong> and click the <code>Install</code> button.</li>
+                                    <li>Once installed, open an HTML file and click the <code>Live Preview</code> button in the status bar at the bottom of the window to start previewing your work in real time.</li>
+                                </ol>
+                            </div>
+                            
+                            <div id="registering-on-github" class="section level4">
+                                <h4>Registering on GitHub</h4>
+                                <p>If you do not have a GitHub account, you can easily create one:</p>
+                                <ol style="list-style-type: decimal">
+                                    <li>Visit the <a href="https://github.com/">GitHub website</a>.</li>
+                                    <li>Click on <strong>Sign up</strong> in the top right corner.</li>
+                                    <li>Follow the prompts to enter your information and complete the registration process.</li>
+                                </ol>
+                            </div>
+                            
+                            <div id="logging-into-github-in-vscode" class="section level4">
+                                <h4>Logging into GitHub in VS Code</h4>
+                                <ol style="list-style-type: decimal">
+                                    <li>In Visual Studio Code, open the Command Palette by pressing <code>Ctrl + Shift + P</code>.</li>
+                                    <li>Type <strong>GitHub: Sign in</strong> and select it from the dropdown.</li>
+                                    <li>A browser window will open. Log in to your GitHub account if prompted.</li>
+                                    <li>After logging in, return to Visual Studio Code; you should now see a notification confirming that you are signed in to GitHub.</li>
+                                </ol>
+                            </div>
+                            
+                            <p>With Live Preview set up and your GitHub account connected, you are now ready to enhance your coding workflow and easily manage your projects!</p>
+                        </div>
+                        
+                        
+                        <section class="intro-text">
+                            <a href="#data-management" style="font-size: 24px; font-weight: bold; text-decoration: none; color: inherit;">
+                                You have made it through all the installations and registrations - congrats!!! 
+                                Let's get started with Module 1 and Happy Data Wrangling!
+                            </a>
+                        </section>
+                              
+        
+        
+        
+        
         <script>
 
 // add bootstrap table styles to pandoc tables

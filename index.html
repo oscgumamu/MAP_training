@@ -427,91 +427,169 @@ see.</p>
                             <p>Generally, it is recommended to keep your R version and all packages up to date, because new versions bring improvements and important bug fixes. To update the packages that you have installed, click <code>Update</code> in the <code>Packages</code> tab in the bottom right panel of RStudio, or go to <code>Tools &gt; Check for Package Updates...</code>.</p>
                             <p>Sometimes, package updates introduce changes that break your old code, which can be very frustrating. To avoid this problem, you can use a package called <code>renv</code>. It locks the package versions you have used for a given project and makes it straightforward to reinstall those exact package versions in a new environment, for example, after updating your R version or on another computer. However, the details are outside the scope of this lesson.</p>
                         </div>
+                        
                         <div id="installing-vscode" class="section level3">
                             <h3>Installing Visual Studio Code</h3>
                             <p>Visual Studio Code (VS Code) is a powerful code editor that supports various programming languages and comes with numerous extensions to enhance your coding experience.</p>
                             <p>To install VS Code, follow the instructions below for your operating system:</p>
-                            <div id="windows" class="section level4">
-                                <h4>Windows</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
-                                    <li>Download the installer for Windows.</li>
-                                    <li>Once the download is complete, double-click the installer file to start the installation process.</li>
-                                    <li>Follow the installation prompts, ensuring to select any additional components you wish to include.</li>
-                                    <li>After installation, launch VS Code from the Start Menu or desktop shortcut.</li>
-                                </ol>
-                            </div>
-                            <div id="mac" class="section level4">
-                                <h4>macOS</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
-                                    <li>Download the installer for macOS.</li>
-                                    <li>Open the downloaded .zip file and drag the Visual Studio Code app into your Applications folder.</li>
-                                    <li>Launch VS Code from your Applications folder or the Launchpad.</li>
-                                </ol>
-                            </div>
-                            <div id="linux" class="section level4">
-                                <h4>Linux</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
-                                    <li>Select the appropriate package for your Linux distribution (deb or rpm).</li>
-                                    <li>Install the downloaded package using your package manager. For example, use the following command for .deb files:</li>
-                                    <pre><code>sudo dpkg -i <file>.deb</code></pre>
-                                    <li>After installation, launch VS Code from your application menu.</li>
-                                </ol>
-                            </div>
-                            <p>Once installed, you can customize VS Code with various extensions and settings to suit your programming needs. </p>
+                        
+                            <h4>Windows</h4>
+                            <ol style="list-style-type: decimal">
+                                <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                <li>Download the installer for Windows.</li>
+                                <li>Once the download is complete, double-click the installer file to start the installation process.</li>
+                                <li>Follow the installation prompts, ensuring to select any additional components you wish to include.</li>
+                                <li>After installation, launch VS Code from the Start Menu or desktop shortcut.</li>
+                            </ol>
+                        
+                            <h4>macOS</h4>
+                            <ol style="list-style-type: decimal">
+                                <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                <li>Download the installer for macOS.</li>
+                                <li>Open the downloaded .zip file and drag the Visual Studio Code app into your Applications folder.</li>
+                                <li>Launch VS Code from your Applications folder or the Launchpad.</li>
+                            </ol>
+                        
+                            <h4>Linux</h4>
+                            <ol style="list-style-type: decimal">
+                                <li>Visit the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+                                <li>Select the appropriate package for your Linux distribution (deb or rpm).</li>
+                                <li>Install the downloaded package using your package manager. For example, use the following command for .deb files:</li>
+                                <pre><code>sudo dpkg -i <file>.deb</code></pre>
+                                <li>After installation, launch VS Code from your application menu.</li>
+                            </ol>
+                            <p>Once installed, you can customize VS Code with various extensions and settings to suit your programming needs.</p>
                         </div>
+                        
+                        <div class="install-guide">
+                            <h3>Installing and Configuring Git</h3>
+                            <p>Follow these steps to install Git on your computer, so you can start using it for version control and collaboration on GitHub.</p>
+                        
+                            <h4>Download Git</h4>
+                            <ul>
+                                <li>Go to the official Git website: <a href="https://git-scm.com/downloads" target="_blank">https://git-scm.com/downloads</a></li>
+                                <li>Select your operating system (Windows, macOS, or Linux).</li>
+                                <li>Download the latest version of Git for your OS.</li>
+                            </ul>
+                        
+                            <h4>Install Git</h4>
+                            <h5>Windows:</h5>
+                            <ul>
+                                <li>Run the downloaded `.exe` file.</li>
+                                <li>Follow the installation prompts.</li>
+                                <li>During installation, you will be asked to choose options. It's recommended to:
+                                    <ul>
+                                        <li>Use the default editor as <strong>VS Code</strong>.</li>
+                                        <li>Choose the default settings for most options.</li>
+                                    </ul>
+                                </li>
+                                <li>After installation, open the Command Prompt/Terminal and type <code>git --version</code> to check if Git is installed correctly.</li>
+                            </ul>
+                        
+                            <h5>macOS:</h5>
+                            <ul>
+                                <li>Run the downloaded `.dmg` file and follow the instructions.</li>
+                                <li>Alternatively, you can install Git using <strong>Homebrew</strong> by opening the Terminal and typing:</li>
+                                <pre><code>brew install git</code></pre>
+                                <li>After installation, check if Git is installed correctly by typing <code>git --version</code> in the Terminal.</li>
+                            </ul>
+                        
+                            <h5>Linux (Ubuntu/Debian):</h5>
+                            <ul>
+                                <li>Open the Terminal and run the following command to install Git:</li>
+                                <pre><code>sudo apt install git</code></pre>
+                                <li>Once installed, verify it by typing <code>git --version</code>.</li>
+                            </ul>
+                        
+                            <h4>Configuring Git in VS Code Terminal</h4>
+                            <p>Follow these steps to configure Git directly in the VS Code terminal:</p>
+                            <ol>
+                                <li>Open VS Code and the integrated terminal
+                                    <ul>
+                                        <li>On Windows/Linux: Press <code>Ctrl + `</code></li>
+                                        <li>On macOS: Press <code>Cmd + `</code></li>
+                                    </ul>
+                                </li>
+                                <li>Check if Git is installed
+                                    <p>In the terminal, type the following command:</p>
+                                    <pre><code>git --version</code></pre>
+                                    <p>If Git is installed, you'll see the version number. If Git is not installed, you will need to <a href="#install-git">install Git</a> first.</p>
+                                </li>
+                                <li>Configure Git Username and Email
+                                    <p>Set up your username (this name will appear with your commits) by typing:</p>
+                                    <pre><code>git config --global user.name "Your Name"</code></pre>
+                                    <p>Set up your email address (this will be associated with your commits) by typing:</p>
+                                    <pre><code>git config --global user.email "your.email@example.com"</code></pre>
+                                </li>
+                                <li>Verify the Configuration
+                                    <p>To ensure Git is configured correctly, run:</p>
+                                    <pre><code>git config --list</code></pre>
+                                    <p>This will display all your Git settings, including your username and email.</p>
+                                </li>
+                            </ol>
+                        
+                            <h4>Troubleshooting</h4>
+                            <p>If you encounter any issues during the installation, refer to the official Git documentation for help: <a href="https://git-scm.com/doc" target="_blank">Git Documentation</a>.</p>
+                        </div>
+                        
+                        <div id="registering-on-github" class="section">
+                            <h3>Registering on GitHub</h3>
+                            <p>GitHub is a platform for version control and collaboration, allowing multiple people to work on projects simultaneously. It's widely used by developers and researchers for managing code, tracking changes, and working on collaborative projects.</p>
+                            <p>In our workshops, we'll guide you through using GitHub, but getting familiar with it beforehand can be helpful. <a href="https://docs.github.com/en/get-started/start-your-journey/hello-world" target="_blank">"Hello World" intro course</a> if you're new to the platform.</p>
+                            <ol>
+                                <li>Visit the <a href="https://github.com/">GitHub website</a>.</li>
+                                <li>Click on <strong>Sign up</strong> in the top right corner.</li>
+                                <li>Follow the prompts to enter your information and complete the registration process.</li>
+                            </ol>
+                        </div>
+                        
                         
                         <div id="setting-up-live-preview-and-github" class="section level3">
                             <h3>Setting Up Live Preview and GitHub Integration</h3>
                             <p>To enhance your coding experience in Visual Studio Code, you can install the "Live Preview" extension, which allows you to see your HTML files in action in real time. Additionally, connecting your GitHub account will enable you to manage your repositories directly from the editor.</p>
+                        
+                            <h4>Step 1: Installing Live Preview</h4>
+                            <ol style="list-style-type: decimal">
+                                <li>Open Visual Studio Code.</li>
+                                <li>Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side or by pressing <code>Ctrl + Shift + X</code>.</li>
+                                <li>In the search bar, type <strong>Live Preview</strong> and press <code>Enter</code>.</li>
+                                <li>Locate the Live Preview extension by MS-CEINTL and click the <code>Install</code> button.</li>
+                                <li>Once installed, open an HTML file and click the <code>Live Preview</code> button in the status bar at the bottom of the window to start previewing your work in real time.</li>
+                            </ol>
+                        
+                            <h4>Step 2: Logging into GitHub in VS Code</h4>
+                            <ol style="list-style-type: decimal">
+                                <li>In Visual Studio Code, open the Command Palette by pressing <code>Ctrl + Shift + P</code>.</li>
+                                <li>Type <strong>GitHub: Sign in</strong> and select it from the dropdown.</li>
+                                <li>A browser window will open. Log in to your Git
+                        
                             
-                            <div id="installing-live-preview" class="section level4">
-                                <h4>Installing Live Preview</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>Open Visual Studio Code.</li>
-                                    <li>Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side or by pressing <code>Ctrl + Shift + X</code>.</li>
-                                    <li>In the search bar, type <strong>Live Preview</strong> and press <code>Enter</code>.</li>
-                                    <li>Locate the Live Preview extension and click the <code>Install</code> button.</li>
-                                    <li>Once installed, open an HTML file and click the <code>Live Preview</code> button in the status bar at the bottom of the window to start previewing your work in real time.</li>
-                                </ol>
-                            </div>
-                            
-                            <div id="registering-on-github" class="section level4">
-                                <h4>Registering on GitHub</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>Visit the <a href="https://github.com/">GitHub website</a>.</li>
-                                    <li>Click on <strong>Sign up</strong> in the top right corner.</li>
-                                    <li>Follow the prompts to enter your information and complete the registration process.</li>
-                                </ol>
-                            </div>
-                            
-                            <div id="logging-into-github-in-vscode" class="section level4">
-                                <h4>Logging into GitHub in VS Code</h4>
-                                <ol style="list-style-type: decimal">
-                                    <li>In Visual Studio Code, open the Command Palette by pressing <code>Ctrl + Shift + P</code>.</li>
-                                    <li>Type <strong>GitHub: Sign in</strong> and select it from the dropdown.</li>
-                                    <li>A browser window will open. Log in to your GitHub account if prompted.</li>
-                                    <li>After logging in, return to Visual Studio Code; you should now see a notification confirming that you are signed in to GitHub.</li>
-                                </ol>
-                            </div>
-                            
-                            <p>With Live Preview set up and your GitHub account connected, you are now ready to enhance your coding workflow and easily manage your projects!</p>
+                            <p>With Live Preview set up and your GitHub account connected, you are now ready to enhance your coding workflow and easily manage your projects.</p>
+                        </div>
+
+                        <div id="vscode-figure" class="section">
+                            <h3>Behind the Scenes of this GitHub page:</h3>
+                            <figure>
+                                <img src="images/index/VSCode.png" alt="VS Code screenshot showing GitHub integration" style="width:100%;">
+                                <figcaption> Why did we do all of this? 
+                                    In this program, participants will be completing assignments in R/Rmarkdown files and will be publishing them onto our GitHub page by editing html files in VS Code.
+                                This figure shows the functionalities that we will be using in VS Code. </figcaption>
+                            </figure>
                         </div>
                         
-                        
-                        <section class="intro-text">
-                            <a href="#data-management" style="font-size: 24px; font-weight: bold; text-decoration: none; color: inherit;">
-                                You have made it through all the installations and registrations - congrats!!! 
-                                Let's get started with Module 1 and Happy Data Wrangling!
-                            </a>
-                        </section>
-                              
-        
-        
-        
-        
+                        <section class="intro-text" style="text-align: center; 
+                                  border: 2px solid #DAA520; 
+                                  background-color: #f9f9f9; 
+                                  padding: 20px; 
+                                  border-radius: 10px; 
+                                  margin: 20px;">
+    <a href="#data-management" style="font-size: 24px; font-weight: bold; text-decoration: none; color: inherit;">
+        <p style="margin: 5px 0;">You have made it through all the installations and registrations - congrats!</p>
+        <p style="margin: 5px 0; color: #DAA520;">Let's get started with Module 1 😊</p>
+    </a>
+</section>
+
+                                       
         <script>
 
 // add bootstrap table styles to pandoc tables

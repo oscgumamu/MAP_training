@@ -99,3 +99,7 @@ h2, h3 {
     margin-bottom: 10px; /* Adjust this for spacing below headings */
     font-weight: bold; /* Ensures headings are bold */
 }
+
+.centered-text {
+    text-align: center;
+}

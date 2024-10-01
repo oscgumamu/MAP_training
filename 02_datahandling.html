@@ -123,23 +123,47 @@ $(document).ready(function () {
                         <h1 class="title toc-ignore">Introduction to data handling and
 visualisation in R</h1>
                     </div>
-                    <p>This module provides an introduction to R and RStudio. It includes
+                    <p>This module provides an introduction to Coding, R and RStudio. It includes
 hands on teaching for how to handle data in R using key packages such as
-tidyverse sf, sp, rgdal and raster.</p>
-                    <p>In this module we will cover what R is, how to install it on your
-machine and how to interact with the RStudio interface. We will look at
+tidyverse sf, sp, (good old retired rgdal) and raster.</p>
+                    <p>In this module we will cover what R is, we will look at
 how to manage your projects in R then introduce basic data management
 and processing. This will then be expanded on and you will learn about
 data manipulation and key functions used to clean and investigate your
 data. We will introduce the ggplot package and explore how this can be
 used to produce high quality data visualisations. Finally we will cover
-how to save your data.</p>
+how to save your data (in every way!).</p>
                     <p>The teaching is followed by a practical session implementing the
 acquired skills to clean and process replica DHIS2 routine malaria
 surveillance data.<img src="images/RStudio.png"></p>
                     <p><br></p>
+                    <section class="coding-intro" style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2 style="text-align: center; color: #2c3e50;">So, You’ve Decided to Venture into the World of Coding</h2>
+                        <p>The world of coding — a place where you’ll speak a language that computers actually understand. 
+                        Whether you’re here for the thrill of data analysis, building websites, or automating tasks (because who doesn’t love making a machine do all the work?), you’re in the right place.</p>
+                        
+                        <h3 style="color: #16a085;">Meet the Languages</h3>
+                        <p>Imagine coding as a global journey, and along the way, you’ll meet some quirky languages. Each one has its own vibe and culture.
+                        Whilst you'll probably think that you <strong>only</strong> need to learn how to use R, this course is designed to give you the confidence to also jump onto other languages without fear. So, whilst learning R is a priority to get you coding and plotting (figures and your research), know that there are other languages out there too. 
+                        </p>
+                        
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li><strong>R:</strong> R is like that friend who shows up to a party with all the charts, graphs, and stats. If you love data, R loves you back. It’s great for crunching numbers and turning data into colorful visuals—perfect for impressing your friends (or your boss).</li>
+                            <li><strong>Git Bash:</strong> Think of Git Bash as the trusty sidekick that helps you keep track of every change you make in your code. It's like the Robin to your coding Batman, helping you avoid accidental disaster (“Oops, I deleted all my code!”) by saving versions of your work.</li>
+                            <li><strong>Command Prompt (Windows):</strong> The Command Prompt is the grandparent of coding languages. Simple, no-nonsense, and loves tradition. It’s here to help you run programs, move files, and feel like a true hacker from a 90s movie.</li>
+                            <li><strong>Linux/Ubuntu Terminal:</strong> If Command Prompt is a grandparent, the Linux Terminal is its cool, tech-savvy cousin who is always up for customization. It's perfect for power users who like to take control of everything on their machine—if you learn this, you’re leveling up!</li>
+                            <li><strong>HTML:</strong> HTML is like the friendly neighbor who helps build websites. It’s not too fancy, but you can still do a lot with it. Need to create a website? HTML is your go-to for making sure things look neat and organized.</li>
+                        </ul>
+                        
+                        <h3 style="color: #16a085;">Don’t Panic!</h3>
+                        <p>Now, I know coding can sound a bit intimidating. You might think you're going to be staring at a screen of endless gibberish. But here’s the secret: every coder felt that way at first. Coding is just giving instructions, one step at a time. And trust me, your computer really wants to listen. It’s like a very obedient puppy—sometimes it gets confused and crashes, but it’s always trying its best.</p>
+                        
+                        <h3 style="color: #16a085;">Embrace the Errors</h3>
+                        <p>Coding is basically typing stuff and seeing if it works. Spoiler: it won't work the first time. But that’s part of the fun! Every error message is just your computer’s way of saying, “Hey, I don’t understand what you want. Can you explain it better?” So, embrace the typos and bugs—they’re your guides to mastery.</p>
+                    </section>
+                    
                     <div id="introduction-to-r-and-rstudio" class="section level2">
-                        <h2>Introduction to R and Rstudio</h2>
+                        <h2>Introduction to R and Rstudio (The Main Acts) </h2>
                         <p>R is a popular programming language for data science. It is a
 powerful language which can be used for basic data cleaning and
 analysis, building complex statistical models, creating publication
@@ -152,19 +176,8 @@ an integrated development environment (IDE) from which we can run R.
 This is more user friendly and has large functionality for organising
 projects and building reproducible code.</p>
                         <p><br></p>
-                        <div id="installing-r-and-rstudio" class="section level3">
-                            <h3>Installing R and RStudio</h3>
-                            <p>Firstly to install R go to the R-project webpage: <a href="https://www.r-project.org/">https://www.r-project.org/</a>. Select
-a CRAN mirror in a location close to you from which to download R.
-Follow the prompts to download R for your processing system.</p>
-                            <p><br></p>
-                            <p><img src="images/02_datahandling/download_R.png" width="100%" style="display: block; margin: auto;"/></p>
-                            <p><br></p>
-                            <p>Rstudio (free desktop version) can then be downloaded from the webpage: <a href="https://www.rstudio.com/products/rstudio/download">https://posit.co/downloads/.&nbsp;&nbsp;<img src="images/Rstudio_Download.png"></a></p>
-                            <p><br></p>
-                            <p></p>
-                            <p><br></p>
-                        </div>
+                
+                        
                         <div id="overview-of-rstudio" class="section level3">
                             <h3>Overview of RStudio</h3>
                             <p>Once installed, open up RStudio. You will see the console on your

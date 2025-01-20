@@ -141,7 +141,7 @@ $(document).ready(function () {
                         As part of the program, the <a href="https://docs.google.com/document/d/1cPeLU0_wUF92hGqMDwEHmqK6KWKtjH0CQqkeRirqowM/edit?usp=sharing" target="_blank">participants will be sharing their assignments</a> 
                         (e.g., informational interviews, R scripts) on this page via GitHub.
                     </p>
-                    <img src="images/index/MAP_ECR_Program_2025.png" />               
+                    <img src="images/index/MAP_ECR_Program_2025.PNG" />               
                     <p><strong>First Series of Workshops (Subject to Change)</strong></p>
 <ul>
     <li>
@@ -380,7 +380,7 @@ above is not selected</p>
                             <p>Next, copy and paste the following command into the console window
 (look for a blinking cursor on the bottom left), then press the<kbd>Enter</kbd> (Windows and Linux) or <kbd>Return</kbd> (MacOS) to
 execute the command.</p>
-                            <pre class="r"><code>list.of.packages &lt;- c(&quot;tidyverse&quot;, &quot;sf&quot;, &quot;terra&quot;, &quot;rgdal&quot;, &quot;sp&quot;, &quot;raster&quot;, &quot;scico&quot;, &quot;RColorBrewer&quot;, &quot;viridis&quot;, &quot;viridisLite&quot;, &quot;ggplot2&quot;, &quot;tidyr&quot;, &quot;dplyr&quot;, &quot;readxl&quot;)
+                            <pre class="r"><code>list.of.packages &lt;- c(&quot;tidyverse&quot;, &quot;sf&quot;, &quot;terra&quot;, &quot;sp&quot;, &quot;raster&quot;, &quot;scico&quot;, &quot;RColorBrewer&quot;, &quot;viridis&quot;, &quot;viridisLite&quot;, &quot;ggplot2&quot;, &quot;tidyr&quot;, &quot;dplyr&quot;, &quot;readxl&quot;)
 new.packages &lt;- list.of.packages[!(list.of.packages %in% installed.packages()[,&quot;Package&quot;])]
 if(length(new.packages)) install.packages(new.packages)</code></pre>
                             <p>Alternatively, you can install the packages using RStudio’s graphical
@@ -395,7 +395,7 @@ library(sf)
 library(terra)
 #library(rgdal)</code></pre>
                             <p>If you do not see an error like<code>there is no package called &lsquo;...&rsquo;</code> you are good to go!</p>
-                            <p>Note: The<a href="https://r-spatial.org/r/2022/04/12/evolution.html"> rgdal package was retired in 2023</a> and other, older R packages might be dependants of this package. To get around this problem, install earlier version of R.&nbsp;</p>
+                            <p>Note: The<a href="https://r-spatial.org/r/2022/04/12/evolution.html"> rgdal package was retired in 2023</a> and other, older R packages might be dependants of this package. For now, we are going to shift to other packages but if you ever really need to use this package, install earlier version of R.&nbsp;</p>
                             <p>Also note that when you load a package like tidyverse in for the
 first time you may see such test in your console:</p>
                             <p><img src="images/index/load_tidyverse.png" width="50%"/></p>

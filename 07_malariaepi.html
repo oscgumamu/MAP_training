@@ -43,7 +43,6 @@ $(document).ready(function () {
   if (href === "")
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
-
   // mark the anchor link active (and if it's in a dropdown, also mark that active)
   var dropdown = menuAnchor.closest('li.dropdown');
   if (window.bootstrap) { // Bootstrap 4+

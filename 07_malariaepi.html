@@ -167,6 +167,110 @@ $(document).ready(function () {
     </ul>
     <p>This data provides insights into healthcare access, equity, and the impact of interventions (<a href="https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0002134" target="_blank">Nguyen et al, 2023</a>).</p>
 
+    <div id="malaria-metrics" class="section level1">
+        <h2>Malaria Epidemiological Metrics: Understanding, Using, and Interpreting Data</h2>
+    
+        <h3>1. Prevalence and Incidence</h3>
+        <ul>
+            <li><strong>Prevalence:</strong> Refers to the proportion of a population infected with malaria at a specific point in time. It is often used to measure the burden of malaria and the effectiveness of long-term interventions.
+                <ul>
+                    <li><strong>Example Data:</strong> Derived from Malaria Indicator Surveys (MIS) or Demographic and Health Surveys (DHS).</li>
+                    <li><strong>Use in Research:</strong> High prevalence often highlights hotspots needing intensified interventions. Temporal comparisons reveal intervention effectiveness.</li>
+                </ul>
+            </li>
+            <li><strong>Incidence:</strong> The number of new malaria cases within a specific time period, often measured per 1,000 individuals.
+                <ul>
+                    <li><strong>Example Data:</strong> Routine health system data or case reporting.</li>
+                    <li><strong>Use in Research:</strong> Identifies trends in transmission dynamics and short-term impacts of control measures.</li>
+                </ul>
+            </li>
+        </ul>
+    
+        <h3>2. Entomological Inoculation Rate (EIR)</h3>
+        <ul>
+            <li><strong>Definition:</strong> Measures the number of infectious mosquito bites per person per year.</li>
+            <li><strong>Interpretation:</strong> Higher EIR values indicate greater transmission intensity and can signal intervention priority areas.</li>
+            <li><strong>Example Data:</strong> Derived from mosquito collection and testing for parasite presence.</li>
+            <li><strong>Use in Research:</strong> A critical metric in transmission modeling and determining high-risk zones.</li>
+        </ul>
+    
+        <h3>3. Basic Reproductive Number (R₀)</h3>
+        <ul>
+            <li><strong>Definition:</strong> The average number of secondary infections caused by one infected individual in a fully susceptible population.</li>
+            <li><strong>Interpretation:</strong> A higher R₀ means more intense transmission, requiring robust interventions to achieve elimination.</li>
+            <li><strong>Use in Research:</strong> Helps assess how intensive control measures (e.g., ITNs, IRS) should be to interrupt transmission.</li>
+        </ul>
+    
+        <h3>4. Test Positivity Rate (TPR)</h3>
+        <ul>
+            <li><strong>Definition:</strong> The proportion of individuals tested for malaria who are found positive.</li>
+            <li><strong>Example Data:</strong> Routine data from health facilities.</li>
+            <li><strong>Interpretation:</strong> TPR above 5% often indicates ongoing transmission, while lower values suggest a decline.</li>
+        </ul>
+    
+        <h3>5. Intervention Coverage Metrics</h3>
+        <ul>
+            <li><strong>Examples:</strong>
+                <ul>
+                    <li>ITN coverage: Proportion of households owning insecticide-treated nets.</li>
+                    <li>IRS coverage: Percentage of households sprayed in a given area.</li>
+                </ul>
+            </li>
+            <li><strong>Use in Research:</strong> Coverage data informs the deployment and scaling of interventions and supports resource allocation.</li>
+        </ul>
+    
+        <h3>6. Exceedance</h3>
+        <ul>
+            <li><strong>Definition:</strong> The probability that a particular malaria metric (e.g., prevalence, incidence) exceeds a specific threshold.</li>
+            <li><strong>Example:</strong> Probability that malaria prevalence exceeds 5% in a defined area.</li>
+            <li><strong>Interpretation:</strong> Useful for identifying areas with a high risk of outbreaks and prioritizing interventions.</li>
+            <li><strong>Use in Research:</strong> Supports decision-making by quantifying high-risk zones and creating predictive models for extreme values.</li>
+        </ul>
+    
+        <h3>7. Probability Maps</h3>
+        <ul>
+            <li><strong>Definition:</strong> Spatially explicit maps showing the probability of malaria occurrence or exceeding a specific threshold.</li>
+            <li><strong>Example:</strong> Probability that a region has >10 malaria cases per 1,000 individuals.</li>
+            <li><strong>Interpretation:</strong> Helps visualize areas of high uncertainty and refine intervention targeting.</li>
+            <li><strong>Use in Research:</strong> Probability maps are widely used in spatial modeling to capture uncertainty and guide resource allocation effectively.</li>
+        </ul>
+    
+        <h3>8. Case Fatality Rate (CFR)</h3>
+        <ul>
+            <li><strong>Definition:</strong> The proportion of malaria cases resulting in death.</li>
+            <li><strong>Interpretation:</strong> High CFR indicates severe disease outcomes or gaps in treatment access and quality.</li>
+            <li><strong>Use in Research:</strong> Highlights areas needing urgent health system strengthening.</li>
+        </ul>
+    
+        <h3>Metrics and Their Integration into Malaria Models</h3>
+        <p>Malaria metrics serve as inputs for geospatial and temporal models, enabling prediction and scenario planning. For instance:</p>
+        <ul>
+            <li><strong>Prevalence and incidence data:</strong> Used in machine learning models to predict malaria hotspots and simulate intervention impacts.</li>
+            <li><strong>EIR and R₀ metrics:</strong> Feed into stochastic models to estimate transmission intensity and evaluate elimination feasibility.</li>
+            <li><strong>Exceedance probabilities:</strong> Inform planners of areas exceeding critical thresholds, such as prevalence or mortality, to prioritize resources.</li>
+            <li><strong>Intervention coverage metrics:</strong> Critical for evaluating the return on investment in malaria programs.</li>
+        </ul>
+    
+        <h3>Interactive Exercise</h3>
+        <p><strong>Question:</strong> Which metric best quantifies the probability of malaria exceeding a threshold in a specific area?</p>
+        <ul>
+            <li><button onclick="alert('Correct! Exceedance measures the likelihood of malaria metrics surpassing critical thresholds.')">Exceedance</button></li>
+            <li><button onclick="alert('Incorrect. Prevalence measures the burden but does not capture probabilities of thresholds.')">Prevalence</button></li>
+            <li><button onclick="alert('Incorrect. EIR quantifies transmission but not threshold probabilities.')">EIR</button></li>
+            <li><button onclick="alert('Incorrect. CFR measures disease outcomes but not exceedance thresholds.')">CFR</button></li>
+        </ul>
+    
+        <h3>Conclusion: Data for Decision-Making</h3>
+        <p>The Malaria Atlas Project integrates these metrics to produce high-resolution maps and guide malaria control strategies. For example:</p>
+        <ul>
+            <li><strong>Resource allocation:</strong> Identifying hotspots for ITN distribution or IRS campaigns.</li>
+            <li><strong>Policy impact:</strong> Assessing how interventions affect transmission over time.</li>
+            <li><strong>Elimination planning:</strong> Understanding where malaria can be eliminated and what resources are needed.</li>
+        </ul>
+        <p>Explore MAP’s interactive tools and datasets to deepen your understanding of malaria epidemiology and interventions: <a href="https://data.malariaatlas.org/" target="_blank">Malaria Atlas Project</a>.</p>
+    </div>
+
+    
     <h2>Applications for Malaria Research</h2>
     <p>Data on malaria epidemiology and interventions is essential for generating actionable insights. The Malaria Atlas Project (MAP) integrates diverse datasets to model malaria prevalence, incidence, and mortality. Examples include:</p>
     <ul>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title>Common Practices for Data Management</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);http://127.0.0.1:3000/index.html
+  }
+}
+</script>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+        <!-- tabsets -->
+        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
+        <!-- code folding -->
+        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
+</div>
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Intro</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    </li>
+                                    <li>
+                                        <a href="07_malariaepi.html">Malaria epi overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                    <li><a href="06_Assignments.html">Assignments</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+</ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+                   
+<!-- Section for Malaria Epidemiology -->
+<div id="malaria-epidemiology" class="section level1">
+    <h1>Introduction to Malaria Epidemiology</h1>
+    <p>Malaria, caused by <em>Plasmodium</em> parasites and transmitted by female <em>Anopheles</em> mosquitoes, is a leading cause of morbidity and mortality, particularly in sub-Saharan Africa. Vulnerable populations, such as children under five years old and pregnant women, bear the highest disease burden. This module equips researchers, public health practitioners, and data scientists with the tools, knowledge, and data sources to better understand malaria dynamics and design targeted interventions.</p>
+
+    <h2>Epidemiologic Triad of Malaria</h2>
+    <p>Malaria epidemiology is shaped by three key components: the host, the infectious agent, and the environment.</p>
+    <p><img src="images/ECR_triad.PNG" width="90%" style="display: block; margin: auto;"/></p>
+    <h3>Host Factors</h3>
+    <p>Host factors significantly influence malaria risk and outcomes. These include:</p>
+    <ul>
+        <li><strong>Demographics:</strong> Children under five and pregnant women are the most vulnerable.</li>
+        <li><strong>Immunity:</strong> Acquired immunity from repeated exposure reduces disease severity.</li>
+        <li><strong>Behavior:</strong> Use of ITNs, adherence to preventive therapies, and nighttime sleeping patterns play a critical role.</li>
+        <li><strong>Socioeconomic Status:</strong> Access to healthcare, education, and preventive measures is a key determinant.</li>
+    </ul>
+
+    <h3>Infectious Agent</h3>
+    <p>The five species of <em>Plasmodium</em> that infect humans have distinct characteristics:</p>
+    <ul>
+        <li><strong><em>P. falciparum:</em></strong> Responsible for most malaria-related deaths, primarily in Africa.</li>
+        <li><strong><em>P. vivax:</em></strong> Causes relapsing malaria due to dormant liver-stage hypnozoites.</li>
+        <li><strong><em>P. malariae:</em></strong> Associated with chronic infections.</li>
+        <li><strong><em>P. ovale:</em></strong> Rare but capable of forming hypnozoites.</li>
+        <li><strong><em>P. knowlesi:</em></strong> A zoonotic species found in Southeast Asia.</li>
+    </ul>
+
+    <h3>Environmental Factors</h3>
+    <p>Environmental conditions impact mosquito survival and malaria transmission:</p>
+    <ul>
+        <li><strong>Climate:</strong> Optimal transmission occurs in areas with temperatures between 20–30°C, high humidity, and seasonal rainfall.</li>
+        <li><strong>Proximity to Water:</strong> Stagnant water bodies are key mosquito breeding sites.</li>
+        <li><strong>Land Use:</strong> Urbanization and agricultural expansion modify habitats.</li>
+    </ul>
+
+    <h2>Data on Treatment-Seeking Behaviors</h2>
+    <p>Treatment-seeking behaviors significantly influence malaria outcomes and intervention efficacy. Data on these behaviors is typically collected through household surveys such as the DHS and MICS. For children under five, surveys gather responses to key questions:</p>
+    <ul>
+        <li>“Has (NAME) been ill with fever at any time in the last 2 weeks?”</li>
+        <li>“Did you seek advice or treatment for the illness from any source?”</li>
+        <li>“Where did you seek advice or treatment?”</li>
+    </ul>
+    <p>Fever cases are classified based on responses, and treatment sources are categorized into:</p>
+    <ul>
+        <li><strong>Public Medical Care:</strong> Government hospitals, clinics, and community health workers.</li>
+        <li><strong>Private Medical Care:</strong> Private facilities, pharmacies, and NGO-run health services.</li>
+        <li><strong>Non-Medical Sources:</strong> Traditional healers, home remedies, or no care sought.</li>
+    </ul>
+    <p>This data provides insights into healthcare access, equity, and the impact of interventions (<a href="https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0002134" target="_blank">Nguyen et al, 2023</a>).</p>
+
+    <h2>Applications for Malaria Research</h2>
+    <p>Data on malaria epidemiology and interventions is essential for generating actionable insights. The Malaria Atlas Project (MAP) integrates diverse datasets to model malaria prevalence, incidence, and mortality. Examples include:</p>
+    <ul>
+        <li><strong>Mapping Malaria Endemicity:</strong> Combining climate, treatment, and surveillance data to produce high-resolution prevalence maps (<a href="https://www.nature.com/articles/nature15535" target="_blank">Bhatt et al., 2015</a>).</li>
+        <li><strong>Evaluating Intervention Coverage:</strong> Assessing ITN distribution, IRS coverage, and SMC uptake across endemic regions (<a href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)31097-9/fulltext" target="_blank">Weiss et al., 2019</a>).</li>
+        <li><strong>Predicting Malaria Risk:</strong> Using environmental and behavioral covariates to forecast malaria hotspots (<a href="https://www.nature.com/articles/nature24059" target="_blank">Snow et al., 2017</a>).</li>
+    </ul>
+    <h2>Final Reflections</h2>
+    <p>This module serves as a comprehensive resource for malaria research. By understanding the disease's biological and epidemiological characteristics, integrating diverse data sources, and leveraging advanced modelling tools, researchers can design targeted, effective interventions. Data-driven approaches empower global efforts to combat malaria, ultimately reducing its burden and saving lives.</p>
+    <p><img src="images/MAP_data.PNG" width="90%" style="display: block; margin: auto;"/></p>
+    <p> Explore the global malaria prevelance, incidence and mortality estimates by the Malaria Atlas Project team here:<a href="https://data.malariaatlas.org/" target="_blank" > https://data.malariaatlas.org/</a>.</li></p>
+    <h2>Interactive Quiz</h2>
+    <p><strong>Question:</strong> Which factor is most critical for predicting malaria prevalence?</p>
+    <ul>
+        <li><button onclick="alert('Correct! Climate variables like temperature and rainfall directly impact mosquito breeding and parasite development.')">Climate Variables</button></li>
+        <li><button onclick="alert('Incorrect. While important, population density alone does not capture malaria dynamics.')">Population Density</button></li>
+        <li><button onclick="alert('Incorrect. Accessibility is crucial for treatment but not the primary predictor of prevalence.')">Healthcare Accessibility</button></li>
+        <li><button onclick="alert('Incorrect. Land use is secondary to climate in malaria modelling.')">Land Use</button></li>
+    </ul>
+
+    <h2>References</h2>
+    <ul>
+        <li><a href="https://apps.who.int/iris/bitstream/handle/10665/96351/9789241506014_tutors_guide_eng.pdf?sequence=1" target="_blank">WHO. (2022). Tutor's Guide for Malaria Control Programs.</a></li>
+        <li><a href="https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0002134" target="_blank">PLOS Global Public Health. (2023). Treatment-Seeking Behaviors for Malaria.</a></li>
+        <li><a href="https://www.nature.com/articles/nature15535" target="_blank">Bhatt, S., et al. (2015). The effect of malaria control on Plasmodium falciparum in Africa. <em>Nature</em>.</a></li>
+        <li><a href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)31097-9/fulltext" target="_blank">Weiss, D. J., et al. (2019). The global burden of malaria. <em>The Lancet</em>.</a></li>
+        <li><a href="https://www.nature.com/articles/nature24059" target="_blank">Hay, S. I., et al. (2017). Mapping malaria for elimination. <em>Nature</em>.</a></li>
+    </ul>
+</div>
+         
+        <script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+        <!-- tabsets -->
+        <script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+        <!-- code folding -->
+        <script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+        <script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+    </body>
+</html>

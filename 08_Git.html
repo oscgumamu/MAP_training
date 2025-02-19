@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title>Common Practices for Data Management</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);http://127.0.0.1:3000/index.html
+  }
+}
+</script>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+        <!-- tabsets -->
+        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
+        <!-- code folding -->
+        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
+</div>
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Intro</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    </li>
+                                    <li>
+                                        <a href="07_malariaepi.html">Malaria epi overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data handling and Visualiation in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="08_Git.html">Bash and Git</a>
+                                    </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                    <li><a href="06_Assignments.html">Assignments</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+</ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+                   
+<!-- Section for Coding -->
+<section class="coding-intro" style="color: #333;">
+    <h2 style="color: #2c3e50;">Venture into the World of Coding</h2>
+    <p>The world of coding — a place where you’ll speak a language that computers actually understand. 
+    Whether you’re here for the thrill of data analysis, building websites, or automating tasks (because who doesn’t love making a machine do all the work?), you’re in the right place.</p>
+    
+    <h3 style="color: #16a085;">Meet the Languages</h3>
+    <p>Imagine coding as a global journey, and along the way, you’ll meet some quirky languages. Each one has its own vibe and culture.
+    Whilst you'll probably think that you <strong>only</strong> need to learn how to use R, this course is designed to give you the confidence to also jump onto other languages without fear (or more like: excitement!). So, whilst learning R is a priority to get you coding and plotting (figures and your research), know that there are other languages out there too. 
+    </p>
+    
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li><strong>R:</strong> R is like that friend who shows up to a party with all the charts, graphs, and stats. If you love data, R loves you back. It’s great for crunching numbers and turning data into colorful visuals—perfect for impressing your friends (or your boss).</li>
+        <li><strong>Git Bash:</strong> Think of Git Bash as the trusty sidekick that helps you keep track of every change you make in your code. It's like the Robin to your coding Batman, helping you avoid accidental disaster (“Oops, I deleted all my code!”) by saving versions of your work.</li>
+        <li><strong>Command Prompt (Windows):</strong> The Command Prompt is the grandparent of coding languages. Simple, no-nonsense, and loves tradition. It’s here to help you run programs, move files, and feel like a true hacker from a 90s movie.</li>
+        <li><strong>Linux/Ubuntu Terminal:</strong> If Command Prompt is a grandparent, the Linux Terminal is its cool, tech-savvy cousin who is always up for customization. It's perfect for power users who like to take control of everything on their machine—if you learn this, you’re leveling up!</li>
+        <li><strong>HTML:</strong> HTML is like the friendly neighbor who helps build websites. It’s not too fancy, but you can still do a lot with it. Need to create a website? HTML is your go-to for making sure things look neat and organized.</li>
+    </ul>
+    
+    <h3 style="color: #16a085;">Don’t Panic!</h3>
+    <p>Now, I know coding can sound a bit intimidating at first. You might think you're going to be staring at a screen of endless gibberish. But here’s the secret: every coder felt that way at first. Coding is just giving instructions, one step at a time. And trust me, your computer really wants to listen. It’s like a very obedient puppy—sometimes it gets confused and crashes, but it’s always trying its best.</p>
+    
+    <h3 style="color: #16a085;">Embrace the Errors</h3>
+    <p>Coding is basically typing stuff and seeing if it works. Spoiler: it won't work the first time. But that’s part of the fun! Every error message is just your computer’s way of saying, “Hey, I don’t understand what you want. Can you explain it better?” So, embrace the typos and bugs—they’re your guides to mastery. (Just please do not break this website when publishing your assignments as JK is definitely not a Master - yet.)</p>
+</section>
+<section class="coding-syntax" style="color: #333;">
+    <h2 style="color: #2c3e50;">Basic Coding Syntax in Different Languages</h2>
+    
+    <p>Whether you’re crunching data, automating tasks, or building a website, most programming languages have similar building blocks. Let’s break down some basic syntax:</p>
+
+    <h3 style="color: #16a085;">1. Commands</h3>
+    <p>Commands are the instructions you give to a computer. They tell the machine what to do, like printing text, loading data, or performing calculations.</p>
+
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li><strong>R:</strong> <code>print("Hello, world!")</code> – This command prints "Hello, world!" to the console.</li>
+        <li><strong>Git Bash:</strong> <code>git push origin main</code> – This command pushes your local code changes to the main branch on a remote Git repository.</li>
+        <li><strong>Command Prompt:</strong> <code>dir</code> – Lists all the files and directories in the current folder.</li>
+        <li><strong>Linux Terminal:</strong> <code>ls</code> – Similar to Command Prompt’s `dir`, this lists all files and directories in a folder.</li>
+        <li><strong>HTML:</strong> <code>&lt;p&gt;Hello, world!&lt;/p&gt;</code> – This command creates a paragraph element that displays "Hello, world!" on a webpage.</li>
+    </ul>
+
+    <h3 style="color: #16a085;">2. Assigning Values</h3>
+    <p>Assigning values is how you store information in a variable, which can then be used later in your code. You can think of variables like labeled boxes that hold data.</p>
+
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li><strong>R:</strong> <code>my_data &lt;- c(1, 2, 3, 4, 5)</code> – This assigns a vector of numbers to the variable <code>my_data</code>.</li>
+        <li><strong>Git Bash:</strong> <code>USERNAME="JohnDoe"</code> – Assigning a value to an environment variable in a Git Bash script.</li>
+        <li><strong>Command Prompt:</strong> <code>set NAME=John</code> – Creates a variable called <code>NAME</code> with the value <code>John</code>.</li>
+        <li><strong>Linux Terminal:</strong> <code>my_var="Hello"</code> – Assigns the string "Hello" to a variable called <code>my_var</code>.</li>
+        <li><strong>HTML:</strong> HTML doesn’t assign variables in the traditional sense, but you can use JavaScript within HTML to assign values. For example, <code>&lt;script&gt;var name = "John";&lt;/script&gt;</code>.</li>
+    </ul>
+
+    <h3 style="color: #16a085;">3. Formulas (or Operations)</h3>
+    <p>Formulas (or operations) perform calculations or manipulate data. It could be simple math, string manipulation, or more complex functions depending on the language.</p>
+
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li><strong>R:</strong> <code>sum(c(1, 2, 3))</code> – This sums up the numbers 1, 2, and 3 and returns the result.</li>
+        <li><strong>Git Bash:</strong> In Git Bash, we don’t usually perform calculations, but you can run shell scripts that include arithmetic: <code>echo $((3 + 4))</code> – This outputs the result of 3 + 4.</li>
+        <li><strong>Command Prompt:</strong> <code>set /a sum=5+10</code> – This adds 5 and 10 and stores the result in a variable <code>sum</code>.</li>
+        <li><strong>Linux Terminal:</strong> Similar to Git Bash: <code>echo $((2 * 8))</code> – Multiplies 2 by 8 and prints the result.</li>
+        <li><strong>HTML:</strong> HTML itself doesn’t have formulas, but you can use JavaScript within HTML to perform calculations. For example, <code>&lt;script&gt;var result = 5 + 3;&lt;/script&gt;</code>.</li>
+    </ul>
+
+    <h3 style="color: #16a085;">4. Writing Notes (Comments)</h3>
+    <p>Comments are notes in your code to explain what’s happening. They’re super useful for reminding yourself what you were doing, or explaining your code to someone else. Comments are ignored by the computer when running the code.</p>
+
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li><strong>R:</strong> <code># This is a comment in R</code> – Everything after the <code>#</code> symbol is ignored by R.</li>
+        <li><strong>Git Bash:</strong> <code># This is a comment in Git Bash</code> – Just like in R, the <code>#</code> symbol is used for comments.</li>
+        <li><strong>Command Prompt:</strong> <code>REM This is a comment in Command Prompt</code> – The <code>REM</code> keyword is used for comments in batch scripts.</li>
+        <li><strong>Linux Terminal:</strong> <code># This is a comment in Linux</code> – Like in Git Bash, <code>#</code> is used for comments.</li>
+        <li><strong>HTML:</strong> <code>&lt;!-- This is a comment in HTML --&gt;</code> – HTML comments are written between <code>&lt;!--</code> and <code>--&gt;</code>.</li>
+    </ul>
+
+    <p>With these basic building blocks, you're on your way to understanding how to interact with different coding languages. Every language has its own quirks, but the underlying logic is the same: give clear instructions, store and manipulate data, and document your work!</p>
+</section>
+<p><img src="images/08_Git/Coding_table1.PNG" width="99%" style="display: block; margin: auto;"/></p>
+                    
+<section class="coding-intro" style="color: #333;"> <h2 style="color: #2c3e50;">Introduction to Bash and Git in RStudio</h2> 
+    <p> Welcome to your guide on using Bash and Git within RStudio! 
+        In this section, we’ll explore how to run Bash commands using RStudio’s integrated Terminal and how to set up Git for version control—linking your work to GitHub for seamless collaboration. </p> <h3 style="color: #16a085;">1. Getting Started with Bash in RStudio</h3> 
+        <p> Bash (Bourne Again Shell) is a powerful command-line interface that lets you interact directly with your computer’s operating system. RStudio’s Terminal (found under <em>Tools &gt; Terminal &gt; New Terminal</em>) is your gateway to running Bash commands, managing files, and automating tasks. </p> 
+            <p style="margin-top: 1em;">
+              💡 Think of the RStudio Terminal as a <strong>"secret door"</strong> in RStudio 
+              that lets you talk directly to your computer, just like the 
+              <em>Command Prompt</em> on Windows or the <em>Terminal</em> on macOS/Linux.
+            </p>
+          </section>
+          
+        
+        <p><strong>Basic Bash Command Structure:</strong></p> <p> <code>command [options] [arguments]</code> </p> 
+        
+
+        <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Example:</strong> <code>mv -v ~/data_backup /mnt/backup/</code> – Moves your <code>data_backup</code> folder to a new destination with verbose output.</li> <li><strong>Example:</strong> <code>Rscript analysis.R</code> – Runs an R script directly from the terminal.</li> <li><strong>Example:</strong> <code>free -h</code> – Displays system memory usage in a human-readable format.</li> </ul> <p> Use the Terminal in RStudio like you would a traditional Command Prompt or macOS/Linux Terminal—it's your secret door to a world of efficient coding! </p> <h3 style="color: #16a085;">2. Setting Up Git in RStudio</h3> 
+        <p> Git is a distributed version control system that allows you to track changes in your code over time. It provides a safety net by letting you revert to earlier versions, experiment on separate branches, and merge changes when ready. This is crucial for collaborative projects and for maintaining a clear history of your work. </p> 
+        
+        <p> <strong>Configure Git using the RStudio Terminal:</strong> </p> 
+        <pre><code>git config --global user.name "Your Name"</code></pre>
+        <pre><code>git config --global user.email "your.email@example.com"</code></pre>
+        <pre><code>git config --global credential.helper 'cache --timeout=7200'</code></pre>
+        <section style="color: #333;">
+            <ul style="list-style-type: none; padding-left: 0;">
+              <li>
+                <code>git config --global</code> &rarr; Sets the configuration for all repositories on your system.
+              </li>
+              <li>
+                <code>user.name</code> &rarr; Your GitHub username (visible in commits).
+              </li>
+              <li>
+                <code>user.email</code> &rarr; Your registered email address on GitHub.
+              </li>
+            </ul>
+          </section>
+          
+        <p> Verify your Git installation by running: </p> 
+        <pre><code>git --version</code></pre> 
+        <p><img src="images/08_Git/Terminal.PNG" width="99%" style="display: block; margin: auto;"/></p>
+
+
+
+        <h3 style="color: #16a085;">3. Why Use Git and GitHub?</h3> 
+        <p> While Git is the tool you use locally to track your project’s history and manage changes, GitHub is an online platform that hosts your Git repositories. Here’s why both are important: </p> 
+        <ul style="list-style-type: disc; padding-left: 20px;"> <li> <strong>Git:</strong> Provides a robust mechanism for version control on your computer. It helps you maintain a detailed record of changes, revert to previous states, and experiment with new ideas using branching—all without losing your work. </li> <li> <strong>GitHub:</strong> Acts as a remote backup and collaboration hub. It allows you to share your code, collaborate with peers, review changes through pull requests, and manage issues—all in one central place. </li> <li> <strong>Difference:</strong> Think of Git as the engine running locally to manage your code history, while GitHub is the cloud service that makes your work accessible and shareable. Together, they create a powerful workflow that enhances productivity and fosters collaboration. </li> </ul> 
+        
+        <h3 style="color: #16a085;">4. Linking a GitHub Repository to Your RStudio Project</h3>
+<p>
+  After configuring Git, you can create a repository on GitHub and connect it to a new RStudio project:
+</p>
+<ol>
+  <li>
+    <strong>Create a Repository on GitHub:</strong> Log in to GitHub and set up a new repository 
+    with a meaningful name. Decide whether it should be public or private.
+  </li>
+  <li>
+    <strong>Create a New Project in RStudio:</strong> Go to 
+    <em>File &gt; New Project &gt; Version Control &gt; Git</em> and paste the GitHub repository URL. 
+    RStudio will clone the repository and set up the project.
+  </li>
+  <li>
+    <strong>Manage Your Work:</strong> As you develop your project, use Git commands or the 
+    RStudio Git pane to save your progress:
+    <pre><code>git add .
+git commit -m "Describe your changes"</code></pre>
+    <pre><code>git push origin main</code></pre>
+  </li>
+</ol>
+
+<h3 style="color: #16a085;">3. Understanding the Git Workflow</h3>
+<p>
+  Git is a distributed version control system that allows you to track and manage changes to your codebase over time. Below is a quick overview of the main concepts and commands you’ll use in a typical Git workflow:
+</p>
+
+<ul style="list-style-type: disc; padding-left: 20px;">
+  <li>
+    <strong>Branch:</strong> A separate line of development in your project. 
+    Branches let you experiment or add features without affecting the main code.
+  </li>
+  <li>
+    <strong>git checkout [branch-name]:</strong> Switches to an existing branch, 
+    or you can create a new one with <code>git checkout -b new-branch</code>.
+  </li>
+  <li>
+    <strong>git add [file(s)]:</strong> Stages your modified files, telling Git which changes 
+    you want to include in the next commit.
+  </li>
+  <li>
+    <strong>git commit -m "[message]":</strong> Creates a snapshot of your staged changes. 
+    Always include a meaningful message to describe what you did.
+  </li>
+  <li>
+    <strong>git push origin [branch-name]:</strong> Uploads local commits to the remote repository, 
+    making your changes visible to collaborators on GitHub (or another Git host).
+  </li>
+  <li>
+    <strong>git pull origin [branch-name]:</strong> Fetches and merges changes from the remote repository, 
+    ensuring your local branch is up to date with the latest commits.
+  </li>
+  <li>
+    <strong>git merge [branch-name]:</strong> Integrates changes from one branch into another. 
+    Often used to merge a feature branch into <code>main</code> when it’s ready.
+  </li>
+  <li>
+    <strong>git clone [URL]:</strong> Creates a local copy of a remote repository on your machine, 
+    including its entire commit history and branches.
+  </li>
+</ul>
+
+<p>
+  Understanding these commands and concepts is key to maintaining a clean, well-organized project 
+  history and collaborating effectively. By committing regularly, branching for new features, and 
+  pushing/pulling updates, your team can work in parallel without overwriting each other’s changes.
+</p>
+
+
+<h4 style="color: #16a085;">M Recap</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
+  <thead>
+    <tr style="background-color: #f8f8f8;">
+      <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">Command</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git status</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Check repo status</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git add .</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Stage all changes</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git commit -m "message"</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Commit changes</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git push origin main</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Push to GitHub</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git pull origin main</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Pull latest updates</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git checkout -b new-branch</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Create &amp; switch to a new branch</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git merge branch-name</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Merge branches</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">git clone URL</td>
+      <td style="padding: 8px; border-bottom: 1px solid #ddd;">Clone a repository</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h3 style="color: #16a085;">5. Collaborating with GitHub</h3> <p> GitHub makes collaboration straightforward: </p> 
+        <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Share Your Repository:</strong> Invite collaborators via your repository’s settings on GitHub, allowing multiple team members to work on the project simultaneously.</li> <li><strong>Synchronize Changes:</strong> Regularly pull updates using <code>git pull origin main</code> to ensure you’re working with the latest version.</li> <li><strong>Branching and Merging:</strong> Create branches with <code>git checkout -b new-branch</code> to work on features independently and merge them back when complete using <code>git merge branch-name</code>.</li> </ul>
+        <p> With Git and GitHub, you not only safeguard your code but also streamline collaboration, making it easier to manage contributions from multiple developers. </p> 
+        <h3 style="color: #16a085;">6. Next Steps</h3>
+        <p> Practice these commands in your RStudio Terminal and explore the Git pane to familiarize yourself with version control. Although another session will dive deeper into Git, this guide provides a solid starting point for managing your code and collaborating on GitHub. </p> 
+    <p> Happy coding! </p> </section>
+
+        <script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+</script>
+        <!-- tabsets -->
+        <script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+        <!-- code folding -->
+        <script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+        <script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+    </body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title>Common Practices for Data Management</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);http://127.0.0.1:3000/index.html
+  }
+}
+</script>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+        <!-- tabsets -->
+        <style type="text/css">.tabset-dropdown > .nav-tabs { display: inline-table; max-height: 500px; min-height: 44px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; } .tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before { content: "\e259"; font-family: 'Glyphicons Halflings'; display: inline-block; padding: 10px; border-right: 1px solid #ddd; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before { content: "\e258"; font-family: 'Glyphicons Halflings'; border: none; } .tabset-dropdown > .nav-tabs > li.active { display: block; } .tabset-dropdown > .nav-tabs > li > a, .tabset-dropdown > .nav-tabs > li > a:focus, .tabset-dropdown > .nav-tabs > li > a:hover { border: none; display: inline-block; border-radius: 4px; background-color: transparent; } .tabset-dropdown > .nav-tabs.nav-tabs-open > li { display: block; float: none; } .tabset-dropdown > .nav-tabs > li { display: none; }</style>
+        <!-- code folding -->
+        <style type="text/css">#TOC { margin: 25px 0px 20px 0px; } @media (max-width: 768px) { #TOC {  position: relative;  width: 100%; } } @media print { .toc-content {  /* see https://github.com/w3c/csswg-drafts/issues/4434 */  float: right; } } .toc-content { padding-left: 30px; padding-right: 40px; } div.main-container { max-width: 1200px; } div.tocify { width: 20%; max-width: 260px; max-height: 85%; } @media (min-width: 768px) and (max-width: 991px) { div.tocify {  width: 25%; } } @media (max-width: 767px) { div.tocify {  width: 100%;  max-width: none; } } .tocify ul, .tocify li { line-height: 20px; } .tocify-subheader .tocify-item { font-size: 0.90em; } .tocify .list-group-item { border-radius: 0px; }</style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
+</div>
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Intro</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    </li>
+                                    <li>
+                                        <a href="07_malariaepi.html">Malaria epi overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data wrangling in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="08_Git.html">Bash and Git</a>
+                                    </li>
+                                    <li>
+                                      <a href="09_Data_vis.html">Data visualisation in R</a>
+                                  </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                    <li><a href="06_Assignments.html">Assignments</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+</ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+                   
+<!-- Section for Intro-->
+<div id="intro-visualisation" class="section level3">
+  <h2>Introduction to Data Visualisation in R</h2>
+  <p>
+    Data visualisation is a crucial step in any data analysis workflow. Whether you’re exploring 
+    new data for the first time or verifying the results of transformations, plotting can help you 
+    quickly spot errors, outliers, or unexpected patterns. Effective figures also help interpret 
+    and communicate your findings—bridging the gap between raw numbers and meaningful insights.
+  </p>
+  <p>
+    In practice, you’ll often find yourself visualising data multiple times:
+  </p>
+  <ul style="list-style-type: disc; padding-left: 20px;">
+    <li>
+      <strong>Initial Exploration:</strong> Quickly plot raw data (e.g., histograms, scatter plots) 
+      to detect outliers, missing values, or irregularities before further cleaning.
+    </li>
+    <li>
+      <strong>Ongoing Checks:</strong> Visualise intermediate results (e.g., boxplots, line graphs) 
+      after transformations or calculations to ensure they worked as expected.
+    </li>
+    <li>
+      <strong>Final Communication:</strong> Create polished plots (e.g., stacked bar charts, 
+      annotated line graphs) to effectively present your findings to colleagues, collaborators, 
+      or in publications.
+    </li>
+  </ul>
+  <p>
+    Below are some common types of plots you’ll encounter and when they’re typically used:
+  </p>
+  <ul style="list-style-type: disc; padding-left: 20px;">
+    <li>
+      <strong>Line Graphs:</strong> Great for showing trends over time or continuous variables. 
+      Useful when you want to highlight changes or patterns over an interval.
+    </li>
+    <li>
+      <strong>Stacked Bar Charts:</strong> Ideal for comparing categories and their subcomponents 
+      (e.g., total counts split by different groups). Helps show how parts contribute to a whole.
+    </li>
+    <li>
+      <strong>Boxplots:</strong> Summarise distributions of continuous data across discrete 
+      categories. Handy for spotting medians, quartiles, and outliers at a glance.
+    </li>
+    <li>
+      <strong>Histograms:</strong> Show the distribution of a single continuous variable by 
+      splitting it into bins. Great for detecting skewness or multi-modal distributions.
+    </li>
+  </ul>
+
+
+</div>
+
+<div id="basic-plotting" class="section level3">
+  <h2>Basic plotting</h2>
+  <p>We will start by showing you how to build a basic plot with the<code>ggplot()</code> function. The <code>ggplot()</code> function
+creates a blank plot to which you add different functions to build your
+data visualisation using the <code>+</code> operator.</p>
+  <p>There are two main arguments to the <code>ggplot() function</code>,
+these are:</p>
+  <ul>
+      <li><code>data</code>: the name of the data frame we are working
+          with
+      </li>
+      <li><code>mapping</code>: the columns of the data frame we are plotting.
+          This is created using the <code>aes()</code> command.
+      </li>
+  </ul>
+  <p><code>aes()</code> stands for “aesthetic” and is used to specify what
+we want to show in the plot. We will start by looking at plots of simple
+time trends using the malaria incidence data for all ages. First, we
+filter the <code>pf_incidence_national</code> data frame for<code>age_group == "total"</code>.</p>
+  <pre class="r"><code>total_incidence &lt;- 
+filter(pf_incidence_national, age_group == &#39;total&#39;)</code></pre>
+  <p>We then start with the ggplot command. We want to use the total
+incidence dataset and wish to plot the year on the x-axis and the
+incidence on the y-axis so the command is as follows:</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))</code></pre>
+</div>
+<div id="scatter-plots-line-graphs" class="section level3">
+  <h2>Scatter plots &amp; line graphs</h2>
+  <p>This wont yet produce a figure as we need to tell ggplot what sort of
+figure we would like this to be. We will start by making a scatter plot
+using <code>geom_point()</code>. We add layers to the ggplot object
+using the <code>+</code> operator.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-69-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>We can then control how the points look by adding commands to the<code>geom_point()</code> function, such as the size, colour and
+transparency (alpha) of the points.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=5, colour = &quot;blue&quot;, alpha = 0.5)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-70-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>We can also change the type of the point by using the<code>shape =</code> command.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=4, colour = &#39;blue&#39;, alpha = 0.5, shape = 18)
+
+# Available shapes (don&#39;t run)
+shapes</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-72-1.png" width="50%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-72-2.png" width="50%"/></p>
+  <p>The general structure of the <code>ggplot()</code> command remains
+similar for different plots.This means that it is easy to change the
+type of an established plot, or create a different plot using a similar
+code structure.</p>
+  <p>We can change the type of plot by replacing <code>geom_point()</code>
+with other options such as a line graph: <code>geom_line()</code>, or
+smoothed conditional means: <code>geom_smooth()</code>.</p>
+  <pre class="r"><code># Line plot
+ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_line(size=2, colour = &quot;red&quot;, alpha = 0.5)
+
+# Smoothed line of fit
+ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_smooth(colour = &quot;yellow&quot;)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-73-1.png" width="50%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-73-2.png" width="50%"/></p>
+  <p>The size, colour and alpha commands are similarly used to control the
+appearance of the line but instead of using <code>shape =</code> to
+control the appearance of the points we can change the style of the line
+in a line plot by specifying <code>linetype =</code></p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_line(size=2, colour = &quot;red&quot;, alpha = 0.5, linetype = &#39;dashed&#39;)
+
+# Available line types (not run)
+lty</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-75-1.png" width="50%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-75-2.png" width="50%"/></p>
+  <p>Additionally, you can layer the types of plots together,
+e.g. plotting the points and lines on the same graph.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_line(size=1, colour = &quot;red&quot;, alpha = 0.5)+
+geom_point(size=5, colour = &#39;blue&#39;, shape = 18)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-76-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <blockquote>
+      <h3 id="task-6" class="challenge">Task 6</h3>
+      <ul>
+          <li>Import the dataset <code>pf_incidence_national</code> we created in
+              the demo from the data folder and filter to just contain data for under
+              5’s
+          </li>
+          <li>Create a line graph plotting the incidence of malaria (y-axis) by
+              date (x-axis)
+</li>
+          <li>Change this to be a green dotted line and increase the line
+              thickness
+</li>
+      </ul>
+      <details>
+          <summary>
+              Solution
+</summary>
+          <pre class="r"><code>  pf_incidence_national &lt;- read_csv(&quot;outputs/pf_incidence_national.csv&quot;)  %&gt;% 
+filter(age_group==&quot;u5&quot;) 
+
+ggplot(pf_incidence_national)+
+geom_line(mapping = aes(x = date_tested, y = incidence), color =  &#39;green&#39;, size = 2)</code></pre>
+      </details>
+  </blockquote>
+  <p><br></p>
+</div>
+<div id="themes" class="section level3">
+  <h2>Themes</h2>
+  <p>Further commands can then be added to the ggplot() object to control
+the appearance of the plot. We can label the axis and add a title using<code>labs()</code>, and can select different themes for the background
+appearance, such as the black and white theme: <code>theme_bw()</code>,
+or the dark theme: <code>theme_dark()</code>.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=2, colour = &quot;blue&quot;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-78-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>We can control the x and y axis limits by using <code>xlim()</code>
+or <code>ylim()</code>. As our x-axis is a date we can control this
+using the command <code>scale_x_date()</code>. Otherwise if this was a
+continuous variable we could use <code>scale_x_continous()</code> to
+control the scale. This command has additional options to control where
+you want the breaks in the axis to be and to alter the data labels</p>
+  <pre class="r"><code># Option 1 using xlim() and ylim()
+ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=5, colour = &#39;blue&#39;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+ylim(0,1000)
+
+ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=5, colour = &#39;blue&#39;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_x_date(limit=c(as.Date(&quot;2018-01-01&quot;),as.Date(&quot;2018-06-01&quot;)),
+date_breaks = &quot;1 month&quot;, date_labels = &quot;%b&quot;)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-79-1.png" width="50%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-79-2.png" width="50%"/></p>
+  <p>Furthermore, we can control the text of the axis and title within the<code>theme()</code> command. <code>theme()</code> provides a large
+amount of control over the appearance of the plot. Common examples of
+what we can do within this command is rotating the x-axis text using the
+option <code>angle =</code>, changing the font size using<code>size =</code> and the font type using <code>face =</code>.</p>
+  <pre class="r"><code>ggplot(data = total_incidence, mapping = aes(x = date_tested, y = incidence))+
+geom_point(size=5, colour = &#39;blue&#39;)+
+labs(x = &quot;Month&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b&quot;)+
+theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust = 0.5),
+axis.title.x = element_text(size = 14,face = &#39;bold&#39;),
+axis.title.y = element_text(size = 14,face = &#39;bold&#39;),
+title = element_text(size = 16,face = &#39;bold&#39;))</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-80-1.png" width="60%" style="display: block; margin: auto;"/></p>
+</div>
+<div id="subgroups-and-facets" class="section level3">
+  <h2>Subgroups and facets</h2>
+  <p>We will now look visualising multiple data trends, for example if you
+had incidence data for multiple countries there are various ways you
+could show this data. Here we will use the dataset<code>pf_incidence_national.csv</code> we imported earlier, with
+incidence for different age groups.</p>
+  <p>Firstly, we can incorporate the trends for different age_groups on
+the same plot by using different colours. We use the <code>colour</code>
+argument inside the <code>aes</code> functions and assign it to the
+country variable. This results in ggplot plotting a line for each
+country in the dataset in a different colour, with a legend added to the
+plot.</p>
+  <pre class="r"><code>ggplot(data = pf_incidence_national, mapping = aes(x = date_tested, y = incidence, colour = age_group))+
+geom_line(size = 3)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;,
+colour = &#39;Age group&#39;)+
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-81-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>We can control the colours in the plots by using the<code>scale_color_manual()</code> function, and passing it the colours
+you wish to use. You can use either the names of colours or the HEX
+codes. We can also move the position of the legend to the bottom using
+the <code>legend.position = "bottom"</code> command within<code>theme()</code> and change the title of the legend within<code>labs()</code>.</p>
+  <pre class="r"><code>ggplot(data = pf_incidence_national, mapping = aes(x = date_tested, y = incidence, colour = age_group))+
+geom_line(size = 3)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;,
+colour = &#39;Age group&#39;)+
+theme_bw()+
+theme(legend.position = &#39;bottom&#39;)+
+scale_colour_manual(values = c(&#39;pink&#39;, &#39;yellow&#39;, &#39;purple&#39;))</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-82-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>Another way to look at multiple data trends in one plot is to uses
+facets. This creates separate plots for each “facet”, as part of the
+overall plot.</p>
+  <pre class="r"><code>ggplot(data = pf_incidence_national, mapping = aes(x = date_tested, y = incidence))+
+geom_line(size=2, colour = &quot;blue&quot;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+facet_wrap(~age_group)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-83-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>There are various options in <code>facet_wrap()</code>. If you have
+largely varying scales between the facets you are plotting, you can plot
+these on different scales using either <code>free_y = TRUE</code>, or<code>free_x = TRUE</code> as options inside of<code>facet_wrap()</code>. You can also specify the number of rows or
+columns you want in the plot, e.g. if you had 6 facets you could plot it
+as <code>nrow = 2, ncol = 3</code> or<code>nrow = 3, ncol = 2</code>.</p>
+  <pre class="r"><code>ggplot(data = pf_incidence_national, mapping = aes(x = date_tested, y = incidence))+
+geom_line(size=2, colour = &quot;blue&quot;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+facet_wrap(~age_group, scales = &#39;free_y&#39;, nrow = 3)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-84-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p><br></p>
+  <blockquote>
+      <h3 id="task-7" class="challenge">Task 7</h3>
+      <ul>
+          <li>Using the <code>pf_incidence_national</code> dataset create scatter
+              plots the number of confirmed malaria cases(y-axis) by date tested
+              (x-axis), with facets for age group.
+          </li>
+          <li>Change the colour of the points based on the age group</li>
+          <li>Change the axis labels and add a title to the plot</li>
+          <li>Change the plot theme to black and white</li>
+      </ul>
+      <details>
+          <summary>
+              Solution
+</summary>
+          <pre class="r"><code>  pf_incidence_national &lt;- read_csv(&quot;outputs/pf_incidence_national.csv&quot;)
+
+ggplot(pf_incidence_national)+
+geom_line(mapping = aes(x = date_tested, y = incidence, color =  &gt;age_group))+
+facet_wrap(~age_group)+
+labs(x = &quot;Date&quot;, y = &quot;Incidence per 1000 PYO&quot;, title = &quot;Incidence &gt;Rate&quot;)+
+theme_bw()</code></pre>
+      </details>
+  </blockquote>
+  <p><br></p>
+</div>
+<div id="continuous-colour-scales" class="section level3">
+  <h2>Continuous colour scales</h2>
+  <p>Similarly to using the <code>colour</code> option to plot your data
+by categorical variables, we can use this options to plot continuous
+data on a colour scale. For example, if we wanted colour the points on
+our plot of incidence by year based on the total population we can add<code>colour = population</code> to the aesthetic command.</p>
+  <pre class="r"><code>ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-86-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>There are then a few options for how we can control the colour scale
+of a continuous variable. Firstly we can use the<code>scale_colour_gradient()</code> command to specify the low and high
+colours of a gradient from which to build the colour ramp. Secondly
+ggpplot allows us to use colour scales from ColorBrewer (<a href="https://colorbrewer2.org" class="uri">https://colorbrewer2.org</a>). This has a wide range of
+sequential, diverging and qualitative colour schemes you can use for a
+rnage of data and projects. For continuous data this is specified using
+the command <code>scale_colour_distiller()</code> and using the option<code>palette =</code> to specify the colour palette to use.</p>
+  <pre class="r"><code>ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_colour_gradient(low = &quot;yellow&quot;, high = &quot;red&quot;)
+
+ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_colour_distiller(palette = &#39;Greens&#39;)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-87-1.png" width="50%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-87-2.png" width="50%"/></p>
+  <p>An additional option for- continuous colour scales are the viridis
+scales. These are well designed colour scales which are excellent for
+graphs and maps. They are colourful, appear uniform in both colour and
+black-and-white and are easy to view for persons with common forms of
+colour blindness. There are various options withing this package and
+they can be used within ggplot through the command<code>scale_colour_viridis_c()</code>.</p>
+  <pre class="r"><code># Default viridis colour scale
+ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_colour_viridis_c()
+
+# Inferno option
+ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_colour_viridis_c(option = &#39;inferno&#39;)
+
+# Reversing the direction
+ggplot(total_incidence, aes(x = date_tested, y = incidence, colour = pop))+
+geom_point(size=5)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;)+
+theme_bw()+
+scale_colour_viridis_c(option = &#39;inferno&#39;, direction = -1)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-88-1.png" width="33%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-88-2.png" width="33%"/><img src="02_datahandling_files/figure-html/unnamed-chunk-88-3.png" width="33%"/></p>
+  <p>Finally, we can use ggplot to have plot different data on different
+layers of the plot. We do this by moving the <code>data =</code> and<code>mapping =</code> arguments from the <code>ggpplot()</code> to the
+specific layers such as <code>geom_point()</code>. Here we plot a
+scatter plot with different colours for each country, but we add a
+smoothed mean line for all of the data.</p>
+  <pre class="r"><code>ggplot()+
+geom_point(data = filter(pf_incidence_national, age_group != &#39;total&#39;),
+aes(x = date_tested, y = incidence, colour = age_group), size=4)+
+geom_line(data = filter(pf_incidence_national, age_group == &#39;total&#39;),
+aes(x = date_tested, y = incidence), colour = &#39;grey&#39;, size = 2, linetype = &#39;dashed&#39;)+
+labs(x = &quot;Date&quot;,
+y = &quot;Incidence/100,000/month&quot;,
+title = &quot;Malaria incidence in 2018&quot;,
+colour = &#39;Age group&#39;)+
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-89-1.png" width="60%" style="display: block; margin: auto;"/></p>
+</div>
+<div id="box-plots-bar-charts-and-histograms" class="section level3">
+  <h2>Box plots, bar charts and histograms</h2>
+  <p><code>ggplot</code> can also be used to create plots summarising the
+data and incorporating statistical transformations.</p>
+  <p>Box plots are a good way of summarising continuous data by discrete
+variables. For example, in this dataset we have the number of confirmed
+malaria cases in different districts for each month. In<code>ggplot</code> we can use box plots to easiy summarise and
+visualise these data.</p>
+  <p>As in the previous section, we provide ggplot() with the x and y
+variables in the <code>aes()</code> argument and R will calculate the
+size of the boxes and whiskers. Similarly, you can control the colour of
+the lines and the fill colour of the plot by using the<code>colour</code> and <code>fill</code> arguments.</p>
+  <p>To look at these plots we will use the “pf_incidence” dataset we
+created earlier, with the confirmed cases, incidence, and population by
+date and district. We will subset this data to look at all ages
+initially. We introduced pipes earlier, these can also be used with
+ggplot. Dates in ggplot are treated as continuous variables to here we
+must specify <code>group = date_tested</code> to group the data by
+date.</p>
+  <pre class="r"><code>filter(pf_incidence, age_group == &#39;total&#39;) %&gt;% 
+ggplot(aes(x = date_tested, y = conf, group=date_tested))+
+geom_boxplot(colour = &#39;black&#39;, fill = &#39;dark red&#39;)+  
+labs(x = &quot;Date&quot;,
+y = &quot;Number of cases&quot;,
+title = &quot;Number of malaria cases by month&quot;)+
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-90-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>Histograms are created using the <code>geom_histogram()</code>
+function. This splits the data into bins using <code>stat_bins()</code>
+and counts the number of occurrences in each bin. You can control the
+number of bins or the width of the bins using <code>bins</code> and<code>binwidth</code> respectively. Options such as <code>fill</code>
+can also be used to control the fill colour of the bars, along with the
+additional options already discussed.</p>
+  <pre class="r"><code>filter(pf_incidence, age_group == &#39;total&#39;) %&gt;% 
+ggplot(aes(x = conf))+
+geom_histogram(bins = 20, fill = &#39;purple&#39;, colour = &#39;black&#39;)+
+theme_bw()+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Histogram of malaria tests conducted&quot;)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-91-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>For bar plots the <code>geom_bar()</code>function is used. The
+default transformation is to count the number of rows for each category,<code>stat = "bin"</code>. There are other transformations we can use,
+so if we want to make the heights of the bars to represent values in the
+data (provided by the assigning the y aesthetic), we use<code>stat = identity</code>. Here we plot a bar chart of the total
+number of malaria tests conducted each month in our routine data.</p>
+  <pre class="r"><code>filter(pf_incidence, age_group == &#39;total&#39;) %&gt;% 
+ggplot(aes(x = date_tested, y = conf, group=date_tested))+
+geom_bar(stat = &quot;identity&quot;, fill = &quot;blue&quot;)+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Bar chart of malaria tests conducted per month&quot;) +
+theme_bw()</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-92-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>If we want to display different subgroups of data, such as number of
+tests by age group, on a bar plot we can either create a stacked bar
+plot with different colours representing the subgroups by using the<code>fill = age_group</code> command, or by creating a side-by-side bar
+plot by combining <code>fill = age_group</code> with the command<code>position = "dodge"</code>.</p>
+  <pre class="r"><code># Stacked bar chart
+filter(pf_incidence, age_group != &#39;total&#39;) %&gt;% 
+ggplot(mapping = aes(x = date_tested, y = conf, fill = age_group))+
+geom_bar(stat = &quot;identity&quot;)+
+theme_bw()+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Bar chart of confirmed malaria cases per month, by age group&quot;,
+fill = NULL)</code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-93-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <pre class="r"><code># Side by side bar chart
+filter(pf_incidence, age_group != &#39;total&#39;) %&gt;% 
+ggplot(mapping = aes(x = date_tested, y = conf, fill = age_group))+
+geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)+
+theme_bw()+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Bar chart of confirmed malaria cases per month, by age group&quot;,
+fill = NULL) </code></pre>
+  <p><img src="02_datahandling_files/figure-html/unnamed-chunk-94-1.png" width="60%" style="display: block; margin: auto;"/></p>
+  <p>This is just an introduction to what you can achieve for ggplot. For
+further guidance look at the help pages and the cheat-sheet available at<a href="https://www.rstudio.com/resources/cheatsheets">https://www.rstudio.com/resources/cheatsheets</a>.</p>
+</div>
+<div id="saving-plots" class="section level3">
+  <h2>Saving plots</h2>
+  <p>There are a couple of different ways you can save plots in R. Firstly
+you can save them by opening a <code>png()</code>, <code>jpeg()</code>
+or <code>pdf()</code> depending on the file type you want to save. These
+commands contain the output file path and the desired height and width
+of the figure (optional). It is then followed by the figure, and closing
+down the file with <code>dev.off()</code>.</p>
+  <pre class="r"><code>png(&quot;outputs/malaria_incidence_plot.png&quot;)
+filter(pf_incidence, age_group != &#39;total&#39;) %&gt;% 
+ggplot(mapping = aes(x = date_tested, y = conf, fill = age_group))+
+geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)+
+theme_bw()+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Bar chart of confirmed malaria cases per month, by age group&quot;,
+fill = NULL) 
+dev.off()</code></pre>
+  <p>Another option for saving plots is using <code>ggsave()</code>. This
+takes the file name, including the extension, that you wish to save and
+the plot. Leaving the plot name empty will default to the last plot
+created. You can also include commands for the desired height and width
+of the figure if required. So saving the above plot would entail:</p>
+  <pre class="r"><code>filter(pf_incidence, age_group != &#39;total&#39;) %&gt;% 
+ggplot(mapping = aes(x = date_tested, y = conf, fill = age_group))+
+geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)+
+theme_bw()+
+labs(x = &quot;Number tested&quot;,
+y = &quot;Count&quot;,
+title = &quot;Bar chart of confirmed malaria cases per month, by age group&quot;,
+fill = NULL) 
+ggsave(&quot;outputs/malaria_incidence_plot.png&quot;)</code></pre>
+  <p><br></p>
+  <blockquote>
+      <h3 id="task-8" class="challenge">Task 8</h3>
+      <ul>
+          <li>Import the <code>pf_incidence</code> dataset we created in demo
+              2.
+          </li>
+          <li>Create a box plot of the confirmed malaria cases for children under
+              5 by month
+</li>
+          <li>Using the <code>pf_incidence</code> dataset create a stacked bar
+              chart of confirmed &gt; malaria cases in children under 5 and over 5’s
+              by month
+          </li>
+      </ul>
+      <details>
+          <summary>
+              Solution
+</summary>
+          <pre class="r"><code>  pf_incidence &lt;- read_csv(&quot;outputs/pf_incidence.csv&quot;) %&gt;% 
+mutate(month = month(date_tested, label = TRUE, abbr = TRUE), year = year(date_tested)) 
+
+pf_incidence %&gt;% 
+filter(age_group == &quot;u5&quot;) %&gt;% 
+ggplot()+
+geom_boxplot(mapping = aes(x = month, y = conf))+
+labs(y = &quot;Confirmed Cases&quot;)+
+theme_bw()
+
+ggplot(pf_incidence)+
+geom_boxplot(mapping = aes(x = month, y = conf, fill = age_group))+
+labs(y = &quot;Confirmed Cases under 5&quot;)+
+theme_bw()</code></pre>
+      </details>
+  </blockquote>
+</div>
+<!-- Tip Section -->
+<p>
+  <strong>Tip:</strong> You can automate generating many plots (e.g., for each country or each 
+  variable) by writing a function or loop. For instance, you might loop through a list of 
+  countries, create four different plots for each, and then save them all in a single PDF. 
+  This can be done by opening a PDF device (<code>pdf("plots.pdf")</code>), producing plots 
+  in a loop, and then closing the device with <code>dev.off()</code>, or by using 
+  <code>ggsave()</code> inside your loop.
+</p>
+
+<!-- Additional Resources -->
+<h2 style="margin-top: 2em;">Further Resources</h2>
+<p>Here are some recommended resources to explore and deepen your understanding of <code>ggplot2</code> and data visualizations:</p>
+<ul style="list-style-type: disc; padding-left: 20px;">
+  <li>
+    <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank" rel="noopener noreferrer">
+      RStudio ggplot2 Cheat Sheet
+    </a>
+    – Handy reference for geoms, scales, and themes.
+  </li>
+  <li>
+    <a href="https://r4ds.had.co.nz/data-visualisation.html" target="_blank" rel="noopener noreferrer">
+      R for Data Science: Data Visualization
+    </a>
+    – In-depth explanation of <code>ggplot2</code> concepts and examples.
+  </li>
+  <li>
+    <a href="https://www.r-graph-gallery.com/" target="_blank" rel="noopener noreferrer">
+      R Graph Gallery
+    </a>
+    – Examples of many different plot types, with sample code to get you started.
+  </li>
+</ul>
+
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+        <script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+</script>
+        <!-- tabsets -->
+        <script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+        <!-- code folding -->
+        <script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+        <script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+    </body>
+</html>

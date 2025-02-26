@@ -215,7 +215,43 @@ $(document).ready(function () {
         <p><strong>Basic Bash Command Structure:</strong></p> <p> <code>command [options] [arguments]</code> </p> 
         
 
-        <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Example:</strong> <code>mv -v ~/data_backup /mnt/backup/</code> – Moves your <code>data_backup</code> folder to a new destination with verbose output.</li> <li><strong>Example:</strong> <code>Rscript analysis.R</code> – Runs an R script directly from the terminal.</li> <li><strong>Example:</strong> <code>free -h</code> – Displays system memory usage in a human-readable format.</li> </ul> <p> Use the Terminal in RStudio like you would a traditional Command Prompt or macOS/Linux Terminal—it's your secret door to a world of efficient coding! </p> <h3 style="color: #16a085;">2. Setting Up Git in RStudio</h3> 
+        <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Example:</strong> <code>mv -v ~/data_backup /mnt/backup/</code> – Moves your <code>data_backup</code> folder to a new destination with verbose output.</li> <li><strong>Example:</strong> <code>Rscript analysis.R</code> – Runs an R script directly from the terminal.</li> <li><strong>Example:</strong> <code>free -h</code> – Displays system memory usage in a human-readable format.</li> </ul> <p> Use the Terminal in RStudio like you would a traditional Command Prompt or macOS/Linux Terminal—it's your secret door to a world of efficient coding! </p> 
+        
+        <div id="git-vs-github" class="section level3" style="margin-top: 2em;">
+          <h3>Understanding the Difference: Git vs. GitHub</h3>
+          <p>
+            Although people often say “Git” and “GitHub” in the same breath, they 
+            are not the same thing:
+          </p>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>
+              <strong>Git:</strong> A free and open-source 
+              <em>distributed version control system</em>. It runs locally on your 
+              computer, tracking changes to your project files over time. With Git, 
+              you can commit changes, revert to earlier versions, create branches 
+              for new features, and merge updates without losing work.
+            </li>
+            <li>
+              <strong>GitHub:</strong> A web-based platform (a 
+              <em>hosting service</em> for Git repositories) that also provides 
+              collaborative features such as pull requests, issue tracking, code 
+              review, and wikis. Think of GitHub as a “cloud-based home” for your 
+              Git repositories, where you can share code with others, contribute 
+              to open-source projects, and manage teamwork more effectively.
+            </li>
+          </ul>
+          <p>
+            In other words, <strong>Git is the tool</strong> that handles version 
+            control on your computer, while <strong>GitHub is the service</strong> 
+            that allows you to upload (push) your local Git repositories and 
+            collaborate with others online. You can use Git <em>without</em> 
+            GitHub (e.g., on your own server or locally), but GitHub’s social 
+            coding features make it easy to share, review, and collaborate on 
+            projects with people around the world.
+          </p>
+        </div>
+        
+        <h3 style="color: #16a085;">2. Setting Up Git in RStudio</h3> 
         <p> Git is a distributed version control system that allows you to track changes in your code over time. It provides a safety net by letting you revert to earlier versions, experiment on separate branches, and merge changes when ready. This is crucial for collaborative projects and for maintaining a clear history of your work. </p> 
         
         <p> <strong>Configure Git using the RStudio Terminal:</strong> </p> 
@@ -240,7 +276,91 @@ $(document).ready(function () {
         <pre><code>git --version</code></pre> 
         <p><img src="images/08_Git/Terminal.PNG" width="99%" style="display: block; margin: auto;"/></p>
 
-
+        <div id="terminal-settings" class="section level3" style="margin-top: 2em;">
+          <h3>Verifying Your Terminal Settings in RStudio</h3>
+          <p>
+            Before running Bash commands or configuring Git, make sure RStudio’s Terminal is set up correctly. 
+            Follow these steps:
+          </p>
+          <ol style="list-style-type: decimal; padding-left: 20px;">
+            <li>
+              <strong>Open RStudio’s Global Options:</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li>Go to <em>Tools &gt; Global Options</em>.</li>
+                <li>In the left-hand menu, select <em>Terminal</em>.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Choose Your Default Shell:</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li>Under <em>New terminals open with:</em>, pick the appropriate shell for your system 
+                    (e.g., <em>Git Bash</em> on Windows, <em>/bin/bash</em> on macOS/Linux).</li>
+                <li>If you have multiple shells installed, confirm you’re selecting the one you use 
+                    for Git or other command-line tasks.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Check the “Close terminal when RStudio exits” Option:</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li>Under <em>Miscellaneous</em>, you can enable or disable 
+                    <em>“Close terminal when RStudio exits”</em>. If you prefer the terminal session 
+                    to remain open between sessions, leave this unchecked.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Apply and Save:</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li>Click <em>Apply</em> and then <em>OK</em> to save your changes.</li>
+                <li>Open a new terminal via <em>Tools &gt; Terminal &gt; New Terminal</em> to confirm 
+                    the shell is correct.</li>
+              </ul>
+            </li>
+          </ol>
+          <p>
+            Ensuring these settings are correct helps avoid confusion when running Bash commands, 
+            configuring Git, or using other command-line tools within RStudio.
+          </p>
+        </div>
+        
+        <div id="bash-demo-exercise" class="section level3" style="margin-top: 2em;">
+          <h3>Demo &amp; Exercise: Basic Bash Commands</h3>
+          <p>
+            Let’s practice a few essential Bash commands for navigating directories, creating new folders, 
+            and removing them.
+          </p>
+          <ol style="list-style-type: decimal; padding-left: 20px;">
+            <li>
+              <strong>Explore Your Current Working Directory</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li><code>pwd</code> – Prints the path of your current working directory.</li>
+                <li><code>ls</code> – Lists the files and folders in your current directory.</li>
+                <li><code>cd</code> – Changes your directory (e.g., <code>cd Documents</code>). 
+                    Use <code>cd ..</code> to go up one level.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Create a Folder for Today’s Session</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li><code>mkdir workshop5_Git</code> – Makes a new folder named <code>workshop5_Git</code>.</li>
+                <li><code>ls</code> – Check to see that the new folder was created.</li>
+                <li><code>cd workshop5_Git</code> – Optionally navigate inside the folder.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Remove the Folder</strong><br/>
+              <ul style="list-style-type: disc; padding-left: 20px;">
+                <li><code>rm -r workshop5_Git</code> – Removes the folder and everything inside it 
+                    (<em>be careful!</em>).</li>
+                <li><code>ls</code> – Verify the folder no longer exists.</li>
+              </ul>
+            </li>
+          </ol>
+          <p>
+            This quick exercise helps you become more comfortable with basic Bash commands and 
+            navigating the file system.
+          </p>
+        </div>
+        
 
         <h3 style="color: #16a085;">3. Why Use Git and GitHub?</h3> 
         <p> While Git is the tool you use locally to track your project’s history and manage changes, GitHub is an online platform that hosts your Git repositories. Here’s why both are important: </p> 
@@ -360,10 +480,168 @@ git commit -m "Describe your changes"</code></pre>
   </tbody>
 </table>
 
-        <h3 style="color: #16a085;">5. Collaborating with GitHub</h3> <p> GitHub makes collaboration straightforward: </p> 
+<!-- =====================================================
+     1. Setting Up SSH Keys in RStudio
+     ===================================================== -->
+     <div id="ssh-setup" class="section level3" style="margin-top: 2em;">
+      <h3> 4. Setting Up SSH Keys in RStudio for GitHub</h3>
+      <p>
+        Instead of using a personal access token (PAT) or HTTPS to authenticate with GitHub, 
+        you can configure RStudio to use SSH keys for a secure, password-free connection. 
+        Here’s how:
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Generate an SSH Key in RStudio:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Open RStudio, then go to 
+              <em>Tools &gt; Global Options &gt; Git/SVN</em> (or just <em>Git</em> in newer versions).
+            </li>
+            <li>Look for a button or link that says <em>Create RSA Key</em> or <em>Create SSH Key</em>. 
+                Click it to generate a new key pair.</li>
+            <li>RStudio will store the private key locally (e.g., <code>~/.ssh/id_rsa</code> on Linux/Mac or 
+                <code>C:\Users\YourName\.ssh\id_rsa</code> on Windows). The public key is 
+                <code>id_rsa.pub</code>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Add Your Public Key to GitHub:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Copy the contents of <code>id_rsa.pub</code> (the public key).</li>
+            <li>On GitHub, go to <em>Settings &gt; SSH and GPG keys &gt; New SSH key</em>.</li>
+            <li>Give it a title (e.g., “RStudio SSH Key”), paste the public key, and click <em>Add SSH key</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Test the Connection:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In RStudio’s <em>Terminal</em> or your system’s terminal, run 
+                <code>ssh -T git@github.com</code>.</li>
+            <li>If you see a success message like “Hi username! You've successfully authenticated,” 
+                you’re all set.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        From now on, you can clone, pull, and push via SSH without re-entering your password or PAT. 
+        For example, an SSH clone URL looks like: 
+        <code>git@github.com:YourUsername/YourRepo.git</code>.
+      </p>
+    </div>
+    
+    <!-- =====================================================
+         2. Creating a New GitHub Repo (with a README)
+            and Connecting It to RStudio
+         ===================================================== -->
+    <div id="new-repo" class="section level3" style="margin-top: 2em;">
+      <h3> 5.  Creating a New GitHub Repo (with a README) and Connecting to RStudio</h3>
+      <p>
+        If you want to start a fresh project on GitHub and immediately connect it to RStudio, 
+        follow these steps:
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Create a New Repository on GitHub:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Click the <em>+ New repository</em> button (top-right corner) or go to your 
+                profile &gt; <em>Repositories &gt; New</em>.</li>
+            <li>Give your repository a name and decide if it’s <em>Public</em> or <em>Private</em>.</li>
+            <li>Check the box <em>“Initialize this repository with a README”</em>. 
+                This adds a basic README file right away.</li>
+            <li>Click <em>Create repository</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Clone the Repo in RStudio:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>On the main page of your new repository, click the green <em>Code</em> button and 
+                copy the clone URL (HTTPS or SSH).</li>
+            <li>In RStudio, go to <em>File &gt; New Project &gt; Version Control &gt; Git</em>.</li>
+            <li>Paste the repository URL, choose a local folder, and click <em>Create Project</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Commit and Push Changes:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Open the new project in RStudio, edit the README or add new files.</li>
+            <li>Use the <em>Git</em> pane (or terminal) to stage (<code>git add .</code>), 
+                commit (<code>git commit -m "message"</code>), and push 
+                (<code>git push origin main</code>) your changes to GitHub.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        That’s it! You now have a local RStudio project connected to a GitHub repo initialized 
+        with a README. This is a quick way to start version control from day one.
+      </p>
+    </div>
+    
+    <!-- =====================================================
+         3. Forking a Public Repo and Uploading to 
+            06_Assignments/Git_Intro
+         ===================================================== -->
+    <div id="fork-repo" class="section level3" style="margin-top: 2em;">
+      <h3>6. Forking a Public Repo and Uploading to <code>06_Assignments/Git_Intro</code></h3>
+      <p>
+        Suppose you want to contribute to the public repository at 
+        <a href="https://github.com/JuniperPNG/MAP_training" target="_blank" rel="noopener noreferrer">
+          https://github.com/JuniperPNG/MAP_training
+        </a>. You can do so by forking the repo, making changes, and submitting a pull request. 
+        Here’s the typical workflow:
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Fork the Repo on GitHub:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Visit the 
+              <a href="https://github.com/JuniperPNG/MAP_training" target="_blank" rel="noopener noreferrer">
+                MAP_training repository
+              </a>.</li>
+            <li>Click the <em>Fork</em> button (top-right). This creates a copy under your 
+                GitHub account, e.g. <code>github.com/YourUsername/MAP_training</code>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Clone Your Fork Locally:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In RStudio, go to <em>File &gt; New Project &gt; Version Control &gt; Git</em>.</li>
+            <li>Use the SSH or HTTPS clone URL from your fork, e.g. 
+                <code>git@github.com:YourUsername/MAP_training.git</code>.</li>
+            <li>Select a local directory to store the project.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Upload Your Assignment:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Inside RStudio, open the cloned project folder. Navigate to 
+                <code>06_Assignments/Git_Intro</code>.</li>
+            <li>Add or modify any files (e.g., <code>my_solution.R</code>) in that folder.</li>
+            <li>Commit and push changes to your fork (e.g., <code>git push origin main</code>).</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Open a Pull Request (PR):</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Back on GitHub, go to your fork at 
+                <code>github.com/YourUsername/MAP_training</code>.</li>
+            <li>Click <em>Contribute</em> &gt; <em>Open pull request</em> to propose merging your changes 
+                into <code>JuniperPNG/MAP_training</code>.</li>
+            <li>Add a descriptive title/summary. Once merged, your changes become part of the main repo.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        This “fork and pull request” workflow is common in open-source projects. It lets you propose 
+        changes without directly altering someone else’s code. Once your pull request is reviewed 
+        and merged, your contributions appear in the original repository.
+      </p>
+    </div>
+    
+
+        <h3 style="color: #16a085;">7. Collaborating with GitHub</h3> <p> GitHub makes collaboration straightforward: </p> 
         <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Share Your Repository:</strong> Invite collaborators via your repository’s settings on GitHub, allowing multiple team members to work on the project simultaneously.</li> <li><strong>Synchronize Changes:</strong> Regularly pull updates using <code>git pull origin main</code> to ensure you’re working with the latest version.</li> <li><strong>Branching and Merging:</strong> Create branches with <code>git checkout -b new-branch</code> to work on features independently and merge them back when complete using <code>git merge branch-name</code>.</li> </ul>
         <p> With Git and GitHub, you not only safeguard your code but also streamline collaboration, making it easier to manage contributions from multiple developers. </p> 
-        <h3 style="color: #16a085;">6. Next Steps</h3>
+        <h3 style="color: #16a085;">8. Next Steps</h3>
         <p> Practice these commands in your RStudio Terminal and explore the Git pane to familiarize yourself with version control. Although another session will dive deeper into Git, this guide provides a solid starting point for managing your code and collaborating on GitHub. </p> 
     <p> Happy coding! </p> </section>
 

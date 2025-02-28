@@ -321,7 +321,55 @@ $(document).ready(function () {
             configuring Git, or using other command-line tools within RStudio.
           </p>
         </div>
-        
+        <!-- =====================================================
+     1. Setting Up SSH Keys in RStudio
+     ===================================================== -->
+     <div id="ssh-setup" class="section level3" style="margin-top: 2em;">
+      <h3> 4. Setting Up SSH Keys in RStudio for GitHub</h3>
+      <p>
+        Instead of using a personal access token (PAT) or HTTPS to authenticate with GitHub, 
+        you can configure RStudio to use SSH keys for a secure, password-free connection. 
+        Here’s how:
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Generate an SSH Key in RStudio:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Open RStudio, then go to 
+              <em>Tools &gt; Global Options &gt; Git/SVN</em> (or just <em>Git</em> in newer versions).
+            </li>
+            <li>Look for a button or link that says <em>Create RSA Key</em> or <em>Create SSH Key</em>. 
+                Click it to generate a new key pair.</li>
+            <li>RStudio will store the private key locally (e.g., <code>~/.ssh/id_rsa</code> on Linux/Mac or 
+                <code>C:\Users\YourName\.ssh\id_rsa</code> on Windows). The public key is 
+                <code>id_rsa.pub</code>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Add Your Public Key to GitHub:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Copy the contents of <code>id_rsa.pub</code> (the public key).</li>
+            <li>On GitHub, go to <em>Settings &gt; SSH and GPG keys &gt; New SSH key</em>.</li>
+            <li>Give it a title (e.g., “RStudio SSH Key”), paste the public key, and click <em>Add SSH key</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Test the Connection:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In RStudio’s <em>Terminal</em> or your system’s terminal, run 
+                <code>ssh -T git@github.com</code>.</li>
+            <li>If you see a success message like “Hi username! You've successfully authenticated,” 
+                you’re all set.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        From now on, you can clone, pull, and push via SSH without re-entering your password or PAT. 
+        For example, an SSH clone URL looks like: 
+        <code>git@github.com:YourUsername/YourRepo.git</code>.
+      </p>
+    </div>
+
         <div id="bash-demo-exercise" class="section level3" style="margin-top: 2em;">
           <h3>Demo &amp; Exercise: Basic Bash Commands</h3>
           <p>
@@ -436,7 +484,7 @@ git commit -m "Describe your changes"</code></pre>
 </p>
 
 
-<h4 style="color: #16a085;">M Recap</h4>
+<h4 style="color: #16a085;">Quick Recap</h4>
 <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
   <thead>
     <tr style="background-color: #f8f8f8;">
@@ -479,55 +527,6 @@ git commit -m "Describe your changes"</code></pre>
     </tr>
   </tbody>
 </table>
-
-<!-- =====================================================
-     1. Setting Up SSH Keys in RStudio
-     ===================================================== -->
-     <div id="ssh-setup" class="section level3" style="margin-top: 2em;">
-      <h3> 4. Setting Up SSH Keys in RStudio for GitHub</h3>
-      <p>
-        Instead of using a personal access token (PAT) or HTTPS to authenticate with GitHub, 
-        you can configure RStudio to use SSH keys for a secure, password-free connection. 
-        Here’s how:
-      </p>
-      <ol style="list-style-type: decimal; padding-left: 20px;">
-        <li>
-          <strong>Generate an SSH Key in RStudio:</strong><br/>
-          <ul style="list-style-type: disc; padding-left: 20px;">
-            <li>Open RStudio, then go to 
-              <em>Tools &gt; Global Options &gt; Git/SVN</em> (or just <em>Git</em> in newer versions).
-            </li>
-            <li>Look for a button or link that says <em>Create RSA Key</em> or <em>Create SSH Key</em>. 
-                Click it to generate a new key pair.</li>
-            <li>RStudio will store the private key locally (e.g., <code>~/.ssh/id_rsa</code> on Linux/Mac or 
-                <code>C:\Users\YourName\.ssh\id_rsa</code> on Windows). The public key is 
-                <code>id_rsa.pub</code>.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Add Your Public Key to GitHub:</strong><br/>
-          <ul style="list-style-type: disc; padding-left: 20px;">
-            <li>Copy the contents of <code>id_rsa.pub</code> (the public key).</li>
-            <li>On GitHub, go to <em>Settings &gt; SSH and GPG keys &gt; New SSH key</em>.</li>
-            <li>Give it a title (e.g., “RStudio SSH Key”), paste the public key, and click <em>Add SSH key</em>.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Test the Connection:</strong><br/>
-          <ul style="list-style-type: disc; padding-left: 20px;">
-            <li>In RStudio’s <em>Terminal</em> or your system’s terminal, run 
-                <code>ssh -T git@github.com</code>.</li>
-            <li>If you see a success message like “Hi username! You've successfully authenticated,” 
-                you’re all set.</li>
-          </ul>
-        </li>
-      </ol>
-      <p>
-        From now on, you can clone, pull, and push via SSH without re-entering your password or PAT. 
-        For example, an SSH clone URL looks like: 
-        <code>git@github.com:YourUsername/YourRepo.git</code>.
-      </p>
-    </div>
     
     <!-- =====================================================
          2. Creating a New GitHub Repo (with a README)
@@ -576,6 +575,161 @@ git commit -m "Describe your changes"</code></pre>
       </p>
     </div>
     
+    <div id="exercise-git-new-repo" class="section level3" style="margin-top: 2em;">
+      <h3>Exercise: Create a New GitHub Repo, Upload Data &amp; R Script, and Push Changes from RStudio</h3>
+      <p>
+        In this exercise, you’ll walk through the process of creating a new GitHub repository, 
+        uploading your data and an R script, then making changes (e.g., adding a simple plot) 
+        and pushing everything to GitHub using RStudio’s built-in Git GUI.
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Create a New GitHub Repository:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Log in to GitHub and click <em>+ New repository</em> (top-right) or 
+                <em>Repositories &gt; New</em> on your profile.</li>
+            <li>Give the repository a name (e.g., <code>routine_data_analysis</code>) and 
+                optionally include a description.</li>
+            <li>Check <em>“Initialize this repository with a README”</em> to create a basic 
+                README file. Then click <em>Create repository</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Clone the Repo in RStudio:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In RStudio, go to <em>File &gt; New Project &gt; Version Control &gt; Git</em>.</li>
+            <li>Copy the repository’s SSH or HTTPS URL from GitHub (e.g., 
+                <code>git@github.com:YourUser/routine_data_analysis.git</code>).</li>
+            <li>Paste the URL into RStudio, choose a local folder, and click 
+                <em>Create Project</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Upload Data and R Script:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Place your data file (e.g., <code>routine_data.csv</code>) into the newly 
+                created project folder.</li>
+            <li>Create a new R script (e.g., <code>data_cleaning.R</code>) in RStudio. 
+                Write code to load and clean the data, for example:
+                <pre><code>my_data &lt;- read.csv("routine_data.csv")
+    # Perform cleaning steps, e.g.:
+    # my_data &lt;- my_data %&gt;%
+    #   filter(!is.na(variable)) %&gt;%
+    #   mutate(...)
+    </code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Add a Basic Plot:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In the same <code>data_cleaning.R</code> script, create a simple plot of your cleaned data, 
+                for instance:
+                <pre><code>plot(my_data$variable1, my_data$variable2,
+         main = "Basic Plot of Routine Data",
+         xlab = "Variable 1",
+         ylab = "Variable 2")</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Stage, Commit, and Push via RStudio’s Git GUI:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Open the <em>Git</em> pane (usually in the top-right or top-left pane in RStudio). 
+                You should see the files you added or changed (e.g., <code>routine_data.csv</code> 
+                and <code>data_cleaning.R</code>).</li>
+            <li>Select the checkboxes next to each file to <em>stage</em> them. 
+                Click <em>Commit</em> to open the commit window.</li>
+            <li>Write a clear commit message (e.g., “Added routine_data.csv and data_cleaning.R script”).</li>
+            <li>Click <em>Commit</em> to finalize. Then click the <em>Push</em> button to upload 
+                your changes to GitHub.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        Once complete, check your repository on GitHub to ensure your data file, R script, 
+        and commit history are visible. Congratulations—you’ve successfully created a new 
+        repo, added data, made changes, and pushed them using the Git GUI in RStudio!
+      </p>
+    </div>
+    <div id="exercise-git-new-repo" class="section level3" style="margin-top: 2em;">
+      <h3>Exercise: Create a New GitHub Repo, Upload Data &amp; R Script, and Push Changes from RStudio</h3>
+      <p>
+        In this exercise, you’ll walk through the process of creating a new GitHub repository, 
+        uploading your data and an R script, then making changes (e.g., adding a simple plot) 
+        and pushing everything to GitHub using RStudio’s built-in Git GUI.
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Create a New GitHub Repository:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Log in to GitHub and click <em>+ New repository</em> (top-right) or 
+                <em>Repositories &gt; New</em> on your profile.</li>
+            <li>Give the repository a name (e.g., <code>routine_data_analysis</code>) and 
+                optionally include a description.</li>
+            <li>Check <em>“Initialize this repository with a README”</em> to create a basic 
+                README file. Then click <em>Create repository</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Clone the Repo in RStudio:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In RStudio, go to <em>File &gt; New Project &gt; Version Control &gt; Git</em>.</li>
+            <li>Copy the repository’s SSH or HTTPS URL from GitHub (e.g., 
+                <code>git@github.com:YourUser/routine_data_analysis.git</code>).</li>
+            <li>Paste the URL into RStudio, choose a local folder, and click 
+                <em>Create Project</em>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Upload Data and R Script:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Place your data file (e.g., <code>routine_data.csv</code>) into the newly 
+                created project folder.</li>
+            <li>Create a new R script (e.g., <code>data_cleaning.R</code>) in RStudio. 
+                Write code to load and clean the data, for example:
+                <pre><code>my_data &lt;- read.csv("routine_data.csv")
+    # Perform cleaning steps, e.g.:
+    # my_data &lt;- my_data %&gt;%
+    #   filter(!is.na(variable)) %&gt;%
+    #   mutate(...)
+    </code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Add a Basic Plot:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>In the same <code>data_cleaning.R</code> script, create a simple plot of your cleaned data, 
+                for instance:
+                <pre><code>plot(my_data$variable1, my_data$variable2,
+         main = "Basic Plot of Routine Data",
+         xlab = "Variable 1",
+         ylab = "Variable 2")</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Stage, Commit, and Push via RStudio’s Git GUI:</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li>Open the <em>Git</em> pane (usually in the top-right or top-left pane in RStudio). 
+                You should see the files you added or changed (e.g., <code>routine_data.csv</code> 
+                and <code>data_cleaning.R</code>).</li>
+            <li>Select the checkboxes next to each file to <em>stage</em> them. 
+                Click <em>Commit</em> to open the commit window.</li>
+            <li>Write a clear commit message (e.g., “Added routine_data.csv and data_cleaning.R script”).</li>
+            <li>Click <em>Commit</em> to finalize. Then click the <em>Push</em> button to upload 
+                your changes to GitHub.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        Once complete, check your repository on GitHub to ensure your data file, R script, 
+        and commit history are visible. Congratulations—you’ve successfully created a new 
+        repo, added data, made changes, and pushed them using the Git GUI in RStudio!
+      </p>
+    </div>
+        
     <!-- =====================================================
          3. Forking a Public Repo and Uploading to 
             06_Assignments/Git_Intro

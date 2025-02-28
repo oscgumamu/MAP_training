@@ -279,7 +279,7 @@ $(document).ready(function () {
         <div id="terminal-settings" class="section level3" style="margin-top: 2em;">
           <h3>Verifying Your Terminal Settings in RStudio</h3>
           <p>
-            Before running Bash commands or configuring Git, make sure RStudio’s Terminal is set up correctly. 
+            Before running Bash commands or configuring Git, make sure RStudio’s Terminal is set up correctly and Git software is installed on your computer!
             Follow these steps:
           </p>
           <ol style="list-style-type: decimal; padding-left: 20px;">
@@ -321,11 +321,10 @@ $(document).ready(function () {
             configuring Git, or using other command-line tools within RStudio.
           </p>
         </div>
-        <!-- =====================================================
-     1. Setting Up SSH Keys in RStudio
-     ===================================================== -->
+        
+
      <div id="ssh-setup" class="section level3" style="margin-top: 2em;">
-      <h3> 4. Setting Up SSH Keys in RStudio for GitHub</h3>
+      <h3> Setting Up SSH Keys in RStudio for GitHub</h3>
       <p>
         Instead of using a personal access token (PAT) or HTTPS to authenticate with GitHub, 
         you can configure RStudio to use SSH keys for a secure, password-free connection. 
@@ -370,46 +369,46 @@ $(document).ready(function () {
       </p>
     </div>
 
-        <div id="bash-demo-exercise" class="section level3" style="margin-top: 2em;">
-          <h3>Demo &amp; Exercise: Basic Bash Commands</h3>
-          <p>
-            Let’s practice a few essential Bash commands for navigating directories, creating new folders, 
-            and removing them.
-          </p>
-          <ol style="list-style-type: decimal; padding-left: 20px;">
-            <li>
-              <strong>Explore Your Current Working Directory</strong><br/>
-              <ul style="list-style-type: disc; padding-left: 20px;">
-                <li><code>pwd</code> – Prints the path of your current working directory.</li>
-                <li><code>ls</code> – Lists the files and folders in your current directory.</li>
-                <li><code>cd</code> – Changes your directory (e.g., <code>cd Documents</code>). 
-                    Use <code>cd ..</code> to go up one level.</li>
-              </ul>
-            </li>
-            <li>
-              <strong>Create a Folder for Today’s Session</strong><br/>
-              <ul style="list-style-type: disc; padding-left: 20px;">
-                <li><code>mkdir workshop5_Git</code> – Makes a new folder named <code>workshop5_Git</code>.</li>
-                <li><code>ls</code> – Check to see that the new folder was created.</li>
-                <li><code>cd workshop5_Git</code> – Optionally navigate inside the folder.</li>
-              </ul>
-            </li>
-            <li>
-              <strong>Remove the Folder</strong><br/>
-              <ul style="list-style-type: disc; padding-left: 20px;">
-                <li><code>rm -r workshop5_Git</code> – Removes the folder and everything inside it 
-                    (<em>be careful!</em>).</li>
-                <li><code>ls</code> – Verify the folder no longer exists.</li>
-              </ul>
-            </li>
-          </ol>
-          <p>
-            This quick exercise helps you become more comfortable with basic Bash commands and 
-            navigating the file system.
-          </p>
-        </div>
-        
-
+    <blockquote id="bash-demo-exercise">
+      <h3 class="challenge">Task: Basic Bash Commands</h3>
+      <p>
+        Let’s practice a few essential Bash commands for navigating directories, creating new folders, 
+        and removing them.
+      </p>
+      <ol style="list-style-type: decimal; padding-left: 20px;">
+        <li>
+          <strong>Explore Your Current Working Directory</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li><code>pwd</code> – Prints the path of your current working directory.</li>
+            <li><code>ls</code> – Lists the files and folders in your current directory.</li>
+            <li><code>cd</code> – Changes your directory (e.g., <code>cd Documents</code>). 
+                Use <code>cd ..</code> to go up one level.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Create a Folder for Today’s Session</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li><code>mkdir workshop5_Git</code> – Makes a new folder named <code>workshop5_Git</code>.</li>
+            <li><code>ls</code> – Check to see that the new folder was created.</li>
+            <li><code>cd workshop5_Git</code> – Optionally navigate inside the folder.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Remove the Folder</strong><br/>
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li><code>rm -r workshop5_Git</code> – Removes the folder and everything inside it 
+                (<em>be careful!</em>).</li>
+            <li><code>ls</code> – Verify the folder no longer exists.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        This quick exercise helps you become more comfortable with basic Bash commands and 
+        navigating the file system.
+      </p>
+    </blockquote>
+    
+      
         <h3 style="color: #16a085;">3. Why Use Git and GitHub?</h3> 
         <p> While Git is the tool you use locally to track your project’s history and manage changes, GitHub is an online platform that hosts your Git repositories. Here’s why both are important: </p> 
         <ul style="list-style-type: disc; padding-left: 20px;"> <li> <strong>Git:</strong> Provides a robust mechanism for version control on your computer. It helps you maintain a detailed record of changes, revert to previous states, and experiment with new ideas using branching—all without losing your work. </li> <li> <strong>GitHub:</strong> Acts as a remote backup and collaboration hub. It allows you to share your code, collaborate with peers, review changes through pull requests, and manage issues—all in one central place. </li> <li> <strong>Difference:</strong> Think of Git as the engine running locally to manage your code history, while GitHub is the cloud service that makes your work accessible and shareable. Together, they create a powerful workflow that enhances productivity and fosters collaboration. </li> </ul> 

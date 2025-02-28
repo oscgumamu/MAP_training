@@ -720,7 +720,73 @@ git commit -m "Describe your changes"</code></pre>
   </p>
 </blockquote>
 
-    
+<blockquote id="github-desktop">
+  <h3 class="challenge">Task: Download &amp; Use GitHub Desktop</h3>
+  <p>
+    <strong>GitHub Desktop</strong> is a user-friendly application that helps you manage your Git 
+    repositories without using the command line. It provides a visual interface for cloning repos, 
+    committing changes, and pushing updates to GitHub.
+  </p>
+  <ol style="list-style-type: decimal; padding-left: 20px;">
+    <li>
+      <strong>Download &amp; Install GitHub Desktop:</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Visit 
+          <a href="https://desktop.github.com" target="_blank" rel="noopener noreferrer">
+            https://desktop.github.com
+          </a> 
+          to download the installer for your operating system (Windows or macOS).</li>
+        <li>Run the installer and follow the on-screen instructions.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Sign In to GitHub:</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Launch GitHub Desktop, then sign in with your GitHub account credentials.</li>
+        <li>If you use two-factor authentication, have your code ready.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Clone a Repository:</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Click <em>File &gt; Clone repository...</em> (or use the “Clone a repository from the Internet...” prompt).</li>
+        <li>Select a repo from your GitHub account or paste a repo URL. Choose a local path and click 
+            <em>Clone</em>.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Make Changes &amp; Commit:</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Open the cloned folder in your favorite editor (or directly in GitHub Desktop if you prefer). 
+            Make any necessary changes to files.</li>
+        <li>Back in GitHub Desktop, review your changes under the “Changes” tab.</li>
+        <li>Write a commit summary and optional description, then click <em>Commit to [branch]</em>.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Push Your Changes:</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Click the <em>Push origin</em> button (top-right) to upload your commits to GitHub.</li>
+        <li>If you have a new branch, GitHub Desktop may prompt you to “Publish branch.” This makes your 
+            branch visible on GitHub.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Create or Merge a Pull Request (Optional):</strong><br/>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>If you’re collaborating or want a code review, open GitHub Desktop’s 
+            <em>Branch &gt; Create Pull Request</em> (or visit the repo on GitHub) to merge changes 
+            into <code>main</code>.</li>
+      </ul>
+    </li>
+  </ol>
+  <p>
+    With GitHub Desktop, you can handle the same tasks you would in the terminal 
+    (committing, branching, merging) but through a point-and-click interface. It’s especially handy 
+    for newcomers to Git or anyone who prefers a visual approach.
+  </p>
+</blockquote>
+
 
         <h3 style="color: #16a085;">7. Collaborating with GitHub</h3> <p> GitHub makes collaboration straightforward: </p> 
         <ul style="list-style-type: none; padding-left: 0;"> <li><strong>Share Your Repository:</strong> Invite collaborators via your repository’s settings on GitHub, allowing multiple team members to work on the project simultaneously.</li> <li><strong>Synchronize Changes:</strong> Regularly pull updates using <code>git pull origin main</code> to ensure you’re working with the latest version.</li> <li><strong>Branching and Merging:</strong> Create branches with <code>git checkout -b new-branch</code> to work on features independently and merge them back when complete using <code>git merge branch-name</code>.</li> </ul>

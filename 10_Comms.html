@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="generator" content="pandoc"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+        <title> Introduction to Spatial Analysis for Infectious Diseases</title>
+        <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet"/>
+        <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+        <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+        <style>h1 { font-size: 34px; } h1.title { font-size: 38px; } h { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } code { color: inherit; background-color: rgba(0, 0, 0, 0.04); } pre:not([class]) { background-color: white; }</style>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet"/>
+        <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet"/>
+        <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+        <style type="text/css">code { white-space: pre-wrap; } span.smallcaps { font-variant: small-caps; } span.underline { text-decoration: underline; } div.column { display: inline-block; vertical-align: top; width: 50%; } div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; } ul.task-list { list-style: none; }</style>
+        <style type="text/css">code { white-space: pre; }</style>
+        <script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <style type="text/css">.main-container { max-width: 940px; margin-left: auto; margin-right: auto; } img { max-width: 100%; } .tabbed-pane { padding-top: 12px; } .html-widget { margin-bottom: 20px; } button.code-folding-btn:focus { outline: none; } summary { display: list-item; } details > summary > p:only-child { display: inline; } pre code { padding: 0; }</style>
+        <style type="text/css">.dropdown-submenu { position: relative; } .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; border-radius: 0 6px 6px 6px; } .dropdown-submenu:hover>.dropdown-menu { display: block; } .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; } .dropdown-submenu:hover>a:after { border-left-color: #adb5bd; } .dropdown-submenu.pull-left { float: none; } .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; border-radius: 6px 0 6px 6px; }</style>
+        <script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+        </script>
+        <!-- tabsets -->
+        <style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.tabset-dropdown > .nav-tabs > li.active:before,
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+        </style>
+        <!-- code folding -->
+        <style>
+#TOC { margin: 25px 0px 20px 0px; }
+@media (max-width: 768px) {
+  #TOC {
+    position: relative;
+    width: 100%;
+  }
+}
+@media print {
+  .toc-content {
+    /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+    float: right;
+  }
+}
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+div.main-container {
+  max-width: 1200px;
+}
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid main-container">
+            <!-- setup 3col/9col grid for toc_float and main content  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div id="TOC" class="tocify">
+                    </div>
+                </div>
+                <div class="toc-content col-xs-12 col-sm-8 col-md-9">
+                    <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="index.html">Intro</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="01_datamanagement.html">Data management and data wrangling in Excel</a>
+                                    </li>
+                                    <li>
+                                        <a href="07_malariaepi.html">Malaria epi overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="02_datahandling.html">Data wrangling in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="08_Git.html">Bash and Git</a>
+                                    </li>
+                                    <li>
+                                        <a href="09_Data_vis.html">Data visualisation in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="10_Comms.html">Comms: writing and presenting</a>
+                                    </li>
+                                    <li>
+                                        <a href="04_spatial_in_R.html">Spatial Data in R</a>
+                                    </li>
+                                    <li>
+                                        <a href="03_QGIS.html">QGIS</a>
+                                    </li>
+                                    <li>
+                                        <a href="05_Intro_to_INLA.html">Introduction to R-INLA</a>
+                                    </li>
+                                    <li><a href="06_Assignments.html">Assignments</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                </ul>
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                        <!--/.container -->
+                    </div>
+                    <!--/.navbar -->
+
+                    <!-- BEGIN MODULE CONTENT -->
+                    <h1>Communicating Your Research Effectively</h1>
+                    
+                    <h2 id="why-communicate">1. Why Communicate?</h2>
+                    <p>
+                        Communication is not an afterthought—it is <strong>integral</strong> to any research or innovation process. 
+                        When research findings can influence policies, local communities, or broader scientific progress, 
+                        sharing your insights clearly and persuasively becomes both an ethical responsibility and a 
+                        catalyst for real-world impact.
+                    </p>
+                    <ul>
+                        <li><strong>Ethical Responsibility</strong>: When data inform people’s health or livelihoods, 
+                            it’s crucial to ensure facts are conveyed accurately and accessibly.</li>
+                        <li><strong>Innovation &amp; Collaboration</strong>: Shared ideas can spark new studies, funding, 
+                            partnerships, and cross-disciplinary learning.</li>
+                        <li><strong>Trust &amp; Engagement</strong>: Interactive, transparent communication encourages dialogue, 
+                            builds credibility, and fosters curiosity.</li>
+                    </ul>
+
+                    <details>
+                      <summary><strong>Reflection Exercise: “Why Communicate?”</strong></summary>
+                      <p>
+                        Think of a time you or someone you know struggled to convey research findings to a non-expert 
+                        (family member, community leader, policymaker). 
+                      </p>
+                      <ul>
+                        <li>What specific barriers did you face (jargon, complexity, time constraints)?</li>
+                        <li>If you had to do it again, what would you change?</li>
+                      </ul>
+                    </details>
+<br> </br>
+                      <!-- Embedded YouTube Video with Intro Text -->
+    <div class="video-section">
+        <p><strong>Watch the recording from this session from 10 March 2025 and read the recommended reading from 
+        <a href="https://drive.google.com/drive/folders/1xKkg7APxrFE4amO5BUORmKitm9-Tjk3m?usp=sharing" target="_blank">
+        Google Drive</a>.</strong></p>
+        
+        <!-- Responsive YouTube Video Embed -->
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+    <iframe 
+      src="https://www.youtube.com/embed/aynG7VTpJpo"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+    </iframe>
+  </div>
+  
+
+                    <h2 id="five-steps">2. Five Steps for Meaningful Interactions</h2>
+                    <p>Here is a simple workflow you can adapt to any communication scenario:</p>
+                    <ol>
+                      <li><strong>Start</strong>: Identify Your Core Message – What is the main point? Why should anyone care?</li>
+                      <li><strong>Identify Your Audience</strong> – Consider their background, motivations, and what they stand to gain.</li>
+                      <li><strong>Plan (What → How → Why)</strong> – Outline your key points using a logical order:
+                        <ul>
+                          <li><em>What</em>: Provide immediate context.</li>
+                          <li><em>How</em>: Describe methodology or steps.</li>
+                          <li><em>Why</em>: Highlight practical impact or emotional resonance.</li>
+                        </ul>
+                      </li>
+                      <li><strong>Execute</strong>: Communicate with clarity – Use stories, visuals, and clear structure.</li>
+                      <li><strong>Measure &amp; Adapt</strong> – Solicit feedback to refine your approach next time.</li>
+                    </ol>
+
+
+
+                    <h2 id="brain-tricks">3. Tricks to Trick the Brain</h2>
+                    <p><strong>Humans respond strongly to stories, visuals, and emotion.</strong> Use these elements to ensure 
+                    your message resonates and sticks:</p>
+                    <ul>
+                      <li><strong>Pattern Recognition</strong>: Organize info into a logical story arc.</li>
+                      <li><strong>Emotion &amp; Memory</strong>: Emotional engagement/human-centered story strengthens neural pathways related to long-term memory.</li>
+                      <li><strong>Cognitive Load</strong>: Simplifying concepts (e.g., via visuals) and organizing your presentation (the what → how → why sequence) reduces cognitive load, so your audience can focus on key messages. </li>
+                      <li><strong>Dual Coding Theory</strong>: When you align an image with your explanation, you create two memory traces instead of one - boosting comprehension and retention
+                      </li>
+                      <li><strong>Neural Coupling &amp; Mirror Neurons</strong>: Genuine enthusiasm and clear gestures help synch audience and speaker. When you tell a story, both speaker and listener can have synchronized brain activity - particularly in areas linked to emotion and understanding
+                      </li>
+                    </ul>
+                    <p><em>Tip:</em> Start with a quick interactive moment—like “Raise your hand if you ate a banana this week!”—to 
+                    prime the Reticular Activating System in the brain for alertness.</p>
+                   
+                    <p><strong>What > How > Why flow recommendation: </strong></p>
+                        <ul>
+                            <li><strong>WHAT</strong>: This satisfies the brain’s need for immediate context and imprints a mental label   </li>
+                            <li><strong>HOW</strong>: The step-by-step explanation gives the brain a causal thread – patterns will be easier to recall </li>
+                            <li><strong>WHY</strong>: This is where emotion meets motivation. It ties in the prefrontal cortex for decision-making and emotional drivers </li>
+                          </ul>
+
+                          <p><img src="images/10_Comms/What_How_Why.PNG" width="90%" style="display: block; margin: auto;"/></p>
+
+                    <details>
+                      <summary><strong>Exercise: Engaging the Senses</strong></summary>
+                      <ol>
+                        <li>Pick a short topic (e.g., “The importance of clean water”).</li>
+                        <li>Write a 1-2 sentence intro that <em>directly involves</em> the audience (like asking a question or 
+                        having them imagine a scenario).</li>
+                        <li>Note how this changes the energy of your opening.</li>
+                      </ol>
+                    </details>
+
+                    <h2 id="toc-diffusion">4. Theory of Change &amp; Diffusion</h2>
+                    
+                    <h3>4.1 Theory of Change (ToC)</h3>
+                    <p> A Theory of Change (ToC) is a structured framework that explicitly lays out how and why you expect a certain intervention, project, or approach to lead to a desired outcome. 
+                        One way to use ToC is to:</p>
+                    <ol>
+                      <li><strong>Define</strong>: State assumptions (e.g., “If participants gain confidence (Attitude), they will apply more 	advanced data visualisations (Skills) in their future presentations (Behavior).”)</li>
+                      <li><strong>Design</strong>: Decide on methods to test your hypothesis (pre-/post-surveys, interviews).</li>
+                      <li><strong>Deploy</strong>: Run the intervention (a training, a communication campaign, etc.).</li>
+                      <li><strong>Analyze &amp; Interpret</strong>: Look at feedback and data on changes in knowledge or behavior.</li>
+                      <li><strong>Adapt</strong>: Refine future actions based on what you discover.</li>
+                    </ol>
+
+                    <h3>4.2 Diffusion vs. Dissemination</h3>
+                    <p>
+                        <strong>Dissemination</strong> is a one-way approach (e.g., a formal report), while 
+                        <strong>Diffusion</strong> is more organic, spreading via interpersonal networks with less control. 
+                        If your aim is widespread adoption or conversation, planning for a more “viral” diffusion approach may be key.
+                    </p>
+
+                    <details>
+                      <summary><strong>Reflection Exercise: Mini Theory of Change</strong></summary>
+                      <p>
+                        Choose a specific research finding (e.g., “Planting cover crops improves soil health”). Sketch a mini ToC:
+                      </p>
+                      <ol>
+                        <li><strong>Define</strong>: The outcome you want (e.g., more farmers adopt cover crops).</li>
+                        <li><strong>Design</strong>: How you’ll measure or observe changes (baseline vs. follow-up).</li>
+                        <li><strong>Deploy</strong>: Outline your communication tactics (e.g., demonstration plots, flyers).</li>
+                        <li><strong>Analyze</strong>: How will you confirm any shifts in attitude or practice?</li>
+                        <li><strong>Adapt</strong>: If results are mixed, what might you change next time?</li>
+                      </ol>
+                    </details>
+
+                    <h2 id="writing-for-different-audiences">5. Writing for Different Audiences</h2>
+                    
+                    <h3>5.1 Writing process</h3>
+                    <p><em>The LEGO Analogy</em>: writing is like building a model—gather your “pieces” (methods, data, visuals), 
+                    then arrange them until they form a coherent whole. Come up with your own workflow, might look very different compared to others and that's okay!</p>
+                    <ul>
+                      <li><strong>Outline &amp; Sketch</strong>: Try drafting your methods, results, and potential figures first; 
+                        then fill in introduction and discussion.</li>
+                      <li><strong>Use Tools</strong>: Consider referencing software (Zotero, Mendeley) or collaborative platforms 
+                        (Google Docs) to streamline the process.</li> 
+                        <li><strong>Iterative process</strong>: Just like with LEGO, you first need to come up with a plan, sort your pieces into groups, prepare a solid foundation (article structure), 
+                            and then you might have to disassemble and re-assemble again and again.</li> </ul>
+                            <p><img src="images/10_Comms/LEGO.PNG" width="90%" style="display: block; margin: auto;"/></p>
+
+                        <h3>5.2 Flow and sentence structures </h3>
+                        <p> Keep the "brain trickery" in mind for your reader - let's make it a nice experience for them to read your work.
+                            Rough draft is great - then let's go into more details and get rid of circumlocution. </p>
+                        <p>SENTENCES </p>
+                        <ul>
+                          <li>One thought per sentence!</li>
+                          <li>Keep sentences concise (2 lines max or split) </li>
+                          <li>Action words and main point at the front of the sentence</li>
+                        </ul>
+                      </li>
+                      <p>PARAGRAPHS </p>
+                      <ul>
+                        <li>Start each paragraph with a “mini-intro” (topic sentence): highlight/put it into bold in your document </li>
+                        <li>End with a “connector” to the next paragraph: highlight again</li>
+                        <li> Each paragraph should revolve around one main point: read the two highlights: should sum up the para’s point </li>
+                      </ul>
+                    </li>
+                    <p> CIRCUMLOCUTION: the use of many words where fewer would be better. Save these tables from the Scientists Must Write book as a reminder and be ruthless with getting rid of unneccessary words. </p>
+                    <p><img src="images/10_Comms/Circum.PNG" width="90%" style="display: block; margin: auto;"/></p>
+
+                    <details>
+                      <summary><strong>Exercises after the Workshop (Writing)</strong></summary>
+                      <p><em>500-word summary for a non-specialist audience</em></p>
+                      <ul>
+                        <li>Choose a peer-reviewed article and translate it into ~500 words of approachable language.</li>
+                        <li>Avoid jargon; aim for clarity and engagement.</li>
+                      </ul>
+                      <p><em>250-word abstract (scientific style)</em></p>
+                      <ul>
+                        <li>Write a concise summary of your own (or hypothetical) research.</li>
+                        <li>Incorporate essential scientific elements (Background, Methods, Results, Conclusion).</li>
+                      </ul>
+                    </details>
+
+                    <div class="section" id="simplify-complex-sentences">
+                        <h3>Exercise: Simplifying Complex Sentences from <em>Nature</em></h3>
+                        <p>
+                          Below are excerpts of long, complex sentences related to malaria research. Try rewriting them in simpler terms—first as a clear 
+                          <strong>scientific</strong> statement, and then for a <strong>non-scientific or blog audience</strong>. When you’re done, compare your 
+                          versions with the examples under each dropdown.
+                        </p>
+                        <ul>
+                        <!-- Example 1 -->
+                        <h3>Example 1</h3>
+                        <p><strong>Original / Circumlocution:</strong><br/>
+                        “In the context of evaluating large-scale anti-malaria strategies implemented over the last decade, an intricate geospatial framework, 
+                         constructed utilizing a multitude of heterogeneous data sources, was deployed to quantify shifting patterns of 
+                         <em>Plasmodium falciparum</em> endemicity within the sub-Saharan region, thereby enabling a multifactorial analysis of 
+                         intervention efficacy.”</p>
+                      
+                        <details>
+                          <summary><strong>Show Possible Rewrites</strong></summary>
+                          <div style="margin-top:10px;">
+                            <p><strong>(B) Improved Scientific:</strong><br/>
+                            “We developed a geospatial model using multiple data sources—routine surveillance records, household surveys, and 
+                             climatic variables—to assess changes in <em>Plasmodium falciparum</em> prevalence across sub-Saharan Africa. 
+                             This approach allowed us to quantify how interventions have influenced malaria transmission over the past decade.”</p>
+                            <p><strong>(C) Blog-Friendly:</strong><br/>
+                            “Researchers pulled together maps, surveys, and climate data to see how malaria infection rates changed across 
+                             sub-Saharan Africa. Thanks to this modeling, they could figure out if bed nets, medicines, and other prevention tools 
+                             really made a difference.”</p>
+                          </div>
+                        </details>
+                      <br> </br>
+                        <!-- Example 2 -->
+                        <h3>Example 2</h3>
+                        <p><strong>Original / Circumlocution:</strong><br/>
+                        “It was observed, through the systematic collation and subsequent analysis of surveillance data, that substantial declines in 
+                         parasite prevalence were correlated in a statistically significant manner with heightened coverage of interventions such as 
+                         insecticide-treated nets, thereby suggesting a pivotal role of these measures in the large-scale reduction of disease incidence.”</p>
+                      
+                        <details>
+                          <summary><strong>Show Possible Rewrites</strong></summary>
+                          <div style="margin-top:10px;">
+                            <p><strong>(B) Improved Scientific:</strong><br/>
+                            “Our analysis shows a significant reduction in parasite prevalence that aligns with increased coverage of 
+                             insecticide-treated nets. These findings underscore the critical role of nets in reducing malaria burden.”</p>
+                            <p><strong>(C) Blog-Friendly:</strong><br/>
+                            “When people started using more bed nets, malaria infection rates dropped. In other words, simple nets were a big 
+                             reason why malaria cases went down.”</p>
+                          </div>
+                        </details>
+                        <br> </br>
+                        <!-- Example 3 -->
+                        <h3>Example 3</h3>
+                        <p><strong>Original / Circumlocution:</strong><br/>
+                        “In light of the substantial effect sizes attributed to vector-control measures observed during our longitudinal assessment, one may 
+                         postulate that ongoing reinforcement of funding allocations toward these preventative modalities stands to yield further 
+                         epidemiological benefits.”</p>
+                      
+                        <details>
+                          <summary><strong>Show Possible Rewrites</strong></summary>
+                          <div style="margin-top:10px;">
+                            <p><strong>(B) Improved Scientific:</strong><br/>
+                            “Given the strong impact of vector-control measures in our study, continued investment in these preventive methods 
+                             could further decrease malaria incidence.”</p>
+                            <p><strong>(C) Blog-Friendly:</strong><br/>
+                            “Because bed nets and other mosquito-fighting tools worked so well, it’s clear that keeping them funded can push 
+                             malaria rates down even more.”</p>
+                          </div>
+                        </details>
+                        <br> </br>
+                        <!-- Overall Blog Summary -->
+                        <h3>Overall Blog Summary</h3>
+                        <p>
+                          <em>Do bed nets and anti-malarial medicines prevent a lot of malaria cases?</em><br/>
+                          A team of scientists used data from thousands of surveys and national control programs across Africa. They found that these 
+                          measures prevented about 663 million malaria cases between 2000 and 2015—proving that simple tools like nets are powerful 
+                          in saving lives.
+                        </p>
+                      </div>
+                    </ul>
+
+
+                    <h2 id="presenting-for-different-audiences">6. Presenting for Different Audiences</h2>
+
+                    <h3>6.1 Structure &amp; Planning</h3>
+                    <ul>
+                      <li><strong>Show your flow and logic to the audience</strong>: Even specialized audiences appreciate an outline. 
+                          Clarify your talk’s main goal right from the start by starting with an outline. Prepare a recap/summary slide at the end. </li>
+                      <li><strong>Signposting</strong>: Inform the audience where you are in the talk (intro, methods, results), 
+                          and offer short recaps.</li>
+                      <li><strong>Mindset Shift</strong>: “They want to catch my mistakes” → “I have something cool to share!”. Presenting in front of others can be scary but you can arm yourself with confidencence by:
+                    being clear with yourself what your talk's message is, being super prepared with a beautiful presentation and after practicing to make sure you can deliver it in time. </li>
+                    </ul>
+
+                    <h3>6.2 Tools &amp; Design Tips</h3>
+                    <ul>
+                      <li><strong>PowerPoint Tricks</strong>: 
+                        <ul>
+                          <li>Gridlines &amp; Guides to align text and images.</li>
+                          <li>Layers &amp; Locking shapes to keep layouts tidy.</li>
+                          <li>Minimal but well-timed Animations—simple fades or reveals can be effective.</li>
+                        </ul>
+                      </li>
+                      <li><strong>Visuals</strong>:
+                        <ul>
+                          <li>.PNG images with transparent backgrounds.</li>
+                          <li>Subtle shadow effects to add depth without clutter.</li>
+                          <li>Lucidchart, BioRender, Marq for diagrams, scientific art, and flyers.</li>
+                        </ul>
+                      </li>
+                    </ul>
+
+                    <details>
+                      <summary><strong>Exercise during and after the Workshop (Presenting)</strong></summary>
+                      <ul>
+                        <li><em>“Your Turn to Pitch”</em>:
+                          <ul>
+                            <li>Create a single slide <strong>without text</strong> and present in under 3 minutes.</li>
+                            <li>Focus on <em>What → How → Why</em> flow.</li>
+                            <li>Gather feedback on visuals, clarity, and flow.</li>
+                          </ul>
+                        </li>
+                        <li><em>5-Minute Talk for a General Scientist Audience</em>:
+                          <ul>
+                            <li>Showcase the broad significance of your research to colleagues in other fields.</li>
+                          </ul>
+                        </li>
+                        <li><em>3.5-Minute Collaboration Pitch</em>:
+                          <ul>
+                            <li>Frame your project in a way that entices new collaborators or funders.</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </details>
+
+                    <h2 id="conclusion-next-steps">7. Conclusion &amp; Next Steps</h2>
+                    <p>
+                        Communication is an ongoing journey of experimentation and refinement. By applying a 
+                        thoughtful framework—starting with a clear purpose, structuring your message for the 
+                        intended audience, and actively seeking feedback—you can continuously improve how you 
+                        connect with others. And "non-sciency" storytelling and great visuals for a scientific audience works well too. 
+                        There should be no hard lines between how one communicates to "scientists" vs "non-scientists"!
+                    </p>
+                    <ul>
+                      <li><strong>Plan</strong> your message with <em>What → How → Why</em> in mind.</li>
+                      <li><strong>Engage</strong> the brain’s natural response to stories, visuals, and emotional resonance.</li>
+                      <li><strong>Reflect &amp; Iterate</strong>: Use exercises, audience feedback, and self-review to refine further.</li>
+                    </ul>
+                    <p><img src="images/10_Comms/Sci.PNG" width="90%" style="display: block; margin: auto;"/></p>
+
+                    <details>
+                      <summary><strong>Action Items</strong></summary>
+                      <ul>
+                        <li>
+                          <strong>Talk to a stranger</strong> about your research this week! 
+                          Notice which explanations or examples pique their interest.
+                        </li>
+                        <li>
+                          <strong>Start on the workshop assignments:</strong> 
+                          <a href="https://docs.google.com/document/d/162qkkO7WIjSnXg6XtMaM4-wHyJuz7FBHlSOXjwRWEPw/edit?usp=sharing">Full instructions here</a>.
+                        </li>
+                        <li>
+                          <strong>Gather feedback</strong> from peers, mentors, or laypeople; 
+                          incorporate it into your next iteration.
+                        </li>
+                      </ul>
+                    </details>
+
+                    <h3>Recommended Resources</h3>
+                    <ul>
+                      <li><a href="https://toc.mel.cgiar.org/">Theory of Change Tools</a></li>
+                      <li>
+                        Diffusion of Innovation:
+                        <ul>
+                          <li><a href="https://www.sydle.com/blog/diffusion-of-innovation-61829eca3885651fa294b9e6">Overview</a></li>
+                          <li><a href="https://journals.sagepub.com/doi/10.1177/1049731509335569">Dearing et al. (2009)</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        Writing Guides:
+                        <ul>
+                          <li><a href="https://www.nature.com/articles/nature15535">Example Nature Paper</a></li>
+                          <li><a href="https://mrce.in/ebooks/Writing%20Guide%20for%20Scientists,%20Engineers%20&%20Students%202nd%20Ed.pdf">Writing Guide</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        Design Tools:
+                        <ul>
+                          <li><a href="https://lucid.app/">Lucidchart</a> for flowcharts</li>
+                          <li><a href="https://biorender.com/">BioRender</a> for scientific illustrations</li>
+                          <li><a href="https://www.marq.com/">Marq</a> for flyers and posters</li>
+                        </ul>
+                      </li>
+                    </ul>
+
+                    <!-- END MODULE CONTENT -->
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+          // add bootstrap table styles to pandoc tables
+          function bootstrapStylePandocTables() {
+            $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+          }
+          $(document).ready(function () {
+            bootstrapStylePandocTables();
+          });
+        </script>
+        <!-- tabsets -->
+        <script>
+          $(document).ready(function () {
+            window.buildTabsets("TOC");
+          });
+
+          $(document).ready(function () {
+            $('.tabset-dropdown > .nav-tabs > li').click(function () {
+              $(this).parent().toggleClass('nav-tabs-open');
+            });
+          });
+        </script>
+        <!-- code folding -->
+        <script>
+          $(document).ready(function ()  {
+
+              // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+              $('.unlisted.unnumbered').addClass('toc-ignore')
+
+              // move toc-ignore selectors from section div to header
+              $('div.section.toc-ignore')
+                  .removeClass('toc-ignore')
+                  .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+              // establish options
+              var options = {
+                selectors: "h1,h2,h3,h4",
+                theme: "bootstrap3",
+                context: '.toc-content',
+                hashGenerator: function (text) {
+                  return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+                },
+                ignoreSelector: ".toc-ignore",
+                scrollTo: 0
+              };
+              options.showAndHide = true;
+              options.smoothScroll = true;
+
+              // tocify
+              var toc = $("#TOC").tocify(options).data("toc-tocify");
+          });
+        </script>
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+        <script>
+          (function () {
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+            document.getElementsByTagName("head")[0].appendChild(script);
+          })();
+        </script>
+    </body>
+</html>

@@ -137,6 +137,24 @@ $(document).ready(function () {
                     <p><br></p>
                     <p>Before you begin, this module expects students to have some basic
 knowledge of R and GIS.</p>
+
+ <!-- Embedded YouTube Video with Intro Text -->
+ <div class="video-section">
+    <p><strong>Watch the recording from this session from 13 March 2025, download the Skeleton script and associated data from 
+    <a href="https://drive.google.com/drive/folders/1xKkg7APxrFE4amO5BUORmKitm9-Tjk3m?usp=sharing" target="_blank">
+    Google Drive</a>.</strong></p>
+    
+    <!-- Responsive YouTube Video Embed -->
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<iframe 
+  src="https://www.youtube.com/embed/M9thl6OzYG4"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+</iframe>
+</div>
+
                     <div id="overview" class="section level2">
                         <h2>Overview</h2>
                         <p>This module will follow a similar structure to previous QGIS session,
@@ -584,6 +602,9 @@ head(fakeland)</code></pre>
   mutate(adm2 = fakeland$adm2)</code></pre>
                             <p><br></p>
                         </div>
+
+
+                        
                         <div id="writing-rasters-out-in-r" class="section level3">
                             <h3>Writing rasters out in R</h3>
                             <p>We can save a rasters in a variety of formats using<code>writeRaster</code>. Here was dave it as a “.tif”</p>
@@ -620,6 +641,57 @@ head(fakeland)</code></pre>
                             <p><br></p>
                         </div>
                     </div>
+                    
+                    <!-- Existing sections remain the same up to "Demo" and "Working with malariaAtlas" ... -->
+
+                    <!-- =============== NEW SECTION 1: FANCY MONTHLY RASTER PLOTTING ==================== -->
+                    <div id="fancy-monthly-rasters" class="section level2">
+                        <h2>Fancy Monthly Raster Plotting in ggplot</h2>
+                        <p>After loading a stack of rasters (e.g., monthly rainfall) into a 
+                        <code>SpatRaster</code> (named <code>GPMM</code> in our script), 
+                        we can create a multi-faceted map of each monthly layer in 
+                        <code>ggplot</code>. Here’s a succinct workflow:</p>
+  
+  <pre><code class="r">
+  library(terra)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  
+  # 1) Convert the SpatRaster (GPMM) to a data frame
+  GPMM_df &lt;- as.data.frame(GPMM, xy = TRUE)
+  # Suppose GPMM has layers named "GPMM_Jan", "GPMM_Feb", etc.
+  
+  # 2) Reshape from wide to long
+  GPMM_long &lt;- GPMM_df %&gt;%
+    pivot_longer(
+      cols = starts_with("GPMM_"), 
+      names_to = "month",
+      names_prefix = "GPMM_",
+      values_to = "rainfall"
+    )
+  
+  # 3) Plot with ggplot2
+  ggplot(GPMM_long, aes(x = x, y = y, fill = rainfall)) +
+    geom_raster() +
+    facet_wrap(~ month) +
+    scale_fill_viridis_c(option = "C") +
+    coord_equal() +
+    labs(
+      title = "Monthly Rainfall (GPMM)",
+      fill  = "Rainfall (mm)"
+    ) +
+    theme_minimal()
+  </code></pre>
+  
+                        <p>This approach generates a “small multiples” grid of monthly rainfall 
+                        distributions, each facet representing one month. 
+                        <strong>Tip:</strong> if your data is lat/long (EPSG:4326), 
+                        consider <code>coord_sf()</code> instead of <code>coord_equal()</code> 
+                        to handle geographic projection more gracefully.</p>
+                      </div>
+                      <!-- END NEW SECTION 1 -->
+                    
                     <div id="demo-1" class="section level2">
                         <h2>Demo 1</h2>
                         <p>In this demo we will join together what we have learnt, importing the
@@ -954,6 +1026,206 @@ data layer.</p>
         legend.key.height = unit(0.75,&quot;cm&quot;), legend.text=element_text(size=12)) </code></pre>
                             <p><img src="04_spatial_in_R_files/figure-html/demo-2-1.png" width="672" style="display: block; margin: auto;"/></p>
                         </div>
+
+                        <!-- ========================= MALARIAATLAS R PACKAGE SECTION ========================= -->
+<div id="malariaatlas-demo" class="section level2">
+    <h2>Malaria Atlas R Package: Intro &amp; Demo</h2>
+    <p>
+      The <code>malariaAtlas</code> R package (<a href="https://github.com/malaria-atlas-project/malariaAtlas" target="_blank">GitHub link</a>) provides direct access 
+      to shapefiles, PfPR survey data, and raster covariates from the Malaria Atlas Project (MAP). 
+      This can significantly speed up your workflow for real-world malaria data. 
+      Below, we demonstrate how to retrieve shapefiles, parasite prevalence (PfPR) survey data, and rasters 
+      for Tanzania and Zambia, then plot them in R. 
+    </p>
+    
+    <!-- Placeholder for an intro screenshot -->
+    <p>
+      <img src="images/malariaAtlas_intro.PNG" alt="Screenshot of malariaAtlas usage" 
+           style="display: block; margin: auto; max-width: 95%;" />
+    </p>
+  
+    <div id="malariaatlas-intro" class="section level3">
+      <h3>1. Installing &amp; Loading <code>malariaAtlas</code></h3>
+      <pre><code class="r">
+  # If not already installed, install from CRAN:
+  install.packages("malariaAtlas")
+  
+  library(malariaAtlas)
+  library(sf)
+  library(ggplot2)
+  library(dplyr)
+  library(terra)
+      </code></pre>
+      <p>
+        The package provides three main functions for data retrieval:
+        <code>getShp()</code>, <code>getPR()</code>, and <code>getRaster()</code>.
+        Each can be filtered by country ISO code(s) or broader region/continent. 
+      </p>
+    </div>
+  
+    <div id="malariaatlas-shapefiles" class="section level3">
+      <h3>2. Loading Shapefiles from MAP</h3>
+      <p>
+        We can quickly retrieve admin-level boundaries for a country using 
+        <code>getShp()</code>. For instance, Tanzania (ISO = "TZA") at admin2 level:
+      </p>
+      <pre><code class="r">
+  # Tanzania shapefile at admin2 level
+  tza_shp &lt;- getShp(ISO = "TZA", admin_level = "admin2")
+  
+  # Inspect
+  tza_shp
+  # Quick Plot
+  autoplot(tza_shp) + 
+    labs(title = "Tanzania - Malaria Atlas Project Shapefile")
+      </code></pre>
+      <p>
+        Similarly, for Zambia:
+      </p>
+      <pre><code class="r">
+  zmb_shp &lt;- getShp(ISO = "ZMB", admin_level = "admin2")
+  
+  autoplot(zmb_shp) +
+    labs(title = "Zambia - Malaria Atlas Project Shapefile")
+      </code></pre>
+      <p>
+        <strong>Note:</strong> By default, shapefiles from MAP are in WGS84 (EPSG:4326).
+        If you need a projected CRS (e.g., UTM), do 
+        <code>st_transform(your_shapefile, &nbsp;32736)</code>, etc.
+      </p>
+  
+      <!-- Placeholder for a shapefile screenshot -->
+      <p>
+        <img src="images/tza_shp_plot.png" alt="Tanzania shapefile autoplot example" 
+             style="display: block; margin: auto; max-width: 90%;" />
+      </p>
+    </div>
+  
+    <div id="malariaatlas-pr" class="section level3">
+      <h3>3. Retrieving PfPR Survey Data</h3>
+      <p>
+        The <code>getPR()</code> function fetches PfPR survey data for a country or set of countries. 
+        For example, to get data for Tanzania:
+      </p>
+      <pre><code class="r">
+  tza_pfpr_raw &lt;- getPR(country = "Tanzania", species = "both")
+  head(tza_pfpr_raw)
+      </code></pre>
+      <p>
+        This returns a data frame with columns like <code>latitude</code>, 
+        <code>longitude</code>, <code>pr</code>, <code>year_start</code>, and more. 
+        We can convert these points to an <code>sf</code> object:
+      </p>
+      <pre><code class="r">
+  tza_pfpr_sf &lt;- tza_pfpr_raw %&gt;%
+    filter(!is.na(latitude), !is.na(longitude), !is.na(pr)) %&gt;%
+    st_as_sf(coords = c("longitude","latitude"), crs = 4326)
+      </code></pre>
+      <p>
+        Then plot with <code>ggplot2</code> or <code>tmap</code>:
+      </p>
+      <pre><code class="r">
+  ggplot() +
+    geom_sf(data = tza_shp, fill = "gray90", color = "white") +
+    geom_sf(data = tza_pfpr_sf, aes(color = pr), size = 2) +
+    scale_color_viridis_c(option = "C") +
+    labs(title = "Tanzania PfPR Surveys", color = "PfPR") +
+    theme_minimal()
+      </code></pre>
+    </div>
+  
+    <div id="malariaatlas-rasters" class="section level3">
+      <h3>4. Downloading Rasters from MAP</h3>
+      <p>
+        MAP also hosts various raster covariates (ITN usage, accessibility, etc.). 
+        The <code>getRaster()</code> function can clip them to your area of interest 
+        automatically if you provide a shapefile. For instance:
+      </p>
+      <pre><code class="r">
+  # ITN Use Rate for Tanzania
+  tza_ITN &lt;- getRaster(
+    dataset_id = "Interventions__202406_Africa_Insecticide_Treated_Net_Use_Rate",
+    shp        = tza_shp
+  )
+  
+  autoplot(tza_ITN) +
+    scale_fill_viridis_c(option = "C") +
+    labs(title = "Tanzania ITN Use Rate") +
+    theme_minimal()
+      </code></pre>
+      <p>
+        The argument <code>dataset_id</code> refers to a specific MAP dataset. 
+        You can list available datasets with <code>listRaster()</code>:
+      </p>
+      <pre><code class="r">
+  listRaster()
+  # returns a table of available dataset_ids
+      </code></pre>
+    </div>
+  
+    <div id="malariaatlas-overlay" class="section level3">
+      <h3>5. Combining Shapefiles &amp; Rasters in Plots</h3>
+      <p>
+        You can replicate the approaches from earlier to overlay these 
+        <code>getRaster</code> outputs with your admin polygons or PfPR points. 
+        For example, once you have <code>tza_ITN</code> as a <code>SpatRaster</code>, 
+        you can convert it to a data frame for a fancy ggplot, or use <code>tmap</code> 
+        for an interactive map.
+      </p>
+      <pre><code class="r">
+  # In tmap, for instance:
+  library(tmap)
+  tmap_mode("view")
+  
+  tm_shape(tza_ITN) +
+    tm_raster(style = "cont", palette = "viridis") +
+  tm_shape(tza_shp) +
+    tm_borders() +
+    tm_layout(title = "Tanzania ITN Rate (malariaAtlas)",
+              legend.outside = TRUE)
+      </code></pre>
+    </div>
+  
+    <div id="malariaatlas-demo" class="section level3">
+      <h3>6. Demo: Tanzania &amp; Zambia in One Plot</h3>
+      <p>
+        Suppose you retrieve both Tanzania and Zambia admin2 shapefiles and PfPR data, 
+        then compute mean PR by admin2 for each. You can create a patchwork grid 
+        that compares these two countries side-by-side:
+      </p>
+      <pre><code class="r">
+  library(patchwork)
+  
+  # (Assume p1 = Tanzania mean PR map, p2 = Tanzania ITN,
+  #  p3 = Tanzania accessibility,
+  #  p4 = Zambia mean PR map, p5 = Zambia ITN, p6 = Zambia accessibility)
+  
+  final_plot &lt;- (p1 + p2 + p3) /
+                 (p4 + p5 + p6)
+  
+  final_plot
+      </code></pre>
+      <p>
+        This yields a 2x3 layout, top row for Tanzania, bottom row for Zambia. 
+        By using <code>malariaAtlas</code>, you quickly grabbed the shapefiles, PfPR data, 
+        and relevant rasters, all in one reproducible script!
+      </p>
+  
+      <!-- Placeholder for a combined plot screenshot -->
+      <p>
+        <img src="images/tza_zmb_combined.png" alt="Combined TZA & ZMB 2x3 patchwork" 
+             style="display: block; margin: auto; max-width: 70%;" />
+      </p>
+    </div>
+  
+    <p><strong>Summary:</strong> The <code>malariaAtlas</code> R package streamlines 
+    data acquisition for malaria research. By combining it with <code>sf</code>, 
+    <code>terra</code>, <code>tmap</code>, and <code>ggplot2</code>, you can seamlessly 
+    retrieve shapefiles, PfPR surveys, and rasters, then visualize or analyze them 
+    with the rest of your workflow.</p>
+  </div>
+  <!-- ====================== END MALARIAATLAS R PACKAGE SECTION ====================== -->
+  
                     </div>
                 </div>
             </div>

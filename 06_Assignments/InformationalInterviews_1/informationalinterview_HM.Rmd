@@ -3,10 +3,10 @@ title:
 author:
 date: 
 output:
-  pdf_document: default
   html_document:
     theme: united
     css: styles.css
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,9 +16,9 @@ output:
 
 Author:Herieth Mboya
 
-![](images/IFEOMA-01.jpg){width="129"}
-
 This document summarizes an informational interview conducted with Dr.Ifeoma Ozodiegwu , a Principal Investigator at *Urban Malaria* and an Associate Professor at *Loyola University*. Her journey spans roles in academia, applied research, and high-level programmatic work. She brings deep insights into both technical excellence and strategic influence.
+
+![Dr. Ifeoma Ozodiegwu](images/IFEOMA-01.jpg){width="129"}
 
 ### [I would like to hear about who you are and what you do in the malaria modeling space.]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
 

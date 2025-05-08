@@ -1,0 +1,130 @@
+---
+title:
+author:
+date: 
+output:
+  pdf_document: default
+  html_document:
+    theme: united
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+```
+
+### Reflections on Epidemiology, Modeling, and the Future of Global Health
+
+Author:Herieth Mboya
+
+![](images/IFEOMA-01.jpg){width="129"}
+
+This document summarizes an informational interview conducted with Dr.Ifeoma Ozodiegwu , a Principal Investigator at *Urban Malaria* and an Associate Professor at *Loyola University*. Her journey spans roles in academia, applied research, and high-level programmatic work. She brings deep insights into both technical excellence and strategic influence.
+
+### [I would like to hear about who you are and what you do in the malaria modeling space.]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+I don't describe myself as a modeler to be honest.
+
+I'm an epidemiologist and a public health scientist. I'm modelling adjacent. I use modelling as needed.I prefer to define myself as an epidemiologist that dabbles in modelling when needed to answer questions.
+
+I hold a Master’s in Public Health (MPH), with a concentration in Health Services Administration. While doing my MPH, I knew I wanted more analytics training — particularly in biostatistics and epidemiology.
+
+After some experience working in Nigeria — including running a consulting company and interning at **WHO** — I pursued a **DrPH in Epidemiology**. [My dissertation](https://dc.etsu.edu/etd/3566/) was on **Bayesian statistical modeling**, specifically **INLA models** to estimate overweight and obesity prevalence among African women.
+
+I was fortunate to collaborate with Lena Messer, who developed these INLA models. She joined my dissertation committee, and we worked on applying geospatial methods to DHS data across multiple African countries. Though the project wasn’t published due to data quality, it was instrumental in expanding my skills in **geospatial modeling** and **Bayesian methods**.
+
+### [How did you end up working with malaria?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+After my DrPH, I joined **Jaline Gerardin**’s group at **Northwestern University**, who happened to be doing very similar work — but for **malaria**. The project was aimed at estimating malaria prevalence at subnational levels and tailoring interventions accordingly.This was a meeting of skills, a happy coincidence, because I knew how to do it.
+
+I'd worked with the DHS data extensively and I had the skills to use INLA models to do the estimation if I wanted to. We worked together for two years and that's how I started more about dynamic models because, you know, it's a give and take. You give the group something, you learn something. I started playing around with dynamic models from a mechanistic point of view. I was trying to understand the mechanisms of malaria transmission. How do vectors actually work? This was not my background .
+
+It was interesting to see how they conceptualized these concepts within the modeling framework from the human vector interactions to the actual vectors interacting with each other.That project led to extensive collaboration with **IDM**, and we built **774 models for Nigeria’s LGAs** — the largest work of its kind. It was intense: I had to learn **R in two weeks**, build code pipelines from scratch, and work on **parameter estimation**, all fresh out of my PhD.
+
+It was a true team effort, including contributions from Manuela Runge and the Nigerian national program. [The project](https://pubmed.ncbi.nlm.nih.gov/37101146/) was eventually published and included simulations on 80% intervention coverage scenarios.
+
+It was a good collaboration. I think the very first collaboration actually on how to do this kind of subnational tailoring and also inform decision making. Manuela Runge was working with us at the time she had done similar work with Tanzania but given the scale of Nigeria this was the largest ever work done. A lot of people contributed , not just the people whose names were on that paper.
+
+### [What's your view of this perception that math is hard and doesn't fit real life situations?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+I think math is challenging, but then applied math is something that is very different. I would say ,what you really need to understand, if you're not a mathematician, is the intuition behind concepts. Once you gain the intuition behind concepts, you can extend it and you can use it.INLA for instance, the basic idea of the INLA model is that any geographic area has similar characteristics to areas that are close by. Once you understand that this is an assumption, but it's a reasonable assumption, you can then ask how do I implement that computationally?
+
+Now,you need to have some flexibility given that some areas will be close that might not be the same. Knowledge of context comes into play and allows you to use the same ideas but implement it in a way that is suitable to context. Basic principles are important. Understanding statistics I think for me is the most important because when you're thinking of sampling you really have to understand what constitutes a representative sampling, how to do by stage. When you're trying to fit a model, you need to know the techniques for fitting a line to your data, for instance, or and building a model around your data from logistic regression, maximum likelihood estimation and more.
+
+> *But the basic idea, never forget, if you cannot explain that basic idea to a three year old, I don't think you should be working in this field at all. So that is the key thing. And then the computational aspects now also is key because it helps you implement that basic idea.*
+
+### [Is this the area that you want to explore, have you arrived?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+I don't know if anybody has arrived.I don't know what I'll be doing next, to be honest. Right now, I'm in malaria. I might be doing something else next time you check on my profile.
+
+I'm not someone that has big goals. I have a concept of what I want to achieve.I am doing some of the things that I've always wanted which is supporting Nigeria to build better health systems. My work presently already has started helping make that shift from just thinking about statistics. A lot of the interventions that were being conducted in the past and the ideas and approaches are more focused on technicalities and less on using the expertise of local people. I think that individuals in Nigeria are much more knowledgeable than people that live outside Nigeria because they, and other countries as well, because they have that lived experience.
+
+I want to see a system that is driven by the market person,let their voices be heard. I want the price of the health system to focus on the poorest, those that are at most need. That's where our resources should go, because we have very limited resources as a continent, and we really need to start prioritizing people that are vulnerable at risk to prevent us falling into a catastrophic situation. There's a huge inequality happening in most African countries, separating the rich and the poor.
+
+We need to start having making that shift.Some of my recent work is also trying to move towards prioritization, ensuring local experiences and local voices are prioritized in the conversation and their needs are brought to the table. So that's kind of where I am with malaria at this point. We published our first paper on that. And we have two more papers on the pipeline.
+
+Things have changed drastically in global health. With funding cuts that we've experienced, the malaria program is going to suffer extensively. WHO has also released a lot of reports on what that means. They are cutting staff. Many international organizations are cutting staff. This is the lowest they've had in terms of commitments. I don't know what's going to happen. I think countries have to really spend more time taking more ownership of their processes and programs. There's a lot of drawbacks, but there's also an opportunity for Africans to take the lead in ensuring that the malaria programs are no longer vertical.
+
+Nigeria is home, so working there is different. I’ve lived in Zambia and Congo-Brazzaville, but that doesn’t give me deep insight into their health systems. Africa isn’t a monolith — context matters.
+
+I typically avoid leading work in countries where I don’t have strong ties, unless local stakeholders are central to the process. It’s complicated. Sometimes, you're the only one in the room with relevant expertise, and you have to balance participation with advocacy for local leadership.
+
+### [Academia versus industry ? How different are these career paths?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+How you define “academia” vs. “industry” matters. Some “industry” organisations (e.g., Google) are doing top-tier academic research. So rather than choosing a side, ask:
+
+> *What kind of work do I want to do, and who is doing it well?*
+
+Today’s world is changing fast — AI is replacing many roles in analytics. The skills that will matter most are human-facing, relational, and design-oriented — things AI can’t replicate easily (yet).We’re facing a global reorganization of labor and expertise, with increasing inequality. My advice:
+
+-   Don’t ask “Academia or Industry?”
+-   Ask: **What can AI not do? What do I offer that’s uniquely human?**
+
+### [What skills have changed how you navigate your work and improved the quality of your work?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+-   **Joy and Positivity :**\
+    When I started working with her, I was very enthusiastic about everything. I think being joyful and being positive and showing that you want to contribute and go above and beyond would make people trust you. And will make people want to give you things to do. So keep in mind that I was the only non-mathematician in the group, but I was the only one that also published a mathematical paper. That should tell you something.
+
+-   **Listening Deeply:**\
+    When people are talking, talk less, listen, listen to every single thing people are saying. Don't be quick to respond. Don't be quick to give advice. Don't be quick to give your opinion. Just listen. You will learn a lot about every single person in that room and by the time they have finished that conversation, by the time you open your mouth to speak, you give the best opinion and the best advice and everybody will follow you.</span>
+
+-   **Reliability and Thoroughness:**\
+    I think I'm very thorough. I'm a bit of a perfectionist, what people say I am. I don't know if that is a good thing though because it can also break you. You don't want to be a perfectionist. You want to do the best you can and know when it's time to step away and let things go. But I think a little bit of perfectionism is good because you're thorough. People trusted my work. People trusted what I could deliver and they knew that if your former says she's gonna do this she's gonna do it and she's gonna do it well .
+
+-   **Risk-Taking and Adaptability:**\
+    Don't leave projects hanging and also let know when to say no don't take on too much. Don't try to be everything to everyone, know who you are ,know what it is you want to accomplish and focus. Once you deliver one big thing, the doors that will open for you will be tremendous It's also the fact that I believed in my value, what I could add, what I could do. And I pushed boundaries in every single thing I did. Just try it as much as possible to push boundaries. Don't be afraid to take risks.
+
+> *That's how you build a reputation. Try to understand context. Don't waste time. Politics is good, something probably I need to learn more of now that I'm getting more and more senior. But don't do it early in your career. Don't waste your time doing that early in your career.*
+
+------------------------------------------------------------------------
+
+### [What is in the pipeline with Urban Malaria?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+rea of expertise is what we do. We don't impose our agenda on them. Last year, for instance, they wanted to do re-prioritization of for seven states. We did exactly that. We developed an [entire process](https://allianceformalariaprevention.com/wp-content/uploads/2024/02/08_AMP-presentation_I-Ozodiegwu.pdf).
+
+We developed machine learning models and conducted spatial analyses. We also carried out key informant interviews and held several meetings with stakeholders. We reviewed the analysis collaboratively with them. The paper is being written at this moment. We built a software called the Malaria re-prioritization tool.
+
+### [What does a typical month of activities look like for you?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+That's a good question because it gets you a sense of what this work is. We don't have typical months unfortunately. Our group has changed in terms of our focus over time right and also we've moved from Northwestern. I was a research assistant professor, focused solely on research. We moved to Loyola, where I'm a full tenure track professor. I do research, I do teaching, I do community service, and I also engage with programs. I used to spend a lot of time coding, but I honestly don't have the time to code as much. I only code if I want to code up data and analyze data to put on my slides.
+
+We have a large language model that we're building. I'm at this moment training that model. It's a lot of stuff that is going on with the group. I spend my time, most of my time actually reading and thinking, as the lead. In a month, we could be writing papers. Right now our priority is working on our malaria re–prioritization tool. The tool was actually selected by a NASA program called NASA Lifelines as one of the geospatial / decision support tools that programs are using. I'm going to be pitching to investors to see if we can get some funding to scale it.
+
+We have grant submission. So we have a collaboration in Nigeria with a number of universities. We worked on a grant this month with them to look at the impact of climate change in Nigeria. I just spend time thinking and strategizing and trying to bring people together to work on things and also thinking of how to save our team from being swamped by AI. There is also going to conferences and meetings and spending time talking and politicking.
+
+There are stages in your career when you you really have to be technical, and there is a stage where you have to be political. I'm at the stage where I have to be political because my technical chops can no longer take me that far. If you want to talk about literature, nobody cares about your literature anymore. So it matters from a programmatic point of view that you do the best thing for them. But when you are talking to very senior people who don't spend their time with the literature and only their time politicking, you have to learn how to politic.
+
+------------------------------------------------------------------------
+
+### [What publications and events are you looking forward to ?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+I've been invited to speak at ASTMH.They asked me to speak from the Nigerian perspective what we've learned. I was at the annual malaria partners meeting. I gave a talk there as well.It's also a program-focused meeting. That's where the Global Fund decides what strategy is going to be implemented.
+
+One of my research assistants, will be speaking at AMMnet on some of the work we've done in Côte d'Ivoire, Ethiopia at Djibouti. Laurette who's the postdoc that works with me was invited to speak at the European Space Agency, their annual symposium on some of our remote sensing work as well. I don't know if I look forward to meetings as much as I used to. I try to be very strategic about the ones I attend.
+
+------------------------------------------------------------------------
+
+### [Final Thoughts?]{style="color: #A52A2A; font-family: 'Helvetica', sans-serif;"}
+
+There’s a lot of change coming. But there’s also a lot of opportunity. We need to invest in skills that are **resilient to automation**, **rooted in empathy**, and **aligned with real-world priorities**.
+
+We need to center **local expertise**, **community needs**, and **multidisciplinary approaches** to solve today’s most pressing global health challenges.

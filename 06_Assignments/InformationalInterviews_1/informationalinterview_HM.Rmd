@@ -3,8 +3,8 @@ title:
 author:
 date: 
 output:
-  html_document:
   pdf_document: default
+  html_document:
 ---
 
 ```{r setup, include=FALSE}

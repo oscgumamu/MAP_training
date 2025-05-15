@@ -1,0 +1,18 @@
+/* Whole document: */
+body{
+  font-family: Söhne;
+  font-size: 16.5pt;
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-bottom: 200px;
+
+}
+/* Headers */
+h2,h3,h4,h5,h6{
+  font-family: Charter;
+  font-size: 26pt;
+}
+h1{
+  font-family: Fell;
+  font-size: 26pt;
+}
